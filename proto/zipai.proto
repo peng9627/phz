@@ -1,0 +1,81 @@
+syntax = "proto3";
+
+service Zipai {
+    //进行过程计算
+    rpc calculate (CalculateData) returns (CalculateResult) {
+    }
+
+    //结算
+    rpc settle (SettleData) returns (SettleResult) {
+    }
+
+    //洗牌函数
+    rpc shuffle (ShuffleData) returns (ShuffleResult) {
+    }
+}
+
+//申请游戏的逻辑计算
+message CalculateData {
+    int32 allocid = 1;
+    repeated int32 handlist = 2; //手牌
+    repeated int32 penglist = 3; //碰的牌
+}
+
+message CalculateResult {
+    repeated int32 chilist = 1; //吃
+    repeated int32 penglist = 2; //碰或者哨
+    repeated int32 zhaolist = 3; //招或者拢
+    repeated int32 hulist = 4; //胡
+}
+
+message SettleData {
+    int32 allocid = 1;
+    int32 huUserId = 2; //胡牌的用户id
+    int32 huCard = 3; //胡牌的牌
+    repeated SettlePatterns settlePatterns = 4; //如果天地胡和自摸，需要传入
+    bool dagun = 5; //红黑胡打滚
+    bool qia = 6; //洽
+    repeated UserSettleData userSettleData = 7; //结算用户
+}
+
+//用户结算数据
+message UserSettleData {
+    int32 userId = 1;
+    repeated int32 chilist = 2; //吃
+    repeated int32 penglist = 3; //碰
+    repeated int32 kanlist = 4; //坎
+    repeated int32 zhaolist = 5; //招
+    repeated int32 longlist = 6; //拢
+    repeated int32 handlist = 7; //手牌
+}
+
+message SettleResult {
+    repeated UserSettleResult userSettleResule = 1;
+}
+
+//用户结算结果
+message UserSettleResult {
+    int32 userId = 1;
+    int32 hu = 2; //胡
+    int32 bang = 3; //棒
+    int32 score = 4; //分数
+    repeated SettlePatterns settlePatterns = 5; //牌型
+}
+
+message ShuffleData {
+    int32 allocid = 1;
+}
+
+message ShuffleResult {
+    repeated int32 cardlist = 1; //牌
+}
+
+enum SettlePatterns {
+    HONGHU = 0; //红胡
+    HEIHU = 1; //黑胡
+    TIANHU = 2; //天胡
+    DIHU = 3; //地胡
+    LANHU = 4; //烂胡
+    ZIMO = 5; //自摸
+    PIAOHU = 6; //票胡
+}

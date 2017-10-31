@@ -1,0 +1,43 @@
+syntax = "proto3";
+
+service Zhipai {
+    //结算
+    rpc settle (SettleData) returns (SettleResult) {
+    }
+
+    //洗牌函数
+    rpc shuffle (ShuffleData) returns (ShuffleResult) {
+    }
+}
+
+message SettleData {
+    int32 allocid = 1; //1.劈板板2.斗牛牛
+    int32 banker = 2; //庄家id
+    repeated UserSettleData userSettleData = 3; //结算用户
+}
+
+//用户结算数据
+message UserSettleData {
+    int32 userId = 1;
+    repeated int32 cardlist = 2; //手牌
+    int32 score = 3; //下注分数
+}
+
+message SettleResult {
+    repeated UserSettleResult userSettleResule = 1;
+}
+
+//用户结算结果
+message UserSettleResult {
+    int32 userId = 1;
+    int32 cardValue = 2; //牌值 0-9为点子，劈板板大于10为豹子，斗牛牛（10.牛牛,11.五牛,12.炸弹牛,13.五小牛）
+    int32 win = 3; //输赢分数
+}
+
+message ShuffleData {
+    int32 allocid = 1; //1.劈板板2.斗牛牛
+}
+
+message ShuffleResult {
+    repeated int32 cardlist = 1; //牌
+}
