@@ -111,6 +111,23 @@ class Daer(object):
         return zhao
 
     @staticmethod
+    def get_si(handlist):
+        """
+        :获取三个
+        :param handlist:
+        :return:
+        """
+        si = set()
+        temp = list()
+        temp.extend(handlist)
+        temp = sorted(temp, cmp=Daer.reversed_cmp)
+        for i in range(0, len(temp) - 3):
+            if temp[i] == temp[i + 3]:
+                si.add(temp[i])
+                i += 3
+        return si
+
+    @staticmethod
     def hu(handlist, penglist):
         """
         :计算能胡哪些牌
@@ -481,28 +498,53 @@ class Performance(zipai_pb2_grpc.ZipaiServicer):
         :return:
         """
         shuffle = ShuffleResult()
-        cardlist = [1, 1, 1, 1,
-                    2, 2, 2, 2,
-                    3, 3, 3, 3,
-                    4, 4, 4, 4,
-                    5, 5, 5, 5,
-                    6, 6, 6, 6,
-                    7, 7, 7, 7,
-                    8, 8, 8, 8,
-                    9, 9, 9, 9,
-                    10, 10, 10, 10,
-                    101, 101, 101, 101,
-                    102, 102, 102, 102,
-                    103, 103, 103, 103,
-                    104, 104, 104, 104,
-                    105, 105, 105, 105,
-                    106, 106, 106, 106,
-                    107, 107, 107, 107,
-                    108, 108, 108, 108,
-                    109, 109, 109, 109,
-                    110, 110, 110, 110]
-        random.shuffle(cardlist)
-        shuffle.cardlist.extend(cardlist)
+        surplusCards = [1, 1, 1, 1,
+                        2, 2, 2, 2,
+                        3, 3, 3, 3,
+                        4, 4, 4, 4,
+                        5, 5, 5, 5,
+                        6, 6, 6, 6,
+                        7, 7, 7, 7,
+                        8, 8, 8, 8,
+                        9, 9, 9, 9,
+                        10, 10, 10, 10,
+                        101, 101, 101, 101,
+                        102, 102, 102, 102,
+                        103, 103, 103, 103,
+                        104, 104, 104, 104,
+                        105, 105, 105, 105,
+                        106, 106, 106, 106,
+                        107, 107, 107, 107,
+                        108, 108, 108, 108,
+                        109, 109, 109, 109,
+                        110, 110, 110, 110]
+        for user in request.userCardLevel:
+            dealCards = DealCards()
+            dealCards.userId = user.user
+            if 0 == user.level:
+                cardSize = request.banker == dealCards.userId and 21 or 20
+                for i in range(0, cardSize):
+                    index = random.random(0, len(surplusCards) - 1)
+                    dealCards.cardlist.append(surplusCards[index])
+                    surplusCards.remove(surplusCards[index])
+                si = Daer.get_si(dealCards.cardlist)
+                dealCards.zhaolist.append(si)
+                handTemp = list()
+                handTemp.extend(dealCards.cardlist)
+                handTemp.remove(si)
+                handTemp.remove(si)
+                handTemp.remove(si)
+                handTemp.remove(si)
+                san = Daer.get_san(handTemp, [])
+                dealCards.penglist.append(san)
+                handTemp.remove(san)
+                handTemp.remove(san)
+                handTemp.remove(san)
+                dealCards.hulist.extend(Daer.hu(handTemp, san))
+                dealCards.tianhu = request.banker == dealCards.userId and Daer.check_lug(handTemp)
+            shuffle.append(dealCards)
+        random.shuffle(surplusCards)
+        shuffle.cardlist.extend(surplusCards)
         return shuffle
 
 

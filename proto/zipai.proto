@@ -1,5 +1,9 @@
 syntax = "proto3";
 
+option java_multiple_files = true;
+option java_package = "zipai.mode.proto";
+option java_outer_classname = "Zipai";
+
 service Zipai {
     //进行过程计算
     rpc calculate (CalculateData) returns (CalculateResult) {
@@ -64,10 +68,27 @@ message UserSettleResult {
 
 message ShuffleData {
     int32 allocid = 1;
+    repeated UserCardLevel userCardLevel = 2;
+    int32 banker = 3;
+}
+
+message UserCardLevel {
+    int32 userId = 1;
+    int32 level = 2;
 }
 
 message ShuffleResult {
-    repeated int32 cardlist = 1; //牌
+    repeated int32 surplusCards = 1; //剩余牌
+    repeated DealCards dealCards = 2;
+}
+
+message DealCards {
+    int32 userId = 1;
+    repeated int32 cardlist = 2; //牌
+    repeated int32 penglist = 3; //碰或者哨
+    repeated int32 zhaolist = 4; //招或者拢
+    repeated int32 hulist = 5; //能胡
+    bool tianhu = 6;
 }
 
 enum SettlePatterns {
