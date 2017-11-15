@@ -24,6 +24,10 @@ class Daer(object):
         possible_list = set()
         for s in handlist:
             possible_list.add(s)
+            if s > 100:
+                possible_list.add(s - 100)
+            else:
+                possible_list.add(s + 100)
             for i in range(0, degree):
                 if (s + i + 1) % 100 < 11:
                     possible_list.add(s + i + 1)
@@ -40,26 +44,139 @@ class Daer(object):
         return possible_list
 
     @staticmethod
-    def chi(handlist):
+    def can_chi(handlist, s):
+        """
+        :能吃的牌
+        :param handlist:
+        :param s
+        :return:
+        """
+        if (s - 2 in handlist and s - 1 in handlist) or (s + 1 in handlist and s - 1 in handlist) or (
+                            s + 2 in handlist and s + 1 in handlist):
+            return True
+        if (s == 2 and 7 in handlist and 10 in handlist) or (s == 7 and 2 in handlist and 10 in handlist) or (
+                            s == 10 and 7 in handlist and 2 in handlist):
+            return True
+        if (s == 102 and 107 in handlist and 110 in handlist) or (
+                            s == 107 and 102 in handlist and 110 in handlist) or (
+                            s == 110 and 107 in handlist and 102 in handlist):
+            return True
+        if 1 < Daer.containSize(handlist, s + 100):
+            return True
+        if 1 < Daer.containSize(handlist, s - 100):
+            return True
+        if s in handlist and (s + 100 in handlist or s - 100 in handlist):
+            return True
+        return False
+
+    @staticmethod
+    def get_chi(handlist, s):
+        canchi = list()
+        temp = list()
+        if s - 2 in handlist and s - 1 in handlist:
+            temp.extend(handlist)
+            temp.remove(s - 2)
+            temp.remove(s - 1)
+            if Daer.can_chi(temp, s):
+                canchi.append(s - 2)
+                canchi.append(s - 1)
+        if s + 1 in handlist and s - 1 in handlist:
+            temp.extend(handlist)
+            temp.remove(s + 1)
+            temp.remove(s - 1)
+            if Daer.can_chi(temp, s):
+                canchi.append(s + 1)
+                canchi.append(s - 1)
+        if s + 2 in handlist and s + 1 in handlist:
+            temp.extend(handlist)
+            temp.remove(s + 1)
+            temp.remove(s + 2)
+            if Daer.can_chi(temp, s):
+                canchi.append(s + 1)
+                canchi.append(s + 2)
+        if s == 2 and 7 in handlist and 10 in handlist:
+            temp.extend(handlist)
+            temp.remove(7)
+            temp.remove(10)
+            if Daer.can_chi(temp, s):
+                canchi.append(7)
+                canchi.append(10)
+        if s == 7 and 2 in handlist and 10 in handlist:
+            temp.extend(handlist)
+            temp.remove(2)
+            temp.remove(10)
+            if Daer.can_chi(temp, s):
+                canchi.append(2)
+                canchi.append(10)
+        if s == 10 and 7 in handlist and 2 in handlist:
+            temp.extend(handlist)
+            temp.remove(2)
+            temp.remove(7)
+            if Daer.can_chi(temp, s):
+                canchi.append(2)
+                canchi.append(7)
+        if s == 102 and 107 in handlist and 110 in handlist:
+            temp.extend(handlist)
+            temp.remove(107)
+            temp.remove(110)
+            if Daer.can_chi(temp, s):
+                canchi.append(107)
+                canchi.append(110)
+        if s == 107 and 102 in handlist and 110 in handlist:
+            temp.extend(handlist)
+            temp.remove(102)
+            temp.remove(110)
+            if Daer.can_chi(temp, s):
+                canchi.append(102)
+                canchi.append(110)
+        if s == 110 and 107 in handlist and 102 in handlist:
+            temp.extend(handlist)
+            temp.remove(102)
+            temp.remove(107)
+            if Daer.can_chi(temp, s):
+                canchi.append(102)
+                canchi.append(107)
+        if 1 < Daer.containSize(handlist, s + 100):
+            temp.extend(handlist)
+            temp.remove(s + 100)
+            temp.remove(s + 100)
+            if Daer.can_chi(temp, s):
+                canchi.append(s + 100)
+                canchi.append(s + 100)
+        if 1 < Daer.containSize(handlist, s - 100):
+            temp.extend(handlist)
+            temp.remove(s - 100)
+            temp.remove(s - 100)
+            if Daer.can_chi(temp, s):
+                canchi.append(s - 100)
+                canchi.append(s - 100)
+        if s in handlist and (s + 100 in handlist or s - 100 in handlist):
+            temp.extend(handlist)
+            temp.remove(s + 100)
+            temp.remove(s - 100)
+            if Daer.can_chi(temp, s):
+                canchi.append(s + 100)
+                canchi.append(s - 100)
+        return canchi
+
+    @staticmethod
+    def chi(handlist, calculate):
         """
         :能吃的牌
         :param handlist:
         :return:
         """
-        chi = set()
         possible = Daer.possible(handlist, 1)
         for s in possible:
-            if (s - 2 in handlist and s - 1 in handlist) or (s + 1 in handlist and s - 1 in handlist) or (
-                                s + 2 in handlist and s + 1 in handlist):
-                chi.add(s)
-            if (s == 2 and 7 in handlist and 10 in handlist) or (s == 7 and 2 in handlist and 10 in handlist) or (
-                                s == 10 and 7 in handlist and 2 in handlist):
-                chi.add(s)
-            if (s == 102 and 107 in handlist and 110 in handlist) or (
-                                s == 107 and 102 in handlist and 110 in handlist) or (
-                                s == 110 and 107 in handlist and 102 in handlist):
-                chi.add(s)
-        return chi
+            if Daer.can_chi(handlist, s):
+                chi = calculate.chilist.add()
+                if 1 == Daer.containSize(handlist, s):
+                    chitemp = Daer.get_chi(handlist, s)
+                    if 0 < len(chitemp):
+                        chi.chicard = s
+                        chi.chiCards.extend(chitemp)
+                else:
+                    chi.chicard = s
 
     @staticmethod
     def peng(handlist):
@@ -458,18 +575,16 @@ class Performance(zipai_pb2_grpc.ZipaiServicer):
                     settle_type.add(LANHU)
         for u in request.userSettleData:
             if u.userId == request.huUserId:
-                userSettleResult = UserSettleResult()
+                userSettleResult = settle.userSettleResule.add()
                 userSettleResult.userId = u.userId
                 userSettleResult.hu = hu
                 userSettleResult.bang = bang
                 userSettleResult.score = 2 * hu * bang
                 userSettleResult.settlePatterns.extend(settle_type)
-                settle.userSettleResule.append(userSettleResult)
             else:
                 userSettleResult = UserSettleResult()
                 userSettleResult.userId = u.userId
                 userSettleResult.score = -hu * bang
-                settle.userSettleResule.append(userSettleResult)
         return settle
 
     def calculate(self, request, context):
@@ -483,7 +598,7 @@ class Performance(zipai_pb2_grpc.ZipaiServicer):
         print "calculate传入penglist", request.penglist
         calculate = CalculateResult()
         if 1 == request.allocid:
-            calculate.chilist.extend(Daer.chi(request.handlist))
+            Daer.chi(request.handlist, calculate)
             calculate.penglist.extend(Daer.peng(request.handlist))
             calculate.zhaolist.extend(Daer.get_san(request.handlist, request.penglist))
             calculate.hulist.extend(Daer.hu(request.handlist, request.penglist))
@@ -519,32 +634,35 @@ class Performance(zipai_pb2_grpc.ZipaiServicer):
                         109, 109, 109, 109,
                         110, 110, 110, 110]
         for user in request.userCardLevel:
-            dealCards = DealCards()
-            dealCards.userId = user.user
+            dealCards = shuffle.dealCards.add()
+            dealCards.userId = user.userId
             if 0 == user.level:
                 cardSize = request.banker == dealCards.userId and 21 or 20
                 for i in range(0, cardSize):
-                    index = random.random(0, len(surplusCards) - 1)
+                    index = random.randint(0, len(surplusCards) - 1)
                     dealCards.cardlist.append(surplusCards[index])
                     surplusCards.remove(surplusCards[index])
                 si = Daer.get_si(dealCards.cardlist)
-                dealCards.zhaolist.append(si)
+                dealCards.longlist.extend(si)
                 handTemp = list()
                 handTemp.extend(dealCards.cardlist)
-                handTemp.remove(si)
-                handTemp.remove(si)
-                handTemp.remove(si)
-                handTemp.remove(si)
+                for s in si:
+                    handTemp.remove(s)
+                    handTemp.remove(s)
+                    handTemp.remove(s)
+                    handTemp.remove(s)
                 san = Daer.get_san(handTemp, [])
-                dealCards.penglist.append(san)
-                handTemp.remove(san)
-                handTemp.remove(san)
-                handTemp.remove(san)
+                dealCards.kanlist.extend(san)
+                for s in san:
+                    handTemp.remove(s)
+                    handTemp.remove(s)
+                    handTemp.remove(s)
                 dealCards.hulist.extend(Daer.hu(handTemp, san))
+                dealCards.penglist.extend(Daer.peng(handTemp))
+                dealCards.zhaolist.extend(Daer.get_san(handTemp, []))
                 dealCards.tianhu = request.banker == dealCards.userId and Daer.check_lug(handTemp)
-            shuffle.append(dealCards)
         random.shuffle(surplusCards)
-        shuffle.cardlist.extend(surplusCards)
+        shuffle.surplusCards.extend(surplusCards)
         return shuffle
 
 

@@ -26,7 +26,13 @@ message CalculateData {
 }
 
 message CalculateResult {
-    repeated int32 chilist = 1; //吃
+
+    message Chi {
+        int32 chicard = 1;
+        repeated int32 chiCards = 2;
+    }
+
+    repeated Chi chilist = 1; //吃
     repeated int32 penglist = 2; //碰或者哨
     repeated int32 zhaolist = 3; //招或者拢
     repeated int32 hulist = 4; //胡
@@ -85,10 +91,12 @@ message ShuffleResult {
 message DealCards {
     int32 userId = 1;
     repeated int32 cardlist = 2; //牌
-    repeated int32 penglist = 3; //碰或者哨
-    repeated int32 zhaolist = 4; //招或者拢
-    repeated int32 hulist = 5; //能胡
-    bool tianhu = 6;
+    repeated int32 longlist = 3; //拢
+    repeated int32 kanlist = 4; //坎
+    repeated int32 penglist = 5; //碰或者哨
+    repeated int32 zhaolist = 6; //招或者拢
+    repeated int32 hulist = 7; //能胡
+    bool tianhu = 8;
 }
 
 enum SettlePatterns {

@@ -32,7 +32,7 @@ class Douniuniu(object):
     """
 
     @staticmethod
-    def get_card_value(cardlist):
+    def get_card_value(cardlist, shunzi):
         """
         :获取牌值
         :param cardlist:牌
@@ -57,13 +57,14 @@ class Douniuniu(object):
                     val = sum_val % 10 == 0 and 10 or sum_val % 10
                     break
 
-        # 软牛牛
-        if temp[0] % 100 == temp[1] % 100 - 1 == temp[2] % 100 - 2 and (temp[3] + temp[4]) % 100 > val:
-            return (temp[3] + temp[4]) % 100
-        if temp[1] % 100 == temp[2] % 100 - 1 == temp[3] % 100 - 2 and (temp[0] + temp[4]) % 100 > val:
-            return (temp[0] + temp[4]) % 100
-        if temp[2] % 100 == temp[3] % 100 - 1 == temp[4] % 100 - 2 and (temp[0] + temp[1]) % 100 > val:
-            return (temp[0] + temp[1]) % 100
+        if shunzi:
+            # 软牛牛
+            if temp[0] % 100 == temp[1] % 100 - 1 == temp[2] % 100 - 2 and (temp[3] + temp[4]) % 100 > val:
+                return (temp[3] + temp[4]) % 100
+            if temp[1] % 100 == temp[2] % 100 - 1 == temp[3] % 100 - 2 and (temp[0] + temp[4]) % 100 > val:
+                return (temp[0] + temp[4]) % 100
+            if temp[2] % 100 == temp[3] % 100 - 1 == temp[4] % 100 - 2 and (temp[0] + temp[1]) % 100 > val:
+                return (temp[0] + temp[1]) % 100
 
         return val
 
@@ -142,17 +143,34 @@ class Performance(zhipai_pb2_grpc.ZhipaiServicer):
                     userSettleResult.win = win
                     settle.append(userSettleResult)
                     break
-        if 2 == request.allocid:
+        if 2 == request.allocid or 3 == request.allocid:
+            if 0 == request.banker:
+                maxUser = request.userSettleData[0]
+                max_value = Douniuniu.get_card_value(maxUser.cardlist, 2 == request.allocid)
+                for u in request.userSettleData:
+                    user_value = Douniuniu.get_card_value(u.cardlist, 2 == request.allocid)
+                    if user_value > max_value:
+                        max_value = user_value
+                        maxUser = u
+                    if user_value == max_value:
+                        max_array_card = sorted(maxUser.cardlist, cmp=Douniuniu.reversed_cmp)
+                        user_array_card = sorted(u.cardlist, cmp=Douniuniu.reversed_cmp)
+                        if max_array_card[4] % 100 < user_array_card[4] % 100 \
+                                or (max_array_card[4] % 100 == user_array_card[4] % 100
+                                    and max_array_card[4] < user_array_card[4]):
+                            max_value = user_value
+                            maxUser = u
+
             for b in request.userSettleData:
                 if b.userId == request.banker:
-                    banker_value = Douniuniu.get_card_value(b.cardlist)
+                    banker_value = Douniuniu.get_card_value(b.cardlist, 2 == request.allocid)
                     banker_multiple = Douniuniu.get_multiple(banker_value)
                     win = 0
                     banker_array_cards = sorted(b.cardlist, cmp=Douniuniu.reversed_cmp)
                     for u in request.userSettleData:
                         if u.userId != request.banker:
                             userSettleResult = UserSettleResult
-                            user_value = Douniuniu.get_card_value(u.cardlist)
+                            user_value = Douniuniu.get_card_value(u.cardlist, 2 == request.allocid)
                             userSettleResult.userId = u.userId
                             userSettleResult.cardValue = user_value
                             user_multiple = Douniuniu.get_multiple(user_value)
