@@ -72,8 +72,8 @@ class Daer(object):
     @staticmethod
     def get_chi(handlist, s):
         canchi = list()
-        temp = list()
         if s - 2 in handlist and s - 1 in handlist:
+            temp = list()
             temp.extend(handlist)
             temp.remove(s - 2)
             temp.remove(s - 1)
@@ -81,6 +81,7 @@ class Daer(object):
                 canchi.append(s - 2)
                 canchi.append(s - 1)
         if s + 1 in handlist and s - 1 in handlist:
+            temp = list()
             temp.extend(handlist)
             temp.remove(s + 1)
             temp.remove(s - 1)
@@ -88,6 +89,7 @@ class Daer(object):
                 canchi.append(s + 1)
                 canchi.append(s - 1)
         if s + 2 in handlist and s + 1 in handlist:
+            temp = list()
             temp.extend(handlist)
             temp.remove(s + 1)
             temp.remove(s + 2)
@@ -95,6 +97,7 @@ class Daer(object):
                 canchi.append(s + 1)
                 canchi.append(s + 2)
         if s == 2 and 7 in handlist and 10 in handlist:
+            temp = list()
             temp.extend(handlist)
             temp.remove(7)
             temp.remove(10)
@@ -102,6 +105,7 @@ class Daer(object):
                 canchi.append(7)
                 canchi.append(10)
         if s == 7 and 2 in handlist and 10 in handlist:
+            temp = list()
             temp.extend(handlist)
             temp.remove(2)
             temp.remove(10)
@@ -109,6 +113,7 @@ class Daer(object):
                 canchi.append(2)
                 canchi.append(10)
         if s == 10 and 7 in handlist and 2 in handlist:
+            temp = list()
             temp.extend(handlist)
             temp.remove(2)
             temp.remove(7)
@@ -116,6 +121,7 @@ class Daer(object):
                 canchi.append(2)
                 canchi.append(7)
         if s == 102 and 107 in handlist and 110 in handlist:
+            temp = list()
             temp.extend(handlist)
             temp.remove(107)
             temp.remove(110)
@@ -123,6 +129,7 @@ class Daer(object):
                 canchi.append(107)
                 canchi.append(110)
         if s == 107 and 102 in handlist and 110 in handlist:
+            temp = list()
             temp.extend(handlist)
             temp.remove(102)
             temp.remove(110)
@@ -130,6 +137,7 @@ class Daer(object):
                 canchi.append(102)
                 canchi.append(110)
         if s == 110 and 107 in handlist and 102 in handlist:
+            temp = list()
             temp.extend(handlist)
             temp.remove(102)
             temp.remove(107)
@@ -137,6 +145,7 @@ class Daer(object):
                 canchi.append(102)
                 canchi.append(107)
         if 1 < Daer.containSize(handlist, s + 100):
+            temp = list()
             temp.extend(handlist)
             temp.remove(s + 100)
             temp.remove(s + 100)
@@ -144,18 +153,28 @@ class Daer(object):
                 canchi.append(s + 100)
                 canchi.append(s + 100)
         if 1 < Daer.containSize(handlist, s - 100):
+            temp = list()
             temp.extend(handlist)
             temp.remove(s - 100)
             temp.remove(s - 100)
             if Daer.can_chi(temp, s):
                 canchi.append(s - 100)
                 canchi.append(s - 100)
-        if s in handlist and (s + 100 in handlist or s - 100 in handlist):
+        if s in handlist and s + 100 in handlist:
+            temp = list()
             temp.extend(handlist)
             temp.remove(s + 100)
-            temp.remove(s - 100)
+            temp.remove(s)
             if Daer.can_chi(temp, s):
                 canchi.append(s + 100)
+                canchi.append(s)
+        if s in handlist and s - 100 in handlist:
+            temp = list()
+            temp.extend(handlist)
+            temp.remove(s)
+            temp.remove(s - 100)
+            if Daer.can_chi(temp, s):
+                canchi.append(s)
                 canchi.append(s - 100)
         return canchi
 
