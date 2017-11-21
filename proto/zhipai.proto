@@ -18,6 +18,12 @@ message SettleData {
     int32 allocid = 1; //1.劈板板2.斗牛牛
     int32 banker = 2; //庄家id
     repeated UserSettleData userSettleData = 3; //结算用户
+    bytes extraData = 4;
+}
+
+message PiBanBanSettleData {
+    int32 playType = 1; //下注方式
+    int32 jackpot = 2; //奖池
 }
 
 //用户结算数据

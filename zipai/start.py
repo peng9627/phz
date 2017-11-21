@@ -621,6 +621,10 @@ class Performance(zipai_pb2_grpc.ZipaiServicer):
             calculate.penglist.extend(Daer.peng(request.handlist))
             calculate.zhaolist.extend(Daer.get_san(request.handlist, request.penglist))
             calculate.hulist.extend(Daer.hu(request.handlist, request.penglist))
+            print "calculate返回penglist", calculate.penglist
+            print "calculate返回zhaolist", calculate.zhaolist
+            print "calculate返回hulist", calculate.hulist
+            print "calculate返回chilist", calculate.chilist
 
         return calculate
 

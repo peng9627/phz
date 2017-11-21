@@ -9,6 +9,7 @@ from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
 from google.protobuf import reflection as _reflection
 from google.protobuf import symbol_database as _symbol_database
+from google.protobuf import descriptor_pb2
 
 # @@protoc_insertion_point(imports)
 
@@ -19,7 +20,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
     package='',
     syntax='proto3',
     serialized_pb=_b(
-        '\n\x0czhipai.proto\"V\n\nSettleData\x12\x0f\n\x07\x61llocid\x18\x01 \x01(\x05\x12\x0e\n\x06\x62\x61nker\x18\x02 \x01(\x05\x12\'\n\x0euserSettleData\x18\x03 \x03(\x0b\x32\x0f.UserSettleData\"A\n\x0eUserSettleData\x12\x0e\n\x06userId\x18\x01 \x01(\x05\x12\x10\n\x08\x63\x61rdlist\x18\x02 \x03(\x05\x12\r\n\x05score\x18\x03 \x01(\x05\";\n\x0cSettleResult\x12+\n\x10userSettleResule\x18\x01 \x03(\x0b\x32\x11.UserSettleResult\"B\n\x10UserSettleResult\x12\x0e\n\x06userId\x18\x01 \x01(\x05\x12\x11\n\tcardValue\x18\x02 \x01(\x05\x12\x0b\n\x03win\x18\x03 \x01(\x05\"\x1e\n\x0bShuffleData\x12\x0f\n\x07\x61llocid\x18\x01 \x01(\x05\"!\n\rShuffleResult\x12\x10\n\x08\x63\x61rdlist\x18\x01 \x03(\x05\x32[\n\x06Zhipai\x12&\n\x06settle\x12\x0b.SettleData\x1a\r.SettleResult\"\x00\x12)\n\x07shuffle\x12\x0c.ShuffleData\x1a\x0e.ShuffleResult\"\x00\x62\x06proto3')
+        '\n\x0czhipai.proto\"i\n\nSettleData\x12\x0f\n\x07\x61llocid\x18\x01 \x01(\x05\x12\x0e\n\x06\x62\x61nker\x18\x02 \x01(\x05\x12\'\n\x0euserSettleData\x18\x03 \x03(\x0b\x32\x0f.UserSettleData\x12\x11\n\textraData\x18\x04 \x01(\x0c\"7\n\x12PiBanBanSettleData\x12\x10\n\x08playType\x18\x01 \x01(\x05\x12\x0f\n\x07jackpot\x18\x02 \x01(\x05\"A\n\x0eUserSettleData\x12\x0e\n\x06userId\x18\x01 \x01(\x05\x12\x10\n\x08\x63\x61rdlist\x18\x02 \x03(\x05\x12\r\n\x05score\x18\x03 \x01(\x05\";\n\x0cSettleResult\x12+\n\x10userSettleResule\x18\x01 \x03(\x0b\x32\x11.UserSettleResult\"B\n\x10UserSettleResult\x12\x0e\n\x06userId\x18\x01 \x01(\x05\x12\x11\n\tcardValue\x18\x02 \x01(\x05\x12\x0b\n\x03win\x18\x03 \x01(\x05\"\x1e\n\x0bShuffleData\x12\x0f\n\x07\x61llocid\x18\x01 \x01(\x05\"!\n\rShuffleResult\x12\x10\n\x08\x63\x61rdlist\x18\x01 \x03(\x05\x32[\n\x06Zhipai\x12&\n\x06settle\x12\x0b.SettleData\x1a\r.SettleResult\"\x00\x12)\n\x07shuffle\x12\x0c.ShuffleData\x1a\x0e.ShuffleResult\"\x00\x42\x1c\n\x11zhipai.mode.protoB\x05ZipaiP\x01\x62\x06proto3')
 )
 
 _SETTLEDATA = _descriptor.Descriptor(
@@ -50,6 +51,13 @@ _SETTLEDATA = _descriptor.Descriptor(
             message_type=None, enum_type=None, containing_type=None,
             is_extension=False, extension_scope=None,
             options=None),
+        _descriptor.FieldDescriptor(
+            name='extraData', full_name='SettleData.extraData', index=3,
+            number=4, type=12, cpp_type=9, label=1,
+            has_default_value=False, default_value=_b(""),
+            message_type=None, enum_type=None, containing_type=None,
+            is_extension=False, extension_scope=None,
+            options=None),
     ],
     extensions=[
     ],
@@ -63,7 +71,44 @@ _SETTLEDATA = _descriptor.Descriptor(
     oneofs=[
     ],
     serialized_start=16,
-    serialized_end=102,
+    serialized_end=121,
+)
+
+_PIBANBANSETTLEDATA = _descriptor.Descriptor(
+    name='PiBanBanSettleData',
+    full_name='PiBanBanSettleData',
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name='playType', full_name='PiBanBanSettleData.playType', index=0,
+            number=1, type=5, cpp_type=1, label=1,
+            has_default_value=False, default_value=0,
+            message_type=None, enum_type=None, containing_type=None,
+            is_extension=False, extension_scope=None,
+            options=None),
+        _descriptor.FieldDescriptor(
+            name='jackpot', full_name='PiBanBanSettleData.jackpot', index=1,
+            number=2, type=5, cpp_type=1, label=1,
+            has_default_value=False, default_value=0,
+            message_type=None, enum_type=None, containing_type=None,
+            is_extension=False, extension_scope=None,
+            options=None),
+    ],
+    extensions=[
+    ],
+    nested_types=[],
+    enum_types=[
+    ],
+    options=None,
+    is_extendable=False,
+    syntax='proto3',
+    extension_ranges=[],
+    oneofs=[
+    ],
+    serialized_start=123,
+    serialized_end=178,
 )
 
 _USERSETTLEDATA = _descriptor.Descriptor(
@@ -106,8 +151,8 @@ _USERSETTLEDATA = _descriptor.Descriptor(
     extension_ranges=[],
     oneofs=[
     ],
-    serialized_start=104,
-    serialized_end=169,
+    serialized_start=180,
+    serialized_end=245,
 )
 
 _SETTLERESULT = _descriptor.Descriptor(
@@ -136,8 +181,8 @@ _SETTLERESULT = _descriptor.Descriptor(
     extension_ranges=[],
     oneofs=[
     ],
-    serialized_start=171,
-    serialized_end=230,
+    serialized_start=247,
+    serialized_end=306,
 )
 
 _USERSETTLERESULT = _descriptor.Descriptor(
@@ -180,8 +225,8 @@ _USERSETTLERESULT = _descriptor.Descriptor(
     extension_ranges=[],
     oneofs=[
     ],
-    serialized_start=232,
-    serialized_end=298,
+    serialized_start=308,
+    serialized_end=374,
 )
 
 _SHUFFLEDATA = _descriptor.Descriptor(
@@ -210,8 +255,8 @@ _SHUFFLEDATA = _descriptor.Descriptor(
     extension_ranges=[],
     oneofs=[
     ],
-    serialized_start=300,
-    serialized_end=330,
+    serialized_start=376,
+    serialized_end=406,
 )
 
 _SHUFFLERESULT = _descriptor.Descriptor(
@@ -240,13 +285,14 @@ _SHUFFLERESULT = _descriptor.Descriptor(
     extension_ranges=[],
     oneofs=[
     ],
-    serialized_start=332,
-    serialized_end=365,
+    serialized_start=408,
+    serialized_end=441,
 )
 
 _SETTLEDATA.fields_by_name['userSettleData'].message_type = _USERSETTLEDATA
 _SETTLERESULT.fields_by_name['userSettleResule'].message_type = _USERSETTLERESULT
 DESCRIPTOR.message_types_by_name['SettleData'] = _SETTLEDATA
+DESCRIPTOR.message_types_by_name['PiBanBanSettleData'] = _PIBANBANSETTLEDATA
 DESCRIPTOR.message_types_by_name['UserSettleData'] = _USERSETTLEDATA
 DESCRIPTOR.message_types_by_name['SettleResult'] = _SETTLERESULT
 DESCRIPTOR.message_types_by_name['UserSettleResult'] = _USERSETTLERESULT
@@ -260,6 +306,13 @@ SettleData = _reflection.GeneratedProtocolMessageType('SettleData', (_message.Me
     # @@protoc_insertion_point(class_scope:SettleData)
 ))
 _sym_db.RegisterMessage(SettleData)
+
+PiBanBanSettleData = _reflection.GeneratedProtocolMessageType('PiBanBanSettleData', (_message.Message,), dict(
+    DESCRIPTOR=_PIBANBANSETTLEDATA,
+    __module__='zhipai_pb2'
+    # @@protoc_insertion_point(class_scope:PiBanBanSettleData)
+))
+_sym_db.RegisterMessage(PiBanBanSettleData)
 
 UserSettleData = _reflection.GeneratedProtocolMessageType('UserSettleData', (_message.Message,), dict(
     DESCRIPTOR=_USERSETTLEDATA,
@@ -296,14 +349,18 @@ ShuffleResult = _reflection.GeneratedProtocolMessageType('ShuffleResult', (_mess
 ))
 _sym_db.RegisterMessage(ShuffleResult)
 
+DESCRIPTOR.has_options = True
+DESCRIPTOR._options = _descriptor._ParseOptions(descriptor_pb2.FileOptions(),
+                                                _b('\n\021zhipai.mode.protoB\005ZipaiP\001'))
+
 _ZHIPAI = _descriptor.ServiceDescriptor(
     name='Zhipai',
     full_name='Zhipai',
     file=DESCRIPTOR,
     index=0,
     options=None,
-    serialized_start=367,
-    serialized_end=458,
+    serialized_start=443,
+    serialized_end=534,
     methods=[
         _descriptor.MethodDescriptor(
             name='settle',

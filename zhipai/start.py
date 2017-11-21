@@ -116,32 +116,51 @@ class Performance(zhipai_pb2_grpc.ZhipaiServicer):
         """
         settle = SettleResult()
         if 1 == request.allocid:
+            pd = PiBanBanSettleData()
+            pd.ParseFromString(request.extraData)
+            jackpot = pd.jackpot
+            deskScore = pd.jackpot
             for b in request.userSettleData:
                 if b.userId == request.banker:
                     banker_value = Pibanban.get_card_value(b.cardlist)
                     win = 0
                     for u in request.userSettleData:
                         if u.userId != request.banker:
-                            userSettleResult = UserSettleResult
+                            playScore = u.score
+                            if 2 == pd.playType:
+                                if 1 == playScore:
+                                    playScore = jackpot
+                                    deskScore = 0
+                                if 2 == playScore:
+                                    playScore = jackpot / 2
+                                    deskScore = jackpot / 2
+                                if 3 == playScore:
+                                    playScore = jackpot
+                                    deskScore = 0
+                                if 4 == playScore:
+                                    playScore = deskScore
+                                    deskScore = 0
+                            elif playScore > jackpot:
+                                playScore = jackpot
+                            userSettleResult = settle.userSettleResule.add()
                             user_value = Pibanban.get_card_value(u.cardlist)
                             userSettleResult.userId = u.userId
                             userSettleResult.cardValue = user_value
                             if user_value > banker_value:
                                 if user_value > 9:
-                                    userSettleResult.win = 2 * u.score
-                                    win -= 2 * u.score
+                                    userSettleResult.win = 2 * playScore
+                                    win -= 2 * playScore
                                 else:
-                                    userSettleResult.win = u.score
-                                    win -= u.score
+                                    userSettleResult.win = playScore
+                                    win -= playScore
                             else:
-                                userSettleResult.win = -u.score
-                                win += u.score
-                            settle.append(userSettleResult)
-                    userSettleResult = UserSettleResult
+                                userSettleResult.win = -playScore
+                                win += playScore
+                            jackpot + win
+                    userSettleResult = settle.userSettleResule.add()
                     userSettleResult.userId = b.userId
                     userSettleResult.cardValue = banker_value
                     userSettleResult.win = win
-                    settle.append(userSettleResult)
                     break
         if 2 == request.allocid or 3 == request.allocid:
             if 0 == request.banker:
@@ -169,7 +188,7 @@ class Performance(zhipai_pb2_grpc.ZhipaiServicer):
                     banker_array_cards = sorted(b.cardlist, cmp=Douniuniu.reversed_cmp)
                     for u in request.userSettleData:
                         if u.userId != request.banker:
-                            userSettleResult = UserSettleResult
+                            userSettleResult = settle.userSettleResule.add()
                             user_value = Douniuniu.get_card_value(u.cardlist, 2 == request.allocid)
                             userSettleResult.userId = u.userId
                             userSettleResult.cardValue = user_value
@@ -195,11 +214,10 @@ class Performance(zhipai_pb2_grpc.ZhipaiServicer):
                                     userSettleResult.win = user_multiple * u.score
                                     win -= user_multiple * u.score
 
-                    userSettleResult = UserSettleResult
+                    userSettleResult = settle.userSettleResule.add()
                     userSettleResult.userId = b.userId
                     userSettleResult.cardValue = banker_value
                     userSettleResult.win = win
-                    settle.append(userSettleResult)
                     break
         return settle
 
@@ -260,3 +278,13 @@ def rpc_server():
 
 if __name__ == '__main__':
     rpc_server()
+
+    p = PiBanBanSettleData()
+    p.playType = 1
+    p.jackpot = 1
+    s = SettleData()
+    s.extraData = p.SerializeToString()
+    g = PiBanBanSettleData()
+    g.ParseFromString(s.extraData)
+    print g.playType
+    print g.jackpot
