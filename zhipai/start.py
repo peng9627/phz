@@ -43,7 +43,7 @@ class Douniuniu(object):
     """
 
     @staticmethod
-    def get_card_value(cardlist, shunzi):
+    def get_card_value(cardlist, shunzi, allocid):
         """
         :获取牌值
         :param cardlist:牌
@@ -59,33 +59,51 @@ class Douniuniu(object):
                 temp.append(c)
                 sum_val += c % 100 > 10 or 0 and c
         temp = sorted(temp, cmp=Douniuniu.reversed_cmp)
-        if temp[4] % 100 < 5 and sum(temp) % 100 < 11:
-            return 13
-        if temp[0] % 100 == temp[3] % 100 or temp[1] % 100 == temp[4] % 100:
-            return 12
-        if temp[0] % 100 > 10:
-            return 11
 
-        val = 0
-        # 硬牛牛
-        for i in range(0, 4):
-            if val != 0:
-                break
-            for j in range(i + 1, 5):
-                if (temp[i] + temp[j]) % 10 == sum_val % 10:
-                    val = sum_val % 10 == 0 and 10 or sum_val % 10
+        # 贵阳斗牛牛
+        if 2 == allocid:
+            if temp[4] % 100 < 5 and sum(temp) % 100 < 11:
+                return 13
+            if temp[0] % 100 == temp[3] % 100 or temp[1] % 100 == temp[4] % 100:
+                return 12
+            if temp[0] % 100 > 10:
+                return 11
+
+            val = 0
+            # 硬牛牛
+            for i in range(0, 4):
+                if val != 0:
                     break
+                for j in range(i + 1, 5):
+                    if (temp[i] + temp[j]) % 10 == sum_val % 10:
+                        val = sum_val % 10 == 0 and 10 or sum_val % 10
+                        break
 
-        if shunzi:
-            # 软牛牛
-            if temp[0] % 100 == temp[1] % 100 - 1 == temp[2] % 100 - 2 and (temp[3] + temp[4]) % 100 > val:
-                val = (temp[3] + temp[4]) % 100
-            if temp[1] % 100 == temp[2] % 100 - 1 == temp[3] % 100 - 2 and (temp[0] + temp[4]) % 100 > val:
-                val = (temp[0] + temp[4]) % 100
-            if temp[2] % 100 == temp[3] % 100 - 1 == temp[4] % 100 - 2 and (temp[0] + temp[1]) % 100 > val:
-                val = (temp[0] + temp[1]) % 100
+            if shunzi:
+                # 软牛牛
+                if temp[0] % 100 == temp[1] % 100 - 1 == temp[2] % 100 - 2 and (temp[3] + temp[4]) % 100 > val:
+                    val = (temp[3] + temp[4]) % 100
+                if temp[1] % 100 == temp[2] % 100 - 1 == temp[3] % 100 - 2 and (temp[0] + temp[4]) % 100 > val:
+                    val = (temp[0] + temp[4]) % 100
+                if temp[2] % 100 == temp[3] % 100 - 1 == temp[4] % 100 - 2 and (temp[0] + temp[1]) % 100 > val:
+                    val = (temp[0] + temp[1]) % 100
 
-        return val
+            return val
+        # 荣昌牛牛
+        if 3 == allocid:
+            if temp[4] % 100 < 5 and sum(temp) % 100 < 11:
+                return 14
+            if temp[0] % 100 == temp[3] % 100 or temp[1] % 100 == temp[4] % 100:
+                return 13
+            if (temp[0] % 100 == temp[1] % 100 and temp[2] % 100 == temp[4] % 100) \
+                    or (temp[0] % 100 == temp[2] % 100 and temp[3] % 100 == temp[4] % 100):
+                return 12
+            if temp[0] % 100 > 10:
+                return 11
+            for i in range(0, 4):
+                for j in range(i + 1, 5):
+                    if (temp[i] + temp[j]) % 10 == sum_val % 10:
+                        return sum_val % 10 == 0 and 10 or sum_val % 10
 
     @staticmethod
     def get_multiple(value):
