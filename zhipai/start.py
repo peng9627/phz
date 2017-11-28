@@ -20,10 +20,21 @@ class Pibanban(object):
         :param cardlist:
         :return:
         """
-        if cardlist[0] == cardlist[1]:
-            return cardlist[0] * 10
+        if cardlist[0] % 100 == cardlist[1] % 100:
+            if cardlist[0] % 100 == 14:
+                return 20
+            else:
+                return (cardlist[0] % 100) * 10
+        value = 0
+        if cardlist[0] % 100 == 14:
+            value += 1
         else:
-            return (cardlist[0] + cardlist[1]) % 10
+            value += cardlist[0]
+        if cardlist[1] % 100 == 14:
+            value += 1
+        else:
+            value += cardlist[1]
+        return value % 10
 
 
 class Douniuniu(object):
@@ -38,9 +49,17 @@ class Douniuniu(object):
         :param cardlist:牌
         :return:
         """
-        temp = sorted(cardlist, cmp=Douniuniu.reversed_cmp)
-        sum_val = sum(temp) % 100
-        if temp[4] % 100 < 5 and sum_val < 11:
+        sum_val = 0
+        temp = list()
+        for c in cardlist:
+            if c % 100 == 14:
+                temp.append(1)
+                sum_val += 1
+            else:
+                temp.append(c)
+                sum_val += c % 100 > 10 or 0 and c
+        temp = sorted(temp, cmp=Douniuniu.reversed_cmp)
+        if temp[4] % 100 < 5 and sum(temp) % 100 < 11:
             return 13
         if temp[0] % 100 == temp[3] % 100 or temp[1] % 100 == temp[4] % 100:
             return 12
@@ -60,11 +79,11 @@ class Douniuniu(object):
         if shunzi:
             # 软牛牛
             if temp[0] % 100 == temp[1] % 100 - 1 == temp[2] % 100 - 2 and (temp[3] + temp[4]) % 100 > val:
-                return (temp[3] + temp[4]) % 100
+                val = (temp[3] + temp[4]) % 100
             if temp[1] % 100 == temp[2] % 100 - 1 == temp[3] % 100 - 2 and (temp[0] + temp[4]) % 100 > val:
-                return (temp[0] + temp[4]) % 100
+                val = (temp[0] + temp[4]) % 100
             if temp[2] % 100 == temp[3] % 100 - 1 == temp[4] % 100 - 2 and (temp[0] + temp[1]) % 100 > val:
-                return (temp[0] + temp[1]) % 100
+                val = (temp[0] + temp[1]) % 100
 
         return val
 
@@ -231,8 +250,7 @@ class Performance(zhipai_pb2_grpc.ZhipaiServicer):
         shuffle = ShuffleResult()
         cardlist = list()
         if 1 == request.allocid:
-            cardlist.extend([1, 101, 201, 301,
-                             2, 102, 202, 302,
+            cardlist.extend([2, 102, 202, 302,
                              3, 103, 203, 303,
                              4, 104, 204, 304,
                              5, 105, 205, 305,
@@ -240,10 +258,10 @@ class Performance(zhipai_pb2_grpc.ZhipaiServicer):
                              7, 107, 207, 307,
                              8, 108, 208, 308,
                              9, 109, 209, 309,
-                             10, 110, 210, 310])
+                             10, 110, 210, 310,
+                             14, 114, 214, 314])
         if 2 == request.allocid:
-            cardlist.extend([1, 101, 201, 301,
-                             2, 102, 202, 302,
+            cardlist.extend([2, 102, 202, 302,
                              3, 103, 203, 303,
                              4, 104, 204, 304,
                              5, 105, 205, 305,
@@ -254,7 +272,8 @@ class Performance(zhipai_pb2_grpc.ZhipaiServicer):
                              10, 110, 210, 310,
                              11, 111, 211, 311,
                              12, 112, 212, 312,
-                             13, 113, 213, 313])
+                             13, 113, 213, 313,
+                             14, 114, 214, 314])
         random.shuffle(cardlist)
         shuffle.cardlist.extend(cardlist)
         return shuffle
@@ -278,13 +297,3 @@ def rpc_server():
 
 if __name__ == '__main__':
     rpc_server()
-
-    p = PiBanBanSettleData()
-    p.playType = 1
-    p.jackpot = 1
-    s = SettleData()
-    s.extraData = p.SerializeToString()
-    g = PiBanBanSettleData()
-    g.ParseFromString(s.extraData)
-    print g.playType
-    print g.jackpot
