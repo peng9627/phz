@@ -234,14 +234,16 @@ class Performance(zhipai_pb2_grpc.ZhipaiServicer):
                     userSettleResult.cardValue = banker_value
                     userSettleResult.win = win
                     break
-        if 2 == request.allocid:
-            data = GYNiuniuSettleData()
+        if 2 == request.allocid or 3 == request.allocid:
+            data = NiuniuSettleData()
             data.ParseFromString(request.extraData)
             if 0 == request.banker:
                 maxUser = request.userSettleData[0]
-                max_value = Douniuniu.get_card_value(maxUser.cardlist, 2, data.playRule == 2, data.gameRules)
+                max_value = Douniuniu.get_card_value(maxUser.cardlist, request.allocid, data.playRule == 2,
+                                                     data.gameRules)
                 for u in request.userSettleData:
-                    user_value = Douniuniu.get_card_value(u.cardlist, 2, data.playRule == 2, data.gameRules)
+                    user_value = Douniuniu.get_card_value(u.cardlist, request.allocid, data.playRule == 2,
+                                                          data.gameRules)
                     if user_value > max_value:
                         max_value = user_value
                         maxUser = u
@@ -256,76 +258,19 @@ class Performance(zhipai_pb2_grpc.ZhipaiServicer):
 
             for b in request.userSettleData:
                 if b.userId == request.banker:
-                    banker_value = Douniuniu.get_card_value(b.cardlist, 2, data.playRule == 2, data.gameRules)
-                    banker_multiple = Douniuniu.get_multiple(banker_value, 2, data.doubleRule)
+                    banker_value = Douniuniu.get_card_value(b.cardlist, request.allocid, data.playRule == 2,
+                                                            data.gameRules)
+                    banker_multiple = Douniuniu.get_multiple(banker_value, request.allocid, data.doubleRule)
                     win = 0
                     banker_array_cards = sorted(b.cardlist, cmp=Douniuniu.reversed_cmp)
                     for u in request.userSettleData:
                         if u.userId != request.banker:
                             userSettleResult = settle.userSettleResule.add()
-                            user_value = Douniuniu.get_card_value(u.cardlist, 2, data.playRule == 2, data.gameRules)
+                            user_value = Douniuniu.get_card_value(u.cardlist, request.allocid, data.playRule == 2,
+                                                                  data.gameRules)
                             userSettleResult.userId = u.userId
                             userSettleResult.cardValue = user_value
-                            user_multiple = Douniuniu.get_multiple(user_value, 2, data.doubleRule)
-                            if user_value < banker_value:
-                                userSettleResult.win = -banker_multiple * u.score
-                                win += banker_multiple * u.score
-                            elif user_value > banker_value:
-                                userSettleResult.win = user_multiple * u.score
-                                win -= user_multiple * u.score
-                            else:
-                                user_array_cards = sorted(u.cardlist, cmp=Douniuniu.reversed_cmp)
-                                if banker_array_cards[4] % 100 > user_array_cards[4] % 100:
-                                    userSettleResult.win = -banker_multiple * u.score
-                                    win += banker_multiple * u.score
-                                elif banker_array_cards[4] % 100 < user_array_cards[4] % 100:
-                                    userSettleResult.win = user_multiple * u.score
-                                    win -= user_multiple * u.score
-                                elif banker_array_cards[4] > user_array_cards[4]:
-                                    userSettleResult.win = -banker_multiple * u.score
-                                    win += banker_multiple * u.score
-                                else:
-                                    userSettleResult.win = user_multiple * u.score
-                                    win -= user_multiple * u.score
-
-                    userSettleResult = settle.userSettleResule.add()
-                    userSettleResult.userId = b.userId
-                    userSettleResult.cardValue = banker_value
-                    userSettleResult.win = win
-                    break
-        if 3 == request.allocid:
-            data = RCNiuniuSettleData()
-            data.ParseFromString(request.extraData)
-            if 0 == request.banker:
-                maxUser = request.userSettleData[0]
-                max_value = Douniuniu.get_card_value(maxUser.cardlist, 3, False, data.gameRules)
-                for u in request.userSettleData:
-                    user_value = Douniuniu.get_card_value(u.cardlist, 3, False, data.gameRules)
-                    if user_value > max_value:
-                        max_value = user_value
-                        maxUser = u
-                    if user_value == max_value:
-                        max_array_card = sorted(maxUser.cardlist, cmp=Douniuniu.reversed_cmp)
-                        user_array_card = sorted(u.cardlist, cmp=Douniuniu.reversed_cmp)
-                        if max_array_card[4] % 100 < user_array_card[4] % 100 \
-                                or (max_array_card[4] % 100 == user_array_card[4] % 100
-                                    and max_array_card[4] < user_array_card[4]):
-                            max_value = user_value
-                            maxUser = u
-
-            for b in request.userSettleData:
-                if b.userId == request.banker:
-                    banker_value = Douniuniu.get_card_value(b.cardlist, 3, False, data.gameRules)
-                    banker_multiple = Douniuniu.get_multiple(banker_value, 3, data.doubleRule)
-                    win = 0
-                    banker_array_cards = sorted(b.cardlist, cmp=Douniuniu.reversed_cmp)
-                    for u in request.userSettleData:
-                        if u.userId != request.banker:
-                            userSettleResult = settle.userSettleResule.add()
-                            user_value = Douniuniu.get_card_value(u.cardlist, 3, False, data.gameRules)
-                            userSettleResult.userId = u.userId
-                            userSettleResult.cardValue = user_value
-                            user_multiple = Douniuniu.get_multiple(user_value, 3, data.doubleRule)
+                            user_multiple = Douniuniu.get_multiple(user_value, request.allocid, data.doubleRule)
                             if user_value < banker_value:
                                 userSettleResult.win = -banker_multiple * u.score
                                 win += banker_multiple * u.score

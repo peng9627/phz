@@ -21,15 +21,10 @@ message SettleData {
     bytes extraData = 4;
 }
 
-message GYNiuniuSettleData {
+message NiuniuSettleData {
     int32 playRule = 1; // 特殊玩法 1=>硬牛牛 2=>软牛牛
     int32 doubleRule = 2; //翻倍规则 1=>牛牛x4 2=>牛牛x3
     int32 gameRules = 3; ////游戏规则
-}
-
-message RCNiuniuSettleData {
-    int32 doubleRule = 1; //翻倍规则 1=>牛牛x4 2=>牛牛x3
-    int32 gameRules = 2; ////游戏规则
 }
 
 message PiBanBanSettleData {
