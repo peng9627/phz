@@ -20,7 +20,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
     package='',
     syntax='proto3',
     serialized_pb=_b(
-        '\n\x0czhipai.proto\"i\n\nSettleData\x12\x0f\n\x07\x61llocid\x18\x01 \x01(\x05\x12\x0e\n\x06\x62\x61nker\x18\x02 \x01(\x05\x12\'\n\x0euserSettleData\x18\x03 \x03(\x0b\x32\x0f.UserSettleData\x12\x11\n\textraData\x18\x04 \x01(\x0c\"7\n\x12PiBanBanSettleData\x12\x10\n\x08playType\x18\x01 \x01(\x05\x12\x0f\n\x07jackpot\x18\x02 \x01(\x05\"A\n\x0eUserSettleData\x12\x0e\n\x06userId\x18\x01 \x01(\x05\x12\x10\n\x08\x63\x61rdlist\x18\x02 \x03(\x05\x12\r\n\x05score\x18\x03 \x01(\x05\";\n\x0cSettleResult\x12+\n\x10userSettleResule\x18\x01 \x03(\x0b\x32\x11.UserSettleResult\"B\n\x10UserSettleResult\x12\x0e\n\x06userId\x18\x01 \x01(\x05\x12\x11\n\tcardValue\x18\x02 \x01(\x05\x12\x0b\n\x03win\x18\x03 \x01(\x05\"\x1e\n\x0bShuffleData\x12\x0f\n\x07\x61llocid\x18\x01 \x01(\x05\"!\n\rShuffleResult\x12\x10\n\x08\x63\x61rdlist\x18\x01 \x03(\x05\x32[\n\x06Zhipai\x12&\n\x06settle\x12\x0b.SettleData\x1a\r.SettleResult\"\x00\x12)\n\x07shuffle\x12\x0c.ShuffleData\x1a\x0e.ShuffleResult\"\x00\x42\x1c\n\x11zhipai.mode.protoB\x05ZipaiP\x01\x62\x06proto3')
+        '\n\x0czhipai.proto\"i\n\nSettleData\x12\x0f\n\x07\x61llocid\x18\x01 \x01(\x05\x12\x0e\n\x06\x62\x61nker\x18\x02 \x01(\x05\x12\'\n\x0euserSettleData\x18\x03 \x03(\x0b\x32\x0f.UserSettleData\x12\x11\n\textraData\x18\x04 \x01(\x0c\"M\n\x12GYNiuniuSettleData\x12\x10\n\x08playRule\x18\x01 \x01(\x05\x12\x12\n\ndoubleRule\x18\x02 \x01(\x05\x12\x11\n\tgameRules\x18\x03 \x01(\x05\"\'\n\x12RCNiuniuSettleData\x12\x11\n\tgameRules\x18\x01 \x01(\x05\"7\n\x12PiBanBanSettleData\x12\x10\n\x08playType\x18\x01 \x01(\x05\x12\x0f\n\x07jackpot\x18\x02 \x01(\x05\"A\n\x0eUserSettleData\x12\x0e\n\x06userId\x18\x01 \x01(\x05\x12\x10\n\x08\x63\x61rdlist\x18\x02 \x03(\x05\x12\r\n\x05score\x18\x03 \x01(\x05\";\n\x0cSettleResult\x12+\n\x10userSettleResule\x18\x01 \x03(\x0b\x32\x11.UserSettleResult\"B\n\x10UserSettleResult\x12\x0e\n\x06userId\x18\x01 \x01(\x05\x12\x11\n\tcardValue\x18\x02 \x01(\x05\x12\x0b\n\x03win\x18\x03 \x01(\x05\"\x1e\n\x0bShuffleData\x12\x0f\n\x07\x61llocid\x18\x01 \x01(\x05\"!\n\rShuffleResult\x12\x10\n\x08\x63\x61rdlist\x18\x01 \x03(\x05\x32[\n\x06Zhipai\x12&\n\x06settle\x12\x0b.SettleData\x1a\r.SettleResult\"\x00\x12)\n\x07shuffle\x12\x0c.ShuffleData\x1a\x0e.ShuffleResult\"\x00\x42\x1c\n\x11zhipai.mode.protoB\x05ZipaiP\x01\x62\x06proto3')
 )
 
 _SETTLEDATA = _descriptor.Descriptor(
@@ -74,6 +74,80 @@ _SETTLEDATA = _descriptor.Descriptor(
     serialized_end=121,
 )
 
+_GYNIUNIUSETTLEDATA = _descriptor.Descriptor(
+    name='GYNiuniuSettleData',
+    full_name='GYNiuniuSettleData',
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name='playRule', full_name='GYNiuniuSettleData.playRule', index=0,
+            number=1, type=5, cpp_type=1, label=1,
+            has_default_value=False, default_value=0,
+            message_type=None, enum_type=None, containing_type=None,
+            is_extension=False, extension_scope=None,
+            options=None),
+        _descriptor.FieldDescriptor(
+            name='doubleRule', full_name='GYNiuniuSettleData.doubleRule', index=1,
+            number=2, type=5, cpp_type=1, label=1,
+            has_default_value=False, default_value=0,
+            message_type=None, enum_type=None, containing_type=None,
+            is_extension=False, extension_scope=None,
+            options=None),
+        _descriptor.FieldDescriptor(
+            name='gameRules', full_name='GYNiuniuSettleData.gameRules', index=2,
+            number=3, type=5, cpp_type=1, label=1,
+            has_default_value=False, default_value=0,
+            message_type=None, enum_type=None, containing_type=None,
+            is_extension=False, extension_scope=None,
+            options=None),
+    ],
+    extensions=[
+    ],
+    nested_types=[],
+    enum_types=[
+    ],
+    options=None,
+    is_extendable=False,
+    syntax='proto3',
+    extension_ranges=[],
+    oneofs=[
+    ],
+    serialized_start=123,
+    serialized_end=200,
+)
+
+_RCNIUNIUSETTLEDATA = _descriptor.Descriptor(
+    name='RCNiuniuSettleData',
+    full_name='RCNiuniuSettleData',
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name='gameRules', full_name='RCNiuniuSettleData.gameRules', index=0,
+            number=1, type=5, cpp_type=1, label=1,
+            has_default_value=False, default_value=0,
+            message_type=None, enum_type=None, containing_type=None,
+            is_extension=False, extension_scope=None,
+            options=None),
+    ],
+    extensions=[
+    ],
+    nested_types=[],
+    enum_types=[
+    ],
+    options=None,
+    is_extendable=False,
+    syntax='proto3',
+    extension_ranges=[],
+    oneofs=[
+    ],
+    serialized_start=202,
+    serialized_end=241,
+)
+
 _PIBANBANSETTLEDATA = _descriptor.Descriptor(
     name='PiBanBanSettleData',
     full_name='PiBanBanSettleData',
@@ -107,8 +181,8 @@ _PIBANBANSETTLEDATA = _descriptor.Descriptor(
     extension_ranges=[],
     oneofs=[
     ],
-    serialized_start=123,
-    serialized_end=178,
+    serialized_start=243,
+    serialized_end=298,
 )
 
 _USERSETTLEDATA = _descriptor.Descriptor(
@@ -151,8 +225,8 @@ _USERSETTLEDATA = _descriptor.Descriptor(
     extension_ranges=[],
     oneofs=[
     ],
-    serialized_start=180,
-    serialized_end=245,
+    serialized_start=300,
+    serialized_end=365,
 )
 
 _SETTLERESULT = _descriptor.Descriptor(
@@ -181,8 +255,8 @@ _SETTLERESULT = _descriptor.Descriptor(
     extension_ranges=[],
     oneofs=[
     ],
-    serialized_start=247,
-    serialized_end=306,
+    serialized_start=367,
+    serialized_end=426,
 )
 
 _USERSETTLERESULT = _descriptor.Descriptor(
@@ -225,8 +299,8 @@ _USERSETTLERESULT = _descriptor.Descriptor(
     extension_ranges=[],
     oneofs=[
     ],
-    serialized_start=308,
-    serialized_end=374,
+    serialized_start=428,
+    serialized_end=494,
 )
 
 _SHUFFLEDATA = _descriptor.Descriptor(
@@ -255,8 +329,8 @@ _SHUFFLEDATA = _descriptor.Descriptor(
     extension_ranges=[],
     oneofs=[
     ],
-    serialized_start=376,
-    serialized_end=406,
+    serialized_start=496,
+    serialized_end=526,
 )
 
 _SHUFFLERESULT = _descriptor.Descriptor(
@@ -285,13 +359,15 @@ _SHUFFLERESULT = _descriptor.Descriptor(
     extension_ranges=[],
     oneofs=[
     ],
-    serialized_start=408,
-    serialized_end=441,
+    serialized_start=528,
+    serialized_end=561,
 )
 
 _SETTLEDATA.fields_by_name['userSettleData'].message_type = _USERSETTLEDATA
 _SETTLERESULT.fields_by_name['userSettleResule'].message_type = _USERSETTLERESULT
 DESCRIPTOR.message_types_by_name['SettleData'] = _SETTLEDATA
+DESCRIPTOR.message_types_by_name['GYNiuniuSettleData'] = _GYNIUNIUSETTLEDATA
+DESCRIPTOR.message_types_by_name['RCNiuniuSettleData'] = _RCNIUNIUSETTLEDATA
 DESCRIPTOR.message_types_by_name['PiBanBanSettleData'] = _PIBANBANSETTLEDATA
 DESCRIPTOR.message_types_by_name['UserSettleData'] = _USERSETTLEDATA
 DESCRIPTOR.message_types_by_name['SettleResult'] = _SETTLERESULT
@@ -306,6 +382,20 @@ SettleData = _reflection.GeneratedProtocolMessageType('SettleData', (_message.Me
     # @@protoc_insertion_point(class_scope:SettleData)
 ))
 _sym_db.RegisterMessage(SettleData)
+
+GYNiuniuSettleData = _reflection.GeneratedProtocolMessageType('GYNiuniuSettleData', (_message.Message,), dict(
+    DESCRIPTOR=_GYNIUNIUSETTLEDATA,
+    __module__='zhipai_pb2'
+    # @@protoc_insertion_point(class_scope:GYNiuniuSettleData)
+))
+_sym_db.RegisterMessage(GYNiuniuSettleData)
+
+RCNiuniuSettleData = _reflection.GeneratedProtocolMessageType('RCNiuniuSettleData', (_message.Message,), dict(
+    DESCRIPTOR=_RCNIUNIUSETTLEDATA,
+    __module__='zhipai_pb2'
+    # @@protoc_insertion_point(class_scope:RCNiuniuSettleData)
+))
+_sym_db.RegisterMessage(RCNiuniuSettleData)
 
 PiBanBanSettleData = _reflection.GeneratedProtocolMessageType('PiBanBanSettleData', (_message.Message,), dict(
     DESCRIPTOR=_PIBANBANSETTLEDATA,
@@ -359,8 +449,8 @@ _ZHIPAI = _descriptor.ServiceDescriptor(
     file=DESCRIPTOR,
     index=0,
     options=None,
-    serialized_start=443,
-    serialized_end=534,
+    serialized_start=563,
+    serialized_end=654,
     methods=[
         _descriptor.MethodDescriptor(
             name='settle',
