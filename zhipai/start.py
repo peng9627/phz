@@ -5,36 +5,10 @@ import time
 from concurrent import futures
 
 import zhipai_pb2_grpc
+from niuniu import Niuniu
+from pibanban import Pibanban
+from zhajinhua import Zhajinhua
 from zhipai_pb2 import *
-
-
-class Pibanban(object):
-    """
-    :劈板板
-    """
-
-    @staticmethod
-    def get_card_value(cardlist):
-        """
-        :获取牌值
-        :param cardlist:
-        :return:
-        """
-        if cardlist[0] % 100 == cardlist[1] % 100:
-            if cardlist[0] % 100 == 14:
-                return 20
-            else:
-                return (cardlist[0] % 100) * 10
-        value = 0
-        if cardlist[0] % 100 == 14:
-            value += 1
-        else:
-            value += cardlist[0]
-        if cardlist[1] % 100 == 14:
-            value += 1
-        else:
-            value += cardlist[1]
-        return value % 10
 
 
 class Douniuniu(object):
@@ -43,11 +17,13 @@ class Douniuniu(object):
     """
 
     @staticmethod
-    def get_card_value(cardlist, allocid, ruanniuniu, gameRules):
+    def get_card_value(cardlist, allocid, ruanniuniu, gamerules):
         """
         :获取牌值
         :param cardlist:牌
         :param allocid:
+        :param gamerules:
+        :param ruanniuniu:
         :return:
         """
         sum_val = 0
@@ -58,19 +34,19 @@ class Douniuniu(object):
                 sum_val += 1
             else:
                 temp.append(c)
-                sum_val += c % 100 > 10 or 0 and c
-        temp = sorted(temp, cmp=Douniuniu.reversed_cmp)
+                sum_val += 0 if c % 100 > 10 else c
+        temp = sorted(temp, cmp=Niuniu.reversed_cmp)
 
         # 贵阳斗牛牛
         if 2 == allocid:
             # 五小牛
-            if (gameRules >> 2) % 2 == 1 and temp[4] % 100 < 5 and sum(temp) % 100 < 11:
+            if (gamerules >> 2) % 2 == 1 and Niuniu.isWuxiaoniu(temp):
                 return 13
             # 炸弹牛
-            if (gameRules >> 1) % 2 == 1 and temp[0] % 100 == temp[3] % 100 or temp[1] % 100 == temp[4] % 100:
+            if (gamerules >> 1) % 2 == 1 and Niuniu.isZhadanniu(temp):
                 return 12
             # 五花牛
-            if gameRules % 2 and temp[0] % 100 > 10:
+            if gamerules % 2 == 1 and Niuniu.isWuhuaniu(temp):
                 return 11
 
             val = 0
@@ -79,8 +55,10 @@ class Douniuniu(object):
                 if val != 0:
                     break
                 for j in range(i + 1, 5):
-                    if (temp[i] + temp[j]) % 10 == sum_val % 10:
-                        val = sum_val % 10 == 0 and 10 or sum_val % 10
+                    temp1 = 0 if temp[i] % 100 > 10 else temp[i] % 100
+                    temp2 = 0 if temp[j] % 100 > 10 else temp[j] % 100
+                    if (temp1 + temp2) % 10 == sum_val % 10:
+                        val = 10 if sum_val % 10 == 0 else sum_val % 10
                         break
 
             if ruanniuniu:
@@ -102,22 +80,31 @@ class Douniuniu(object):
         # 荣昌牛牛
         if 3 == allocid:
             # 五小牛
-            if (gameRules >> 2) % 2 == 1 and temp[4] % 100 < 5 and sum(temp) % 100 < 11:
+            if (gamerules >> 2) % 2 == 1 and Niuniu.isWuxiaoniu(temp):
                 return 14
             # 炸弹牛
-            if (gameRules >> 1) % 2 == 1 and temp[0] % 100 == temp[3] % 100 or temp[1] % 100 == temp[4] % 100:
+            if (gamerules >> 1) % 2 == 1 and Niuniu.isZhadanniu(temp):
                 return 13
             # 葫芦牛
-            if (gameRules >> 5) % 2 == 1 and (temp[0] % 100 == temp[1] % 100 and temp[2] % 100 == temp[4] % 100) \
-                    or (temp[0] % 100 == temp[2] % 100 and temp[3] % 100 == temp[4] % 100):
+            if (gamerules >> 5) % 2 == 1 and Niuniu.isHuluniu(temp):
                 return 12
             # 五花牛
-            if gameRules % 2 == 1 and temp[0] % 100 > 10:
+            if gamerules % 2 == 1 and Niuniu.isWuhuaniu(temp):
                 return 11
             for i in range(0, 4):
                 for j in range(i + 1, 5):
-                    if (temp[i] + temp[j]) % 10 == sum_val % 10:
-                        return sum_val % 10 == 0 and 10 or sum_val % 10
+                    temp1 = 0 if temp[i] % 100 > 10 else temp[i] % 100
+                    temp2 = 0 if temp[j] % 100 > 10 else temp[j] % 100
+                    if (temp1 + temp2) % 10 == sum_val % 10:
+                        return 10 if sum_val % 10 == 0 else sum_val % 10
+        # 万州牛牛
+        if 4 == allocid:
+            # 五花牛
+            if gamerules % 2 == 1 and Niuniu.isWuhuaniu(temp):
+                return 12
+            # 炸弹牛
+            if (gamerules >> 1) % 2 == 1 and Niuniu.isZhadanniu(temp):
+                return 11
 
     @staticmethod
     def get_multiple(value, allocid, doubleRule):
@@ -134,9 +121,9 @@ class Douniuniu(object):
             if 11 == value:
                 return 5
             if 10 == value:
-                return 1 == doubleRule or 4 and 3
+                return 4 if 1 == doubleRule else 3
             if 9 == value:
-                return 1 == doubleRule or 3 and 2
+                return 3 if 1 == doubleRule else 2
             if 6 < value:
                 return 2
             return 1
@@ -150,28 +137,24 @@ class Douniuniu(object):
             if 11 == value:
                 return 5
             if 10 == value:
-                return 1 == doubleRule or 3 and 4
+                return 3 if 1 == doubleRule else 4
             if 9 == value:
-                return 1 == doubleRule or 2 and 3
+                return 2 if 1 == doubleRule else 3
             if 8 == value:
                 return 2
             if 6 < value and 2 == doubleRule:
                 return 2
             return 1
-
-    @staticmethod
-    def reversed_cmp(x, y):
-        """
-        :排序方法
-        :param x:
-        :param y:
-        :return:
-        """
-        if x % 100 > y % 100:
+        if 4 == allocid:
+            if 12 == value:
+                return 5
+            if 11 == value:
+                return 4
+            if 10 == value:
+                return 3
+            if 6 < value:
+                return 2
             return 1
-        if x % 100 < y % 100:
-            return -1
-        return x > y
 
 
 class Performance(zhipai_pb2_grpc.ZhipaiServicer):
@@ -234,7 +217,7 @@ class Performance(zhipai_pb2_grpc.ZhipaiServicer):
                     userSettleResult.cardValue = banker_value
                     userSettleResult.win = win
                     break
-        if 2 == request.allocid or 3 == request.allocid:
+        if 2 == request.allocid or 3 == request.allocid or 4 == request.allocid:
             data = NiuniuSettleData()
             data.ParseFromString(request.extraData)
             if 0 == request.banker:
@@ -248,8 +231,8 @@ class Performance(zhipai_pb2_grpc.ZhipaiServicer):
                         max_value = user_value
                         maxUser = u
                     if user_value == max_value:
-                        max_array_card = sorted(maxUser.cardlist, cmp=Douniuniu.reversed_cmp)
-                        user_array_card = sorted(u.cardlist, cmp=Douniuniu.reversed_cmp)
+                        max_array_card = sorted(maxUser.cardlist, cmp=Niuniu.reversed_cmp)
+                        user_array_card = sorted(u.cardlist, cmp=Niuniu.reversed_cmp)
                         if max_array_card[4] % 100 < user_array_card[4] % 100 \
                                 or (max_array_card[4] % 100 == user_array_card[4] % 100
                                     and max_array_card[4] < user_array_card[4]):
@@ -262,7 +245,7 @@ class Performance(zhipai_pb2_grpc.ZhipaiServicer):
                                                             data.gameRules)
                     banker_multiple = Douniuniu.get_multiple(banker_value, request.allocid, data.doubleRule)
                     win = 0
-                    banker_array_cards = sorted(b.cardlist, cmp=Douniuniu.reversed_cmp)
+                    banker_array_cards = sorted(b.cardlist, cmp=Niuniu.reversed_cmp)
                     for u in request.userSettleData:
                         if u.userId != request.banker:
                             userSettleResult = settle.userSettleResule.add()
@@ -278,7 +261,7 @@ class Performance(zhipai_pb2_grpc.ZhipaiServicer):
                                 userSettleResult.win = user_multiple * u.score
                                 win -= user_multiple * u.score
                             else:
-                                user_array_cards = sorted(u.cardlist, cmp=Douniuniu.reversed_cmp)
+                                user_array_cards = sorted(u.cardlist, cmp=Niuniu.reversed_cmp)
                                 if banker_array_cards[4] % 100 > user_array_cards[4] % 100:
                                     userSettleResult.win = -banker_multiple * u.score
                                     win += banker_multiple * u.score
@@ -297,6 +280,16 @@ class Performance(zhipai_pb2_grpc.ZhipaiServicer):
                     userSettleResult.cardValue = banker_value
                     userSettleResult.win = win
                     break
+        if 5 == request.allocid:
+            u1 = request.userSettleData[0]
+            u2 = request.userSettleData[1]
+            win = Zhajinhua.compare(u1.cardlist, u2.cardlist)
+            userSettleResult = settle.userSettleResule.add()
+            userSettleResult.userId = u1.userId
+            userSettleResult.win = 1 if win else -1
+            userSettleResult = settle.userSettleResule.add()
+            userSettleResult.userId = u2.userId
+            userSettleResult.win = -1 if win else 1
         return settle
 
     def shuffle(self, request, context):
@@ -319,7 +312,7 @@ class Performance(zhipai_pb2_grpc.ZhipaiServicer):
                              9, 109, 209, 309,
                              10, 110, 210, 310,
                              14, 114, 214, 314])
-        if 2 == request.allocid:
+        if 2 == request.allocid or 3 == request.allocid or 4 == request.allocid or 5 == request.allocid:
             cardlist.extend([2, 102, 202, 302,
                              3, 103, 203, 303,
                              4, 104, 204, 304,
