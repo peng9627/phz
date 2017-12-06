@@ -160,7 +160,6 @@ class Daer(object):
             if Daer.can_chi(temp, s):
                 canchi.append(s - 100)
                 canchi.append(s - 100)
-        handlist.append(s)
         if s in handlist and s + 100 in handlist:
             temp = list()
             temp.extend(handlist)
@@ -228,6 +227,7 @@ class Daer(object):
         for i in range(0, len(temp) - 1):
             if temp[i] == temp[i + 1]:
                 dui.add(temp[i])
+                i += 1
         return dui
 
     @staticmethod
@@ -273,7 +273,7 @@ class Daer(object):
         :计算能胡哪些牌
         :param handlist:
         :param penglist:
-        :param hashu: 
+        :param hashu:
         :return:
         """
         hu = set()
@@ -281,7 +281,7 @@ class Daer(object):
         temp = []
         temp.extend(handlist)
         if Daer.check_lug(temp) and (Daer.check_hu(temp, hashu) >= 10 or 0 == Daer.check_hu(temp, hashu)):
-            hu.union(penglist)
+            hu = set.union(hu, penglist)
         for p in possible:
             temp = []
             temp.extend(handlist)
@@ -289,13 +289,12 @@ class Daer(object):
             temp = sorted(temp, cmp=Daer.reversed_cmp)
             dui = Daer.get_dui(temp)
             for d in dui:
-                if 2 == Daer.containSize(temp, d):
-                    tempd = list()
-                    tempd.extend(temp)
-                    tempd.remove(d)
-                    tempd.remove(d)
-                    if Daer.check_lug(tempd) and (Daer.check_hu(temp, hashu) >= 10 or 0 == Daer.check_hu(temp, hashu)):
-                        hu.add(p)
+                tempd = list()
+                tempd.extend(temp)
+                tempd.remove(d)
+                tempd.remove(d)
+                if Daer.check_lug(tempd) and (Daer.check_hu(temp, hashu) >= 10 or 0 == Daer.check_hu(temp, hashu)):
+                    hu.add(p)
             if Daer.check_lug(temp) and (Daer.check_hu(temp, hashu) >= 10 or 0 == Daer.check_hu(temp, hashu)):
                 hu.add(p)
         return hu
@@ -570,18 +569,8 @@ class Performance(zipai_pb2_grpc.ZipaiServicer):
                 temp_card = list()
                 temp_card.extend(u.chilist)
                 temp_card.extend(u.penglist)
-                temp_card.extend(u.penglist)
-                temp_card.extend(u.penglist)
-                temp_card.extend(u.kanlist)
-                temp_card.extend(u.kanlist)
                 temp_card.extend(u.kanlist)
                 temp_card.extend(u.zhaolist)
-                temp_card.extend(u.zhaolist)
-                temp_card.extend(u.zhaolist)
-                temp_card.extend(u.zhaolist)
-                temp_card.extend(u.longlist)
-                temp_card.extend(u.longlist)
-                temp_card.extend(u.longlist)
                 temp_card.extend(u.longlist)
                 temp_card.extend(u.handlist)
                 if Daer.containSize(temp_card, 2) + Daer.containSize(temp_card, 7) \
@@ -645,7 +634,10 @@ class Performance(zipai_pb2_grpc.ZipaiServicer):
         if 1 == request.allocid:
             Daer.chi(u.handlist, calculate)
             calculate.penglist.extend(Daer.peng(u.handlist))
-            calculate.zhaolist.extend(Daer.get_san(u.handlist, u.kanlist))
+            penglist = list()
+            penglist.extend(u.penglist)
+            penglist.extend(u.kanlist)
+            calculate.zhaolist.extend(Daer.get_san(u.handlist, penglist))
             calculate.hulist.extend(Daer.hu(u.handlist, u.penglist, Daer.get_hu(u)))
             print "calculate返回penglist", calculate.penglist
             print "calculate返回zhaolist", calculate.zhaolist

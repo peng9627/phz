@@ -33,12 +33,14 @@ class Niuniu(object):
         :param y:
         :return:
         """
-        x1 = 0
-        y1 = 0
         if x % 100 == 14:
             x1 = x - 13
+        else:
+            x1 = x
         if y % 100 == 14:
             y1 = y - 13
+        else:
+            y1 = y
         if x1 % 100 > y1 % 100:
             return 1
         if x1 % 100 < y1 % 100:

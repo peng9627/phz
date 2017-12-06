@@ -1,0 +1,135 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "mahjong.mode.proto";
+
+package majong_rpc;
+
+service MajongCalculate {
+    //进行麻将牌过程计算
+    rpc calculate (CalculateData) returns (CalculateResult) {
+    }
+
+    //结算
+    rpc settle (SettleData) returns (SettleResult) {
+    }
+
+    //洗牌函数
+    rpc shuffle (ShuffleData) returns (ShuffleResult) {
+    }
+}
+
+//杠牌类型
+enum GangType {
+    BGANG = 0; //巴杠
+    MGANG = 1; //明杠
+    AGANG = 2; //暗杠
+}
+
+message GangData {
+    GangType type = 1;
+    int32 fighter = 2; //放杠者的ID
+    int32 gangvalue = 3; //杠了哪张牌
+}
+
+message MajongPlayerData {
+    int32 player_id = 1;
+    repeated int32 handlist = 2; //手牌
+    repeated int32 chi = 3; //吃过的牌
+    repeated int32 peng = 4; //碰过的牌
+    repeated GangData gang = 5; //杠过的牌
+}
+
+//申请麻将游戏的逻辑计算
+message CalculateData {
+    int32 allocid = 1;
+    MajongPlayerData player = 2;
+    int32 rogue = 3;
+}
+
+//麻将游戏计算结果
+message CalculateResult {
+    repeated int32 chi = 1; //能够吃的牌
+    repeated int32 dui = 2; //只能够碰的牌
+    repeated int32 san = 3; //能杠或碰的牌
+    repeated int32 si = 4; //只能暗杠的牌
+    repeated int32 hu = 5; //能够胡的牌
+    repeated int32 zimo = 6; //能自摸的牌
+}
+
+enum SettleType {
+    PING_JU = 0; //平局
+    FANG_PAO = 1; //放炮
+    HU_PAO = 2; //胡炮
+    ZI_MO = 3; //自摸
+    BZI_MO = 4; //被自摸
+    GANG_PAO = 5; //杠上炮
+    HU_GANG_PAO = 6; //胡杠上炮
+    GANG_HUA = 7; //杠上花
+    BGANG_HUA = 8; //被杠上花
+    QIANG_GANG = 9; //胡抢杠
+    BQIANG_GANG = 10; //被抢杠
+}
+
+//结算的玩家数据
+message SettlePlayerData {
+    MajongPlayerData player = 1;
+    SettleType settle = 2;
+    int32 majong = 3; //胡的哪张牌
+}
+
+message SettleData {
+    int32 alloc_id = 1;
+    repeated SettlePlayerData player_list = 2; //玩家数据
+    int32 banker = 3; //本轮游戏的庄家ID
+}
+
+message SettleResult {
+    repeated UserSettleResult userSettleResule = 1;
+}
+
+//用户结算结果
+message UserSettleResult {
+    int32 userId = 1;
+    int32 score = 2; //棒
+    repeated SettlePatterns settlePatterns = 3; //牌型
+}
+
+//作弊的数据
+message CheatData {
+    int32 player_id = 1;
+    int32 loc = 2;
+    int32 level = 3;
+}
+
+//申请洗牌的数据
+message ShuffleData {
+    int32 alloc_id = 1;
+    repeated CheatData cheats = 2;
+}
+
+//洗牌结果
+message ShuffleResult {
+    repeated int32 cardlist = 1; //牌
+}
+
+enum SettlePatterns {
+    PIHU = 0; //屁胡x2
+    DADUI = 1; //大对x12
+    JINGOUDIAO = 2; //金勾钓x24
+    QINGYISE = 3; //清一色x12
+    QINGDADUI = 4; //清大对x24
+    QINGSANDA = 5; //清三搭x48
+    QINGQIDUI = 6; //清七对x24
+    QINGLONGQIDUI = 7; //清龙七对x48
+    QINGSHUANGLONGQIDUI = 8; //清双龙七对x96
+    QINGSANLONGQIDUI = 9; //清三龙七对x96
+    QINGJINGOUDIAO = 10; //清金勾钓x96
+    QIDUI = 11; //七对x12
+    LONGQIDUI = 12; //龙七对x24
+    SHUANGLONGQIDUI = 13; //双龙七对x48
+    SANLONGQIDUI = 14; //三龙七对x96
+}
+
+
+
