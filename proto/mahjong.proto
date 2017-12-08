@@ -28,7 +28,7 @@ enum GangType {
 
 message GangData {
     GangType type = 1;
-    int32 fighter = 2; //放杠者的ID
+    repeated int32 fighter = 2; //放杠者的ID
     int32 gangvalue = 3; //杠了哪张牌
 }
 
@@ -58,30 +58,29 @@ message CalculateResult {
 }
 
 enum SettleType {
-    PING_JU = 0; //平局
-    FANG_PAO = 1; //放炮
-    HU_PAO = 2; //胡炮
-    ZI_MO = 3; //自摸
-    BZI_MO = 4; //被自摸
-    GANG_PAO = 5; //杠上炮
-    HU_GANG_PAO = 6; //胡杠上炮
-    GANG_HUA = 7; //杠上花
-    BGANG_HUA = 8; //被杠上花
-    QIANG_GANG = 9; //胡抢杠
-    BQIANG_GANG = 10; //被抢杠
-}
-
-//结算的玩家数据
-message SettlePlayerData {
-    MajongPlayerData player = 1;
-    SettleType settle = 2;
-    int32 majong = 3; //胡的哪张牌
+    ZI_MO = 0; //自摸
+    GANG_PAO = 1; //杠上炮
+    GANG_HUA = 2; //杠上花
+    QIANG_GANG = 3; //抢杠
+    QIAN_SI = 4; //前四
+    HOU_SI = 5; //后四
+    BAO_JIAO = 6; //报叫
+    CHA_JIAO = 7; //查叫
 }
 
 message SettleData {
     int32 alloc_id = 1;
-    repeated SettlePlayerData player_list = 2; //玩家数据
+    repeated MajongPlayerData player = 2; //玩家数据
     int32 banker = 3; //本轮游戏的庄家ID
+    repeated HuData hudata = 4;
+    int32 rogue = 5;
+    int32 fengding = 6; //封顶
+    message HuData {
+        int32 huUser = 1; //胡牌的人
+        repeated int32 loseUsers = 2; //输家
+        repeated SettleType settle = 3; //胡牌类型
+        int32 majong = 4; //胡的哪张牌
+    }
 }
 
 message SettleResult {
@@ -91,8 +90,10 @@ message SettleResult {
 //用户结算结果
 message UserSettleResult {
     int32 userId = 1;
-    int32 score = 2; //棒
-    repeated SettlePatterns settlePatterns = 3; //牌型
+    int32 win = 2; //输赢分
+    int32 gangScore = 3; //杠分
+    int32 cardScore = 4; //牌型分
+    repeated SettlePatterns settlePatterns = 5; //牌型
 }
 
 //作弊的数据

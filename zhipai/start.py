@@ -57,46 +57,111 @@ class Douniuniu(object):
                 for j in range(i + 1, 5):
                     temp1 = 0 if temp[i] % 100 > 10 else temp[i] % 100
                     temp2 = 0 if temp[j] % 100 > 10 else temp[j] % 100
-                    if (temp1 + temp2) % 10 == sum_val % 10:
+                    if (temp1 % 100 + temp2 % 100) % 10 == sum_val % 10:
                         val = 10 if sum_val % 10 == 0 else sum_val % 10
+                        if 0 == val:
+                            val = 10
                         break
+
+            valuetemp = list()
+            for t in temp:
+                valuetemp.append(10 if (t % 100) > 10 else (t % 100))
 
             if ruanniuniu:
                 # 软牛牛
-                if temp[0] % 100 == temp[1] % 100 - 1 == temp[2] % 100 - 2 and (temp[3] + temp[4]) % 100 > val:
-                    val = (temp[3] + temp[4]) % 100
-                if temp[1] % 100 == temp[2] % 100 - 1 == temp[3] % 100 - 2 and (temp[0] + temp[4]) % 100 > val:
-                    val = (temp[0] + temp[4]) % 100
-                if temp[2] % 100 == temp[3] % 100 - 1 == temp[4] % 100 - 2 and (temp[0] + temp[1]) % 100 > val:
-                    val = (temp[0] + temp[1]) % 100
-                if temp[0] % 100 == temp[2] % 100 and (temp[3] + temp[4]) % 100 > val:
-                    val = (temp[3] + temp[4]) % 100
-                if temp[1] % 100 == temp[3] % 100 and (temp[0] + temp[4]) % 100 > val:
-                    val = (temp[0] + temp[4]) % 100
-                if temp[2] % 100 == temp[4] % 100 and (temp[0] + temp[1]) % 100 > val:
-                    val = (temp[0] + temp[1]) % 100
+                if temp[0] % 100 == temp[1] % 100 - 1 == temp[2] % 100 - 2 and (valuetemp[3] + valuetemp[4]) % 10 > val:
+                    val = (valuetemp[3] + valuetemp[4]) % 10
+                    if 0 == val:
+                        val = 10
+                if temp[1] % 100 == temp[2] % 100 - 1 == temp[3] % 100 - 2 and (valuetemp[0] + valuetemp[4]) % 10 > val:
+                    val = (valuetemp[0] + valuetemp[4]) % 10
+                    if 0 == val:
+                        val = 10
+                if temp[2] % 100 == temp[3] % 100 - 1 == temp[4] % 100 - 2 and (valuetemp[0] + valuetemp[1]) % 10 > val:
+                    val = (valuetemp[0] + valuetemp[1]) % 10
+                    if 0 == val:
+                        val = 10
+                if temp[0] % 100 == temp[2] % 100 and (valuetemp[3] + valuetemp[4]) % 10 > val:
+                    val = (valuetemp[3] + valuetemp[4]) % 10
+                    if 0 == val:
+                        val = 10
+                if temp[1] % 100 == temp[3] % 100 and (valuetemp[0] + valuetemp[4]) % 10 > val:
+                    val = (valuetemp[0] + valuetemp[4]) % 10
+                    if 0 == val:
+                        val = 10
+                if temp[2] % 100 == temp[4] % 100 and (valuetemp[0] + valuetemp[1]) % 10 > val:
+                    val = (valuetemp[0] + valuetemp[1]) % 10
+                    if 0 == val:
+                        val = 10
 
             return val
         # 荣昌牛牛
         if 3 == allocid:
             # 五小牛
             if (gamerules >> 2) % 2 == 1 and Niuniu.isWuxiaoniu(temp):
-                return 14
+                return 15
             # 炸弹牛
             if (gamerules >> 1) % 2 == 1 and Niuniu.isZhadanniu(temp):
-                return 13
+                return 14
             # 葫芦牛
             if (gamerules >> 5) % 2 == 1 and Niuniu.isHuluniu(temp):
-                return 12
+                return 13
             # 五花牛
             if gamerules % 2 == 1 and Niuniu.isWuhuaniu(temp):
+                return 12
+            if Niuniu.isShunziniu(temp):
                 return 11
+            val1 = 0
             for i in range(0, 4):
                 for j in range(i + 1, 5):
                     temp1 = 0 if temp[i] % 100 > 10 else temp[i] % 100
                     temp2 = 0 if temp[j] % 100 > 10 else temp[j] % 100
-                    if (temp1 + temp2) % 10 == sum_val % 10:
-                        return 10 if sum_val % 10 == 0 else sum_val % 10
+                    if (temp1 % 100 + temp2 % 100) % 10 == sum_val % 10:
+                        val1 = (10 if sum_val % 10 == 0 else sum_val % 10)
+                        break
+
+            valuetemp = list()
+            for t in temp:
+                valuetemp.append(10 if (t % 100) > 10 else (t % 100))
+            # 软牛牛
+            if temp[0] % 100 == temp[1] % 100 - 1 == temp[2] % 100 - 2 and (valuetemp[3] + valuetemp[4]) % 10 > val1:
+                val1 = (valuetemp[3] + valuetemp[4]) % 10
+                if 0 == val1:
+                    val1 = 10
+            if temp[1] % 100 == temp[2] % 100 - 1 == temp[3] % 100 - 2 and (valuetemp[0] + valuetemp[4]) % 10 > val1:
+                val1 = (valuetemp[0] + valuetemp[4]) % 10
+                if 0 == val1:
+                    val1 = 10
+            if temp[2] % 100 == temp[3] % 100 - 1 == valuetemp[4] % 100 - 2 and (
+                        valuetemp[0] + valuetemp[1]) % 10 > val1:
+                val1 = (valuetemp[0] + valuetemp[1]) % 10
+                if 0 == val1:
+                    val1 = 10
+            if temp[0] % 100 == temp[2] % 100 and (valuetemp[3] + valuetemp[4]) % 10 > val1:
+                val1 = (valuetemp[3] + valuetemp[4]) % 10
+                if 0 == val1:
+                    val1 = 10
+            if temp[1] % 100 == temp[3] % 100 and (valuetemp[0] + valuetemp[4]) % 10 > val1:
+                val1 = (valuetemp[0] + valuetemp[4]) % 10
+                if 0 == val1:
+                    val1 = 10
+            if temp[2] % 100 == temp[4] % 100 and (valuetemp[0] + valuetemp[1]) % 10 > val1:
+                val1 = (valuetemp[0] + valuetemp[1]) % 10
+                if 0 == val1:
+                    val1 = 10
+            if temp[0] % 100 == temp[2] % 100 and (valuetemp[3] + valuetemp[4]) % 10 > val1:
+                val1 = (valuetemp[3] + valuetemp[4]) % 10
+                if 0 == val1:
+                    val1 = 10
+            if temp[1] % 100 == temp[3] % 100 and (valuetemp[0] + valuetemp[4]) % 10 > val1:
+                val1 = (valuetemp[0] + valuetemp[4]) % 10
+                if 0 == val1:
+                    val1 = 10
+            if temp[2] % 100 == temp[4] % 100 and (valuetemp[0] + valuetemp[1]) % 10 > val1:
+                val1 = (valuetemp[0] + valuetemp[1]) % 10
+                if 0 == val1:
+                    val1 = 10
+            return val1
         # 万州牛牛
         if 4 == allocid:
             # 五花牛
@@ -111,6 +176,8 @@ class Douniuniu(object):
         """
         :获取倍数
         :param value:牌值
+        :param allocid
+        :param doubleRule
         :return:
         """
         if 2 == allocid:

@@ -25,6 +25,12 @@ class Niuniu(object):
         return ((cardlist[0] % 100 == cardlist[1] % 100 and cardlist[2] % 100 == cardlist[4] % 100) or (
             cardlist[0] % 100 == cardlist[2] % 100 and cardlist[3] % 100 == cardlist[4] % 100))
 
+    # 顺子牛
+    @staticmethod
+    def isShunziniu(cardlist):
+        return cardlist[0] % 100 == (cardlist[1] % 100) - 1 and cardlist[1] % 100 == (cardlist[2] % 100) - 1 and \
+               cardlist[2] % 100 == (cardlist[3] % 100) - 1 and cardlist[3] % 100 == (cardlist[4] % 100) - 1
+
     @staticmethod
     def reversed_cmp(x, y):
         """
