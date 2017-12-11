@@ -31,6 +31,44 @@ class Niuniu(object):
         return cardlist[0] % 100 == (cardlist[1] % 100) - 1 and cardlist[1] % 100 == (cardlist[2] % 100) - 1 and \
                cardlist[2] % 100 == (cardlist[3] % 100) - 1 and cardlist[3] % 100 == (cardlist[4] % 100) - 1
 
+    # 顺斗
+    @staticmethod
+    def getShunDouValue(cardlist):
+        shunvalue = 0
+        shundoutemp = list()
+        for c in cardlist:
+            shundoutemp.append(c)
+        for i in range(0, 3):
+            if shundoutemp[i] + 1 in shundoutemp and shundoutemp[i] + 2 in shundoutemp:
+                shundouvtemp = list()
+                shundouvtemp.extend(shundoutemp)
+                shundouvtemp.remove(shundoutemp[i])
+                shundouvtemp.remove(shundoutemp[i] + 1)
+                shundouvtemp.remove(shundoutemp[i] + 2)
+                value1 = 10 if shundouvtemp[0] > 10 else shundouvtemp[0]
+                value2 = 10 if shundouvtemp[0] > 10 else shundouvtemp[0]
+                tempvalue = value1 + value2
+                if tempvalue > 10:
+                    tempvalue -= 10
+                if tempvalue > shunvalue:
+                    shunvalue = tempvalue
+        shundouvtemp = list()
+        shundouvtemp.extend(shundoutemp)
+        if 1 in shundouvtemp and 12 in shundouvtemp and 13 in shundouvtemp:
+            shundouvtemp = list()
+            shundouvtemp.extend(shundoutemp)
+            shundouvtemp.remove(1)
+            shundouvtemp.remove(12)
+            shundouvtemp.remove(13)
+            value1 = 10 if shundouvtemp[0] > 10 else shundouvtemp[0]
+            value2 = 10 if shundouvtemp[0] > 10 else shundouvtemp[0]
+            tempvalue = value1 + value2
+            if tempvalue > 10:
+                tempvalue -= 10
+            if tempvalue > shunvalue:
+                shunvalue = tempvalue
+        return shunvalue
+
     @staticmethod
     def reversed_cmp(x, y):
         """

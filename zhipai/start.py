@@ -69,18 +69,9 @@ class Douniuniu(object):
 
             if ruanniuniu:
                 # 软牛牛
-                if temp[0] % 100 == temp[1] % 100 - 1 == temp[2] % 100 - 2 and (valuetemp[3] + valuetemp[4]) % 10 > val:
-                    val = (valuetemp[3] + valuetemp[4]) % 10
-                    if 0 == val:
-                        val = 10
-                if temp[1] % 100 == temp[2] % 100 - 1 == temp[3] % 100 - 2 and (valuetemp[0] + valuetemp[4]) % 10 > val:
-                    val = (valuetemp[0] + valuetemp[4]) % 10
-                    if 0 == val:
-                        val = 10
-                if temp[2] % 100 == temp[3] % 100 - 1 == temp[4] % 100 - 2 and (valuetemp[0] + valuetemp[1]) % 10 > val:
-                    val = (valuetemp[0] + valuetemp[1]) % 10
-                    if 0 == val:
-                        val = 10
+                shunvalue = Niuniu.getShunDouValue(cardlist)
+                if val < shunvalue:
+                    val = shunvalue
                 if temp[0] % 100 == temp[2] % 100 and (valuetemp[3] + valuetemp[4]) % 10 > val:
                     val = (valuetemp[3] + valuetemp[4]) % 10
                     if 0 == val:
@@ -124,31 +115,9 @@ class Douniuniu(object):
             for t in temp:
                 valuetemp.append(10 if (t % 100) > 10 else (t % 100))
             # 软牛牛
-            if temp[0] % 100 == temp[1] % 100 - 1 == temp[2] % 100 - 2 and (valuetemp[3] + valuetemp[4]) % 10 > val1:
-                val1 = (valuetemp[3] + valuetemp[4]) % 10
-                if 0 == val1:
-                    val1 = 10
-            if temp[1] % 100 == temp[2] % 100 - 1 == temp[3] % 100 - 2 and (valuetemp[0] + valuetemp[4]) % 10 > val1:
-                val1 = (valuetemp[0] + valuetemp[4]) % 10
-                if 0 == val1:
-                    val1 = 10
-            if temp[2] % 100 == temp[3] % 100 - 1 == valuetemp[4] % 100 - 2 and (
-                        valuetemp[0] + valuetemp[1]) % 10 > val1:
-                val1 = (valuetemp[0] + valuetemp[1]) % 10
-                if 0 == val1:
-                    val1 = 10
-            if temp[0] % 100 == temp[2] % 100 and (valuetemp[3] + valuetemp[4]) % 10 > val1:
-                val1 = (valuetemp[3] + valuetemp[4]) % 10
-                if 0 == val1:
-                    val1 = 10
-            if temp[1] % 100 == temp[3] % 100 and (valuetemp[0] + valuetemp[4]) % 10 > val1:
-                val1 = (valuetemp[0] + valuetemp[4]) % 10
-                if 0 == val1:
-                    val1 = 10
-            if temp[2] % 100 == temp[4] % 100 and (valuetemp[0] + valuetemp[1]) % 10 > val1:
-                val1 = (valuetemp[0] + valuetemp[1]) % 10
-                if 0 == val1:
-                    val1 = 10
+            shunvalue = Niuniu.getShunDouValue(cardlist)
+            if val1 < shunvalue:
+                val1 = shunvalue
             if temp[0] % 100 == temp[2] % 100 and (valuetemp[3] + valuetemp[4]) % 10 > val1:
                 val1 = (valuetemp[3] + valuetemp[4]) % 10
                 if 0 == val1:
