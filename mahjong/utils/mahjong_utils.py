@@ -178,13 +178,25 @@ class MahjongUtils(object):
         """
         hu = set()
         rogueSize = MahjongUtils.containSize(handlist, rogue)
-        possible = MahjongUtils.possible(handlist, rogueSize + 1)
-        temp = list()
-        temp.extend(handlist)
-        for i in range(0, rogueSize):
+
+        if rogueSize > 0:
+            temp = list()
+            temp.extend(handlist)
             temp.remove(rogue)
+            for i in range(0, rogueSize - 1):
+                temp.remove(rogue)
+            if MahjongUtils.check_lug_rogue(temp, rogueSize - 1):
+                hu.add(-1)
+                return hu
+        possible = MahjongUtils.possible(handlist, rogueSize + 1)
         for p in possible:
+            temp = list()
+            temp.extend(handlist)
             temp.append(p)
+            if -1 != MahjongUtils.double7(temp, rogue):
+                hu.add(p)
+            for i in range(0, rogueSize):
+                temp.remove(rogue)
             tempset = set(temp)
             for s in tempset:
                 if 1 != MahjongUtils.containSize(temp, s):
@@ -206,3 +218,40 @@ class MahjongUtils(object):
                         break
             temp.remove(p)
         return hu
+
+    @staticmethod
+    def double7(handlist, rogue):
+        """
+        :七对
+        :param handlist:
+        :param rogue:
+        :return:
+        """
+        temp = list()
+        temp.extend(handlist)
+        rogueSize = MahjongUtils.containSize(handlist, rogue)
+        for i in range(0, rogueSize):
+            temp.remove(rogue)
+        si = MahjongUtils.get_si(temp)
+        if 14 == len(handlist) and 14 - (2 * (len(MahjongUtils.get_dui(temp)) + len(si))) <= 2 * rogueSize:
+            siCount = 0
+            temp1 = list()
+            temp1.extend(temp)
+            for i in range(0, 4):
+                for s in si:
+                    temp1.remove(s)
+            siCount += len(si)
+            san = MahjongUtils.get_san(temp1)
+            for i in range(0, 3):
+                for s in san:
+                    temp1.remove(s)
+            siCount += len(san)
+            rogueSize -= len(san)
+            dui = MahjongUtils.get_dui(temp1)
+            for i in range(0, 2):
+                for s in dui:
+                    temp1.remove(s)
+            rogueSize -= len(dui)
+            siCount += len(dui)
+            return siCount
+        return -1

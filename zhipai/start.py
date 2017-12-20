@@ -8,7 +8,7 @@ import zhipai_pb2_grpc
 from niuniu import Niuniu
 from pibanban import Pibanban
 from zhajinhua import Zhajinhua
-from zhipai_pb2 import *
+from zhipai.zhipai_pb2 import *
 
 
 class Douniuniu(object):
@@ -30,7 +30,7 @@ class Douniuniu(object):
         temp = list()
         for c in cardlist:
             if c % 100 == 14:
-                temp.append(1)
+                temp.append(c - 13)
                 sum_val += 1
             else:
                 temp.append(c)
@@ -88,19 +88,26 @@ class Douniuniu(object):
             return val
         # 荣昌牛牛
         if 3 == allocid:
+            # 同花顺
+            if (gamerules >> 9) % 2 == 1 and Niuniu.sameColor(temp) and Niuniu.isShunziniu(temp):
+                return 17
+            # 炸弹牛
+            if (gamerules >> 1) % 2 == 1 and Niuniu.isZhadanniu(temp):
+                return 16
             # 五小牛
             if (gamerules >> 2) % 2 == 1 and Niuniu.isWuxiaoniu(temp):
                 return 15
-            # 炸弹牛
-            if (gamerules >> 1) % 2 == 1 and Niuniu.isZhadanniu(temp):
+            # 五花牛
+            if gamerules % 2 == 1 and Niuniu.isWuhuaniu(temp):
                 return 14
             # 葫芦牛
             if (gamerules >> 5) % 2 == 1 and Niuniu.isHuluniu(temp):
                 return 13
-            # 五花牛
-            if gamerules % 2 == 1 and Niuniu.isWuhuaniu(temp):
+            # 同花牛
+            if (gamerules >> 8) % 2 == 1 and Niuniu.sameColor(temp):
                 return 12
-            if Niuniu.isShunziniu(temp):
+            # 顺子牛
+            if (gamerules >> 6) % 2 == 1 and Niuniu.isShunziniu(temp):
                 return 11
             val1 = 0
             for i in range(0, 4):
@@ -115,21 +122,22 @@ class Douniuniu(object):
             for t in temp:
                 valuetemp.append(10 if (t % 100) > 10 else (t % 100))
             # 软牛牛
-            shunvalue = Niuniu.getShunDouValue(cardlist)
-            if val1 < shunvalue:
-                val1 = shunvalue
-            if temp[0] % 100 == temp[2] % 100 and (valuetemp[3] + valuetemp[4]) % 10 > val1:
-                val1 = (valuetemp[3] + valuetemp[4]) % 10
-                if 0 == val1:
-                    val1 = 10
-            if temp[1] % 100 == temp[3] % 100 and (valuetemp[0] + valuetemp[4]) % 10 > val1:
-                val1 = (valuetemp[0] + valuetemp[4]) % 10
-                if 0 == val1:
-                    val1 = 10
-            if temp[2] % 100 == temp[4] % 100 and (valuetemp[0] + valuetemp[1]) % 10 > val1:
-                val1 = (valuetemp[0] + valuetemp[1]) % 10
-                if 0 == val1:
-                    val1 = 10
+            if (gamerules >> 7) % 2 == 1:
+                shunvalue = Niuniu.getShunDouValue(cardlist)
+                if val1 < shunvalue:
+                    val1 = shunvalue
+                if temp[0] % 100 == temp[2] % 100 and (valuetemp[3] + valuetemp[4]) % 10 > val1:
+                    val1 = (valuetemp[3] + valuetemp[4]) % 10
+                    if 0 == val1:
+                        val1 = 10
+                if temp[1] % 100 == temp[3] % 100 and (valuetemp[0] + valuetemp[4]) % 10 > val1:
+                    val1 = (valuetemp[0] + valuetemp[4]) % 10
+                    if 0 == val1:
+                        val1 = 10
+                if temp[2] % 100 == temp[4] % 100 and (valuetemp[0] + valuetemp[1]) % 10 > val1:
+                    val1 = (valuetemp[0] + valuetemp[1]) % 10
+                    if 0 == val1:
+                        val1 = 10
             return val1
         # 万州牛牛
         if 4 == allocid:
@@ -164,12 +172,18 @@ class Douniuniu(object):
                 return 2
             return 1
         if 3 == allocid:
-            if 14 == value:
+            if 17 == value:
+                return 10
+            if 16 == value:
+                return 9
+            if 15 == value:
                 return 8
-            if 13 == value:
+            if 14 == value:
                 return 7
-            if 12 == value:
+            if 13 == value:
                 return 6
+            if 12 == value:
+                return 5
             if 11 == value:
                 return 5
             if 10 == value:
@@ -280,6 +294,7 @@ class Performance(zhipai_pb2_grpc.ZhipaiServicer):
                     banker_value = Douniuniu.get_card_value(b.cardlist, request.allocid, data.playRule == 2,
                                                             data.gameRules)
                     banker_multiple = Douniuniu.get_multiple(banker_value, request.allocid, data.doubleRule)
+                    banker_multiple *= b.grab
                     win = 0
                     banker_array_cards = sorted(b.cardlist, cmp=Niuniu.reversed_cmp)
                     for u in request.userSettleData:
@@ -290,6 +305,7 @@ class Performance(zhipai_pb2_grpc.ZhipaiServicer):
                             userSettleResult.userId = u.userId
                             userSettleResult.cardValue = user_value
                             user_multiple = Douniuniu.get_multiple(user_value, request.allocid, data.doubleRule)
+                            user_multiple *= b.grab
                             if user_value < banker_value:
                                 userSettleResult.win = -banker_multiple * u.score
                                 win += banker_multiple * u.score
@@ -348,20 +364,44 @@ class Performance(zhipai_pb2_grpc.ZhipaiServicer):
                              9, 109, 209, 309,
                              10, 110, 210, 310,
                              14, 114, 214, 314])
-        if 2 == request.allocid or 3 == request.allocid or 4 == request.allocid or 5 == request.allocid:
-            cardlist.extend([2, 102, 202, 302,
-                             3, 103, 203, 303,
-                             4, 104, 204, 304,
-                             5, 105, 205, 305,
-                             6, 106, 206, 306,
-                             7, 107, 207, 307,
-                             8, 108, 208, 308,
-                             9, 109, 209, 309,
-                             10, 110, 210, 310,
-                             11, 111, 211, 311,
-                             12, 112, 212, 312,
-                             13, 113, 213, 313,
-                             14, 114, 214, 314])
+        if 2 == request.allocid or 3 == request.allocid or 4 == request.allocid:
+            cardlist.extend([102, 202, 302, 402,
+                             103, 203, 303, 403,
+                             104, 204, 304, 404,
+                             105, 205, 305, 405,
+                             106, 206, 306, 406,
+                             107, 207, 307, 407,
+                             108, 208, 308, 408,
+                             109, 209, 309, 409,
+                             110, 210, 310, 410,
+                             111, 211, 311, 411,
+                             112, 212, 312, 412,
+                             113, 213, 313, 413,
+                             114, 214, 314, 414])
+        if 5 == request.allocid:
+            jinhuaData = JinhuaData()
+            jinhuaData.ParseFromString(request.extraData)
+            if jinhuaData.gameType:
+                cardlist.extend([102, 202, 302, 402,
+                                 103, 203, 303, 403,
+                                 104, 204, 304, 404,
+                                 105, 205, 305, 405,
+                                 106, 206, 306, 406,
+                                 107, 207, 307, 407,
+                                 108, 208, 308, 408,
+                                 109, 209, 309, 409,
+                                 110, 210, 310, 410,
+                                 111, 211, 311, 411,
+                                 112, 212, 312, 412,
+                                 113, 213, 313, 413,
+                                 114, 214, 314, 414])
+            else:
+                cardlist.extend([109, 209, 309, 409,
+                                 110, 210, 310, 410,
+                                 111, 211, 311, 411,
+                                 112, 212, 312, 412,
+                                 113, 213, 313, 413,
+                                 114, 214, 314, 414])
         random.shuffle(cardlist)
         shuffle.cardlist.extend(cardlist)
         return shuffle

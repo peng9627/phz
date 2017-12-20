@@ -2,7 +2,6 @@ syntax = "proto3";
 
 option java_multiple_files = true;
 option java_package = "zhipai.mode.proto";
-option java_outer_classname = "Zipai";
 
 service Zhipai {
     //结算
@@ -37,6 +36,7 @@ message UserSettleData {
     int32 userId = 1;
     repeated int32 cardlist = 2; //手牌
     int32 score = 3; //下注分数
+    int32 grab = 4; //抢庄
 }
 
 message SettleResult {
@@ -52,8 +52,13 @@ message UserSettleResult {
 
 message ShuffleData {
     int32 allocid = 1; //1.劈板板2.斗牛牛
+    bytes extraData = 2;
 }
 
 message ShuffleResult {
     repeated int32 cardlist = 1; //牌
+}
+
+message JinhuaData {
+    bool gameType = 1;
 }

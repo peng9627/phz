@@ -32,7 +32,7 @@ message GangData {
     int32 gangvalue = 3; //杠了哪张牌
 }
 
-message MajongPlayerData {
+message MahjongPlayerData {
     int32 player_id = 1;
     repeated int32 handlist = 2; //手牌
     repeated int32 chi = 3; //吃过的牌
@@ -43,7 +43,7 @@ message MajongPlayerData {
 //申请麻将游戏的逻辑计算
 message CalculateData {
     int32 allocid = 1;
-    MajongPlayerData player = 2;
+    MahjongPlayerData player = 2;
     int32 rogue = 3;
 }
 
@@ -57,7 +57,7 @@ message CalculateResult {
     repeated int32 zimo = 6; //能自摸的牌
 }
 
-enum SettleType {
+enum RpcSettleType {
     ZI_MO = 0; //自摸
     GANG_PAO = 1; //杠上炮
     GANG_HUA = 2; //杠上花
@@ -70,7 +70,7 @@ enum SettleType {
 
 message SettleData {
     int32 alloc_id = 1;
-    repeated MajongPlayerData player = 2; //玩家数据
+    repeated MahjongPlayerData player = 2; //玩家数据
     int32 banker = 3; //本轮游戏的庄家ID
     repeated HuData hudata = 4;
     int32 rogue = 5;
@@ -78,7 +78,7 @@ message SettleData {
     message HuData {
         int32 huUser = 1; //胡牌的人
         repeated int32 loseUsers = 2; //输家
-        repeated SettleType settle = 3; //胡牌类型
+        repeated RpcSettleType settle = 3; //胡牌类型
         int32 majong = 4; //胡的哪张牌
     }
 }
@@ -131,6 +131,3 @@ enum SettlePatterns {
     SHUANGLONGQIDUI = 13; //双龙七对x48
     SANLONGQIDUI = 14; //三龙七对x96
 }
-
-
-

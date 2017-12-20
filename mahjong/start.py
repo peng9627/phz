@@ -7,6 +7,7 @@ from concurrent import futures
 from mahjong import mahjong_pb2_grpc, wanzhou_mahjong
 from mahjong.mahjong_pb2 import *
 from mahjong.utils import mahjong_utils
+from zipai.zipai_pb2 import ZIMO
 
 
 class Performance(mahjong_pb2_grpc.MajongCalculateServicer):
@@ -25,7 +26,9 @@ class Performance(mahjong_pb2_grpc.MajongCalculateServicer):
         user_settles = {}
         users = {}
         for user in request.player:
-            user_settles.setdefault(user.player_id, settle.userSettleResule.add())
+            user_settle = settle.userSettleResule.add()
+            user_settle.userId = user.player_id
+            user_settles.setdefault(user.player_id, user_settle)
             users.setdefault(user.player_id, user)
         for user in request.player:
             for g in user.gang:
@@ -44,10 +47,10 @@ class Performance(mahjong_pb2_grpc.MajongCalculateServicer):
         for hudata in request.hudata:
             cardtype = wanzhou_mahjong.getCardType(users[hudata.huUser].handlist, users[hudata.huUser].peng,
                                                    users[hudata.huUser].gang, request.rogue)
-            users[hudata.huUser].settlePatterns.add(SettlePatterns.items()[cardtype])
+            user_settles[hudata.huUser].settlePatterns.append(PIHU)
             score = wanzhou_mahjong.getScore(cardtype)
-            for settle in hudata.settle:
-                if settle != ZIMO:
+            for s in hudata.settle:
+                if s != ZIMO:
                     score *= 2
             if ZIMO in hudata.settle:
                 score += 1
@@ -56,6 +59,7 @@ class Performance(mahjong_pb2_grpc.MajongCalculateServicer):
             user_settles[hudata.huUser].cardScore += score * len(hudata.loseUsers)
             for u in hudata.loseUsers:
                 user_settles[u].cardScore -= score
+        return settle
 
     def calculate(self, request, context):
         """
@@ -89,32 +93,35 @@ class Performance(mahjong_pb2_grpc.MajongCalculateServicer):
         """
         shuffle = ShuffleResult()
         cardlist = list()
-        if 1 == request.allocid:
-            cardlist.extend([2, 102, 202, 302,
-                             3, 103, 203, 303,
-                             4, 104, 204, 304,
-                             5, 105, 205, 305,
-                             6, 106, 206, 306,
-                             7, 107, 207, 307,
-                             8, 108, 208, 308,
-                             9, 109, 209, 309,
-                             10, 110, 210, 310,
-                             14, 114, 214, 314])
-        if 2 == request.allocid or 3 == request.allocid or 4 == request.allocid or 5 == request.allocid:
-            cardlist.extend([2, 102, 202, 302,
-                             3, 103, 203, 303,
-                             4, 104, 204, 304,
-                             5, 105, 205, 305,
-                             6, 106, 206, 306,
-                             7, 107, 207, 307,
-                             8, 108, 208, 308,
-                             9, 109, 209, 309,
-                             10, 110, 210, 310,
-                             11, 111, 211, 311,
-                             12, 112, 212, 312,
-                             13, 113, 213, 313,
-                             14, 114, 214, 314])
-        random.shuffle(cardlist)
+        if 1 == request.alloc_id:
+            cardlist.extend([1, 1, 1, 1,
+                             2, 2, 2, 2,
+                             3, 3, 3, 3,
+                             4, 4, 4, 4,
+                             5, 5, 5, 5,
+                             6, 6, 6, 6,
+                             7, 7, 7, 7,
+                             8, 8, 8, 8,
+                             9, 9, 9, 9,
+                             11, 11, 11, 11,
+                             12, 12, 12, 12,
+                             13, 13, 13, 13,
+                             14, 14, 14, 14,
+                             15, 15, 15, 15,
+                             16, 16, 16, 16,
+                             17, 17, 17, 17,
+                             18, 18, 18, 18,
+                             19, 19, 19, 19,
+                             21, 21, 21, 21,
+                             22, 22, 22, 22,
+                             23, 23, 23, 23,
+                             24, 24, 24, 24,
+                             25, 25, 25, 25,
+                             26, 26, 26, 26,
+                             27, 27, 27, 27,
+                             28, 28, 28, 28,
+                             29, 29, 29, 29])
+        # random.shuffle(cardlist)
         shuffle.cardlist.extend(cardlist)
         return shuffle
 
@@ -126,7 +133,7 @@ def rpc_server():
     """
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
     mahjong_pb2_grpc.add_MajongCalculateServicer_to_server(Performance(), server)
-    server.add_insecure_port('[::]:50001')
+    server.add_insecure_port('[::]:50002')
     server.start()
     try:
         while True:

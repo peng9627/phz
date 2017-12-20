@@ -31,6 +31,11 @@ class Niuniu(object):
         return cardlist[0] % 100 == (cardlist[1] % 100) - 1 and cardlist[1] % 100 == (cardlist[2] % 100) - 1 and \
                cardlist[2] % 100 == (cardlist[3] % 100) - 1 and cardlist[3] % 100 == (cardlist[4] % 100) - 1
 
+    # 同花牛
+    @staticmethod
+    def sameColor(cardlist):
+        return cardlist[0] / 100 == cardlist[4] / 100
+
     # 顺斗
     @staticmethod
     def getShunDouValue(cardlist):

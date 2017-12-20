@@ -26,10 +26,12 @@ def getCardType(handlist, penglist, gangdata, rogue):
                 card_type = 5
             else:
                 card_type = 4
-        if 10 < card_type:
+        elif 10 < card_type:
             card_type -= 6
-        if 2 == card_type:
+        elif 2 == card_type:
             card_type = 10
+        else:
+            card_type = 3
     return card_type
 
 

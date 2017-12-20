@@ -57,7 +57,10 @@ class MahjongCardType(object):
         rogueSize = MahjongUtils.containSize(handlist, rogue)
         if 0 == rogueSize and 2 == len(temp) and temp[0] == temp[1]:
             return True
-        for i in range(0, rogueSize):
+        if rogue not in san:
+            for i in range(0, rogueSize):
+                temp.remove(rogue)
+        if rogue in temp:
             temp.remove(rogue)
         dui = MahjongUtils.get_dui(temp)
         if 1 == rogueSize and ((2 == len(dui) and 4 == len(temp)) or 1 == len(temp)):
@@ -86,9 +89,9 @@ class MahjongCardType(object):
         rogueSize = MahjongUtils.containSize(handlist, rogue)
         for i in range(0, rogueSize):
             temp.remove(rogue)
-        if 14 == len(handlist) and 14 - (2 * len(MahjongUtils.get_dui(temp))) <= 2 * rogueSize:
+        si = MahjongUtils.get_si(temp)
+        if 14 == len(handlist) and 14 - (2 * (len(MahjongUtils.get_dui(temp)) + len(si))) <= 2 * rogueSize:
             siCount = 0
-            si = MahjongUtils.get_si(temp)
             temp1 = list()
             temp1.extend(temp)
             for i in range(0, 4):
