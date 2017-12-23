@@ -7,7 +7,6 @@ from concurrent import futures
 from mahjong import mahjong_pb2_grpc, wanzhou_mahjong
 from mahjong.mahjong_pb2 import *
 from mahjong.utils import mahjong_utils
-from zipai.zipai_pb2 import ZIMO
 
 
 class Performance(mahjong_pb2_grpc.MajongCalculateServicer):
@@ -25,11 +24,13 @@ class Performance(mahjong_pb2_grpc.MajongCalculateServicer):
         settle = SettleResult()
         user_settles = {}
         users = {}
+        cannothu_user = []
         for user in request.player:
             user_settle = settle.userSettleResule.add()
             user_settle.userId = user.player_id
             user_settles.setdefault(user.player_id, user_settle)
             users.setdefault(user.player_id, user)
+            cannothu_user.append(user.player_id)
         for user in request.player:
             for g in user.gang:
                 if g.type == BGANG:
@@ -45,20 +46,61 @@ class Performance(mahjong_pb2_grpc.MajongCalculateServicer):
                     for f in g.fighter:
                         user_settles[f].gangScore -= 2
         for hudata in request.hudata:
-            cardtype = wanzhou_mahjong.getCardType(users[hudata.huUser].handlist, users[hudata.huUser].peng,
+            if hudata.huUser in cannothu_user:
+                cannothu_user.remove(hudata.huUser)
+            tempcard = list()
+            tempcard.extend(users[hudata.huUser].handlist)
+            tempcard.append(hudata.majong)
+            cardtype = wanzhou_mahjong.getCardType(tempcard, users[hudata.huUser].peng,
                                                    users[hudata.huUser].gang, request.rogue)
-            user_settles[hudata.huUser].settlePatterns.append(PIHU)
+            user_settles[hudata.huUser].settlePatterns.append(cardtype)
             score = wanzhou_mahjong.getScore(cardtype)
             for s in hudata.settle:
-                if s != ZIMO:
-                    score *= 2
-            if ZIMO in hudata.settle:
+                if s != ZI_MO:
+                    if 1 == score:
+                        score = 12
+                    else:
+                        score *= 2
+            if ZI_MO in hudata.settle and score == 1:
                 score += 1
             if score > request.fengding:
                 score = request.fengding
-            user_settles[hudata.huUser].cardScore += score * len(hudata.loseUsers)
             for u in hudata.loseUsers:
-                user_settles[u].cardScore -= score
+                if users[u].baojiao:
+                    if 2 == score:
+                        user_settles[u].cardScore -= 12
+                        user_settles[hudata.huUser].cardScore += 12
+                    else:
+                        user_settles[u].cardScore -= score * 2
+                        user_settles[hudata.huUser].cardScore += score * 2
+                else:
+                    user_settles[u].cardScore -= score
+                    user_settles[hudata.huUser].cardScore += score
+        peijiao_users = list()
+        user_score = {}
+        if 4 == len(cannothu_user):
+            for c in cannothu_user:
+                hucards = mahjong_utils.MahjongUtils.get_hu(users[c].handlist, request.rogue)
+                # 有叫
+                if 0 < len(hucards):
+                    score = 0
+                    for h in hucards:
+                        tempcard = list()
+                        tempcard.extend(users[c].handlist)
+                        tempcard.append(h)
+                        cardtype = wanzhou_mahjong.getCardType(tempcard, users[c].peng, users[c].gang, request.rogue)
+                        cardscore = wanzhou_mahjong.getScore(cardtype)
+                        if cardscore > score:
+                            score = cardscore
+                    if score > 0:
+                        user_score.setdefault(c, score)
+                else:
+                    peijiao_users.append(c)
+            if 0 < len(user_score) and 0 < len(peijiao_users):
+                for key, value in user_score.items():
+                    for p in peijiao_users:
+                        user_settles[p].cardScore -= value
+                        user_settles[key].cardScore += value
         return settle
 
     def calculate(self, request, context):
@@ -121,7 +163,7 @@ class Performance(mahjong_pb2_grpc.MajongCalculateServicer):
                              27, 27, 27, 27,
                              28, 28, 28, 28,
                              29, 29, 29, 29])
-        # random.shuffle(cardlist)
+        random.shuffle(cardlist)
         shuffle.cardlist.extend(cardlist)
         return shuffle
 
@@ -144,3 +186,13 @@ def rpc_server():
 
 if __name__ == '__main__':
     rpc_server()
+    # zimo = mahjong_utils.MahjongUtils.get_hu([13, 15, 17, 17,18,21,21], 21)
+    # hu = list()
+    # for z in zimo:
+    #     handlist = list()
+    #     handlist.extend([13, 15, 17, 17,18,21,21])
+    #     handlist.append(z)
+    #     if 0 != wanzhou_mahjong.getCardType(handlist, [1,1,1], [], 21):
+    #         hu.append(z)
+    # print hu
+    # print zimo

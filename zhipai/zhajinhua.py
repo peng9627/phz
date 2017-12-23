@@ -42,7 +42,7 @@ class Zhajinhua(object):
         cards_values = sorted(cards_values)
         if cardlist_type == 1:
             if cardlist_values[1] != cards_values[1]:
-                return cardlist_values[1] > cards_values[1]
+                return 1 if cardlist_values[1] > cards_values[1] else -1
             if cardlist_values[0] != cardlist_values[1]:
                 cardlist_value = cardlist_values[0]
             else:
@@ -51,16 +51,26 @@ class Zhajinhua(object):
                 cards_value = cards_values[0]
             else:
                 cards_value = cards_values[2]
-            return cardlist_value > cards_value
+            if cardlist_value == cards_value:
+                return 0
+            return 1 if cardlist_value > cards_value else -1
         if cardlist_type == 2 or cardlist_type == 4:
+            list123 = False
+            card123 = False
             if cardlist_values[0] == 2 and cardlist_values[2] == 14:
-                return False
+                list123 = True
             if cards_values[0] == 2 and cards_values[2] == 14:
-                return True
+                card123 = True
+            if list123 and card123:
+                return 0
+            elif list123 and not card123:
+                return -1
+            elif not list123 and card123:
+                return 1
         for i in range(2, -1, -1):
             if cardlist_values[i] != cards_values[i]:
-                return cardlist_values[i] > cards_values[i]
-        return False
+                return 1 if cardlist_values[i] > cards_values[i] else -1
+        return 0
 
     @staticmethod
     def isSameThree(cardlist):

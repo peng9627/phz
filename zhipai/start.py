@@ -147,6 +147,13 @@ class Douniuniu(object):
             # 炸弹牛
             if (gamerules >> 1) % 2 == 1 and Niuniu.isZhadanniu(temp):
                 return 11
+            for i in range(0, 4):
+                for j in range(i + 1, 5):
+                    temp1 = 0 if temp[i] % 100 > 10 else temp[i] % 100
+                    temp2 = 0 if temp[j] % 100 > 10 else temp[j] % 100
+                    if (temp1 % 100 + temp2 % 100) % 10 == sum_val % 10:
+                        return 10 if sum_val % 10 == 0 else sum_val % 10
+            return 0
 
     @staticmethod
     def get_multiple(value, allocid, doubleRule):
@@ -338,10 +345,10 @@ class Performance(zhipai_pb2_grpc.ZhipaiServicer):
             win = Zhajinhua.compare(u1.cardlist, u2.cardlist)
             userSettleResult = settle.userSettleResule.add()
             userSettleResult.userId = u1.userId
-            userSettleResult.win = 1 if win else -1
+            userSettleResult.win = win
             userSettleResult = settle.userSettleResule.add()
             userSettleResult.userId = u2.userId
-            userSettleResult.win = -1 if win else 1
+            userSettleResult.win = -win
         return settle
 
     def shuffle(self, request, context):

@@ -38,6 +38,7 @@ message MahjongPlayerData {
     repeated int32 chi = 3; //吃过的牌
     repeated int32 peng = 4; //碰过的牌
     repeated GangData gang = 5; //杠过的牌
+    bool baojiao = 6; //报叫
 }
 
 //申请麻将游戏的逻辑计算
