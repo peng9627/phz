@@ -1,5 +1,5 @@
 # coding=utf-8
-from mahjong.utils.mahjong_utils import MahjongUtils
+from mahjong_utils import MahjongUtils
 
 
 class MahjongCardType(object):

@@ -8,7 +8,7 @@ import zhipai_pb2_grpc
 from niuniu import Niuniu
 from pibanban import Pibanban
 from zhajinhua import Zhajinhua
-from zhipai.zhipai_pb2 import *
+from zhipai_pb2 import *
 
 
 class Douniuniu(object):
@@ -432,3 +432,6 @@ def rpc_server():
 
 if __name__ == '__main__':
     rpc_server()
+    # temp = [111, 104, 211, 304, 411]
+    # temp = sorted(temp, cmp=Niuniu.reversed_cmp)
+    # print Niuniu.isHuluniu(temp)

@@ -1,5 +1,5 @@
 # coding=utf-8
-from mahjong.utils.mahjong_cardtype import MahjongCardType
+from mahjong_cardtype import MahjongCardType
 
 
 def getCardType(handlist, penglist, gangdata, rogue):

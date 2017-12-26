@@ -4,9 +4,10 @@ import time
 
 from concurrent import futures
 
-from mahjong import mahjong_pb2_grpc, wanzhou_mahjong
-from mahjong.mahjong_pb2 import *
-from mahjong.utils import mahjong_utils
+import mahjong_pb2_grpc
+import wanzhou_mahjong
+from mahjong_pb2 import *
+from mahjong_utils import MahjongUtils
 
 
 class Performance(mahjong_pb2_grpc.MajongCalculateServicer):
@@ -80,7 +81,7 @@ class Performance(mahjong_pb2_grpc.MajongCalculateServicer):
         user_score = {}
         if 4 == len(cannothu_user):
             for c in cannothu_user:
-                hucards = mahjong_utils.MahjongUtils.get_hu(users[c].handlist, request.rogue)
+                hucards = MahjongUtils.get_hu(users[c].handlist, request.rogue)
                 # 有叫
                 if 0 < len(hucards):
                     score = 0
@@ -111,10 +112,10 @@ class Performance(mahjong_pb2_grpc.MajongCalculateServicer):
         :return:
         """
         calculate = CalculateResult()
-        calculate.dui.extend(mahjong_utils.MahjongUtils.get_dui(request.player.handlist))
-        calculate.san.extend(mahjong_utils.MahjongUtils.get_san(request.player.handlist))
-        calculate.si.extend(mahjong_utils.MahjongUtils.get_si(request.player.handlist))
-        zimo = mahjong_utils.MahjongUtils.get_hu(request.player.handlist, request.rogue)
+        calculate.dui.extend(MahjongUtils.get_dui(request.player.handlist))
+        calculate.san.extend(MahjongUtils.get_san(request.player.handlist))
+        calculate.si.extend(MahjongUtils.get_si(request.player.handlist))
+        zimo = MahjongUtils.get_hu(request.player.handlist, request.rogue)
         calculate.zimo.extend(zimo)
         hu = list()
         for z in zimo:
