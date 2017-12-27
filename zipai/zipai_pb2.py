@@ -88,14 +88,14 @@ _CALCULATEDATA = _descriptor.Descriptor(
             has_default_value=False, default_value=0,
             message_type=None, enum_type=None, containing_type=None,
             is_extension=False, extension_scope=None,
-            options=None),
+            options=None, file=DESCRIPTOR),
         _descriptor.FieldDescriptor(
             name='userData', full_name='CalculateData.userData', index=1,
             number=2, type=11, cpp_type=10, label=1,
             has_default_value=False, default_value=None,
             message_type=None, enum_type=None, containing_type=None,
             is_extension=False, extension_scope=None,
-            options=None),
+            options=None, file=DESCRIPTOR),
     ],
     extensions=[
     ],
@@ -125,28 +125,28 @@ _CALCULATERESULT = _descriptor.Descriptor(
             has_default_value=False, default_value=[],
             message_type=None, enum_type=None, containing_type=None,
             is_extension=False, extension_scope=None,
-            options=None),
+            options=None, file=DESCRIPTOR),
         _descriptor.FieldDescriptor(
             name='penglist', full_name='CalculateResult.penglist', index=1,
             number=2, type=5, cpp_type=1, label=3,
             has_default_value=False, default_value=[],
             message_type=None, enum_type=None, containing_type=None,
             is_extension=False, extension_scope=None,
-            options=None),
+            options=None, file=DESCRIPTOR),
         _descriptor.FieldDescriptor(
             name='zhaolist', full_name='CalculateResult.zhaolist', index=2,
             number=3, type=5, cpp_type=1, label=3,
             has_default_value=False, default_value=[],
             message_type=None, enum_type=None, containing_type=None,
             is_extension=False, extension_scope=None,
-            options=None),
+            options=None, file=DESCRIPTOR),
         _descriptor.FieldDescriptor(
             name='hulist', full_name='CalculateResult.hulist', index=3,
             number=4, type=5, cpp_type=1, label=3,
             has_default_value=False, default_value=[],
             message_type=None, enum_type=None, containing_type=None,
             is_extension=False, extension_scope=None,
-            options=None),
+            options=None, file=DESCRIPTOR),
     ],
     extensions=[
     ],
@@ -176,49 +176,49 @@ _SETTLEDATA = _descriptor.Descriptor(
             has_default_value=False, default_value=0,
             message_type=None, enum_type=None, containing_type=None,
             is_extension=False, extension_scope=None,
-            options=None),
+            options=None, file=DESCRIPTOR),
         _descriptor.FieldDescriptor(
             name='huUserId', full_name='SettleData.huUserId', index=1,
             number=2, type=5, cpp_type=1, label=1,
             has_default_value=False, default_value=0,
             message_type=None, enum_type=None, containing_type=None,
             is_extension=False, extension_scope=None,
-            options=None),
+            options=None, file=DESCRIPTOR),
         _descriptor.FieldDescriptor(
             name='huCard', full_name='SettleData.huCard', index=2,
             number=3, type=5, cpp_type=1, label=1,
             has_default_value=False, default_value=0,
             message_type=None, enum_type=None, containing_type=None,
             is_extension=False, extension_scope=None,
-            options=None),
+            options=None, file=DESCRIPTOR),
         _descriptor.FieldDescriptor(
             name='settlePatterns', full_name='SettleData.settlePatterns', index=3,
             number=4, type=14, cpp_type=8, label=3,
             has_default_value=False, default_value=[],
             message_type=None, enum_type=None, containing_type=None,
             is_extension=False, extension_scope=None,
-            options=None),
+            options=None, file=DESCRIPTOR),
         _descriptor.FieldDescriptor(
             name='dagun', full_name='SettleData.dagun', index=4,
             number=5, type=8, cpp_type=7, label=1,
             has_default_value=False, default_value=False,
             message_type=None, enum_type=None, containing_type=None,
             is_extension=False, extension_scope=None,
-            options=None),
+            options=None, file=DESCRIPTOR),
         _descriptor.FieldDescriptor(
             name='qia', full_name='SettleData.qia', index=5,
             number=6, type=8, cpp_type=7, label=1,
             has_default_value=False, default_value=False,
             message_type=None, enum_type=None, containing_type=None,
             is_extension=False, extension_scope=None,
-            options=None),
+            options=None, file=DESCRIPTOR),
         _descriptor.FieldDescriptor(
             name='userData', full_name='SettleData.userData', index=6,
             number=7, type=11, cpp_type=10, label=3,
             has_default_value=False, default_value=[],
             message_type=None, enum_type=None, containing_type=None,
             is_extension=False, extension_scope=None,
-            options=None),
+            options=None, file=DESCRIPTOR),
     ],
     extensions=[
     ],
@@ -248,49 +248,49 @@ _USERDATA = _descriptor.Descriptor(
             has_default_value=False, default_value=0,
             message_type=None, enum_type=None, containing_type=None,
             is_extension=False, extension_scope=None,
-            options=None),
+            options=None, file=DESCRIPTOR),
         _descriptor.FieldDescriptor(
             name='chilist', full_name='UserData.chilist', index=1,
             number=2, type=5, cpp_type=1, label=3,
             has_default_value=False, default_value=[],
             message_type=None, enum_type=None, containing_type=None,
             is_extension=False, extension_scope=None,
-            options=None),
+            options=None, file=DESCRIPTOR),
         _descriptor.FieldDescriptor(
             name='penglist', full_name='UserData.penglist', index=2,
             number=3, type=5, cpp_type=1, label=3,
             has_default_value=False, default_value=[],
             message_type=None, enum_type=None, containing_type=None,
             is_extension=False, extension_scope=None,
-            options=None),
+            options=None, file=DESCRIPTOR),
         _descriptor.FieldDescriptor(
             name='kanlist', full_name='UserData.kanlist', index=3,
             number=4, type=5, cpp_type=1, label=3,
             has_default_value=False, default_value=[],
             message_type=None, enum_type=None, containing_type=None,
             is_extension=False, extension_scope=None,
-            options=None),
+            options=None, file=DESCRIPTOR),
         _descriptor.FieldDescriptor(
             name='zhaolist', full_name='UserData.zhaolist', index=4,
             number=5, type=5, cpp_type=1, label=3,
             has_default_value=False, default_value=[],
             message_type=None, enum_type=None, containing_type=None,
             is_extension=False, extension_scope=None,
-            options=None),
+            options=None, file=DESCRIPTOR),
         _descriptor.FieldDescriptor(
             name='longlist', full_name='UserData.longlist', index=5,
             number=6, type=5, cpp_type=1, label=3,
             has_default_value=False, default_value=[],
             message_type=None, enum_type=None, containing_type=None,
             is_extension=False, extension_scope=None,
-            options=None),
+            options=None, file=DESCRIPTOR),
         _descriptor.FieldDescriptor(
             name='handlist', full_name='UserData.handlist', index=6,
             number=7, type=5, cpp_type=1, label=3,
             has_default_value=False, default_value=[],
             message_type=None, enum_type=None, containing_type=None,
             is_extension=False, extension_scope=None,
-            options=None),
+            options=None, file=DESCRIPTOR),
     ],
     extensions=[
     ],
@@ -320,7 +320,7 @@ _SETTLERESULT = _descriptor.Descriptor(
             has_default_value=False, default_value=[],
             message_type=None, enum_type=None, containing_type=None,
             is_extension=False, extension_scope=None,
-            options=None),
+            options=None, file=DESCRIPTOR),
     ],
     extensions=[
     ],
@@ -350,35 +350,35 @@ _USERSETTLERESULT = _descriptor.Descriptor(
             has_default_value=False, default_value=0,
             message_type=None, enum_type=None, containing_type=None,
             is_extension=False, extension_scope=None,
-            options=None),
+            options=None, file=DESCRIPTOR),
         _descriptor.FieldDescriptor(
             name='hu', full_name='UserSettleResult.hu', index=1,
             number=2, type=5, cpp_type=1, label=1,
             has_default_value=False, default_value=0,
             message_type=None, enum_type=None, containing_type=None,
             is_extension=False, extension_scope=None,
-            options=None),
+            options=None, file=DESCRIPTOR),
         _descriptor.FieldDescriptor(
             name='bang', full_name='UserSettleResult.bang', index=2,
             number=3, type=5, cpp_type=1, label=1,
             has_default_value=False, default_value=0,
             message_type=None, enum_type=None, containing_type=None,
             is_extension=False, extension_scope=None,
-            options=None),
+            options=None, file=DESCRIPTOR),
         _descriptor.FieldDescriptor(
             name='score', full_name='UserSettleResult.score', index=3,
             number=4, type=5, cpp_type=1, label=1,
             has_default_value=False, default_value=0,
             message_type=None, enum_type=None, containing_type=None,
             is_extension=False, extension_scope=None,
-            options=None),
+            options=None, file=DESCRIPTOR),
         _descriptor.FieldDescriptor(
             name='settlePatterns', full_name='UserSettleResult.settlePatterns', index=4,
             number=5, type=14, cpp_type=8, label=3,
             has_default_value=False, default_value=[],
             message_type=None, enum_type=None, containing_type=None,
             is_extension=False, extension_scope=None,
-            options=None),
+            options=None, file=DESCRIPTOR),
     ],
     extensions=[
     ],
@@ -408,21 +408,21 @@ _SHUFFLEDATA = _descriptor.Descriptor(
             has_default_value=False, default_value=0,
             message_type=None, enum_type=None, containing_type=None,
             is_extension=False, extension_scope=None,
-            options=None),
+            options=None, file=DESCRIPTOR),
         _descriptor.FieldDescriptor(
             name='userCardLevel', full_name='ShuffleData.userCardLevel', index=1,
             number=2, type=11, cpp_type=10, label=3,
             has_default_value=False, default_value=[],
             message_type=None, enum_type=None, containing_type=None,
             is_extension=False, extension_scope=None,
-            options=None),
+            options=None, file=DESCRIPTOR),
         _descriptor.FieldDescriptor(
             name='banker', full_name='ShuffleData.banker', index=2,
             number=3, type=5, cpp_type=1, label=1,
             has_default_value=False, default_value=0,
             message_type=None, enum_type=None, containing_type=None,
             is_extension=False, extension_scope=None,
-            options=None),
+            options=None, file=DESCRIPTOR),
     ],
     extensions=[
     ],
@@ -452,14 +452,14 @@ _USERCARDLEVEL = _descriptor.Descriptor(
             has_default_value=False, default_value=0,
             message_type=None, enum_type=None, containing_type=None,
             is_extension=False, extension_scope=None,
-            options=None),
+            options=None, file=DESCRIPTOR),
         _descriptor.FieldDescriptor(
             name='level', full_name='UserCardLevel.level', index=1,
             number=2, type=5, cpp_type=1, label=1,
             has_default_value=False, default_value=0,
             message_type=None, enum_type=None, containing_type=None,
             is_extension=False, extension_scope=None,
-            options=None),
+            options=None, file=DESCRIPTOR),
     ],
     extensions=[
     ],
@@ -489,14 +489,14 @@ _SHUFFLERESULT = _descriptor.Descriptor(
             has_default_value=False, default_value=[],
             message_type=None, enum_type=None, containing_type=None,
             is_extension=False, extension_scope=None,
-            options=None),
+            options=None, file=DESCRIPTOR),
         _descriptor.FieldDescriptor(
             name='dealCards', full_name='ShuffleResult.dealCards', index=1,
             number=2, type=11, cpp_type=10, label=3,
             has_default_value=False, default_value=[],
             message_type=None, enum_type=None, containing_type=None,
             is_extension=False, extension_scope=None,
-            options=None),
+            options=None, file=DESCRIPTOR),
     ],
     extensions=[
     ],
@@ -526,63 +526,63 @@ _DEALCARDS = _descriptor.Descriptor(
             has_default_value=False, default_value=0,
             message_type=None, enum_type=None, containing_type=None,
             is_extension=False, extension_scope=None,
-            options=None),
+            options=None, file=DESCRIPTOR),
         _descriptor.FieldDescriptor(
             name='cardlist', full_name='DealCards.cardlist', index=1,
             number=2, type=5, cpp_type=1, label=3,
             has_default_value=False, default_value=[],
             message_type=None, enum_type=None, containing_type=None,
             is_extension=False, extension_scope=None,
-            options=None),
+            options=None, file=DESCRIPTOR),
         _descriptor.FieldDescriptor(
             name='longlist', full_name='DealCards.longlist', index=2,
             number=3, type=5, cpp_type=1, label=3,
             has_default_value=False, default_value=[],
             message_type=None, enum_type=None, containing_type=None,
             is_extension=False, extension_scope=None,
-            options=None),
+            options=None, file=DESCRIPTOR),
         _descriptor.FieldDescriptor(
             name='kanlist', full_name='DealCards.kanlist', index=3,
             number=4, type=5, cpp_type=1, label=3,
             has_default_value=False, default_value=[],
             message_type=None, enum_type=None, containing_type=None,
             is_extension=False, extension_scope=None,
-            options=None),
+            options=None, file=DESCRIPTOR),
         _descriptor.FieldDescriptor(
             name='penglist', full_name='DealCards.penglist', index=4,
             number=5, type=5, cpp_type=1, label=3,
             has_default_value=False, default_value=[],
             message_type=None, enum_type=None, containing_type=None,
             is_extension=False, extension_scope=None,
-            options=None),
+            options=None, file=DESCRIPTOR),
         _descriptor.FieldDescriptor(
             name='zhaolist', full_name='DealCards.zhaolist', index=5,
             number=6, type=5, cpp_type=1, label=3,
             has_default_value=False, default_value=[],
             message_type=None, enum_type=None, containing_type=None,
             is_extension=False, extension_scope=None,
-            options=None),
+            options=None, file=DESCRIPTOR),
         _descriptor.FieldDescriptor(
             name='hulist', full_name='DealCards.hulist', index=6,
             number=7, type=5, cpp_type=1, label=3,
             has_default_value=False, default_value=[],
             message_type=None, enum_type=None, containing_type=None,
             is_extension=False, extension_scope=None,
-            options=None),
+            options=None, file=DESCRIPTOR),
         _descriptor.FieldDescriptor(
             name='chilist', full_name='DealCards.chilist', index=7,
             number=8, type=11, cpp_type=10, label=3,
             has_default_value=False, default_value=[],
             message_type=None, enum_type=None, containing_type=None,
             is_extension=False, extension_scope=None,
-            options=None),
+            options=None, file=DESCRIPTOR),
         _descriptor.FieldDescriptor(
             name='tianhu', full_name='DealCards.tianhu', index=8,
             number=9, type=8, cpp_type=7, label=1,
             has_default_value=False, default_value=False,
             message_type=None, enum_type=None, containing_type=None,
             is_extension=False, extension_scope=None,
-            options=None),
+            options=None, file=DESCRIPTOR),
     ],
     extensions=[
     ],
@@ -612,14 +612,14 @@ _CHI = _descriptor.Descriptor(
             has_default_value=False, default_value=0,
             message_type=None, enum_type=None, containing_type=None,
             is_extension=False, extension_scope=None,
-            options=None),
+            options=None, file=DESCRIPTOR),
         _descriptor.FieldDescriptor(
             name='chiCards', full_name='Chi.chiCards', index=1,
             number=2, type=5, cpp_type=1, label=3,
             has_default_value=False, default_value=[],
             message_type=None, enum_type=None, containing_type=None,
             is_extension=False, extension_scope=None,
-            options=None),
+            options=None, file=DESCRIPTOR),
     ],
     extensions=[
     ],
@@ -781,203 +781,4 @@ _sym_db.RegisterServiceDescriptor(_ZIPAI)
 
 DESCRIPTOR.services_by_name['Zipai'] = _ZIPAI
 
-try:
-    # THESE ELEMENTS WILL BE DEPRECATED.
-    # Please use the generated *_pb2_grpc.py files instead.
-    import grpc
-    from grpc.beta import implementations as beta_implementations
-    from grpc.beta import interfaces as beta_interfaces
-    from grpc.framework.common import cardinality
-    from grpc.framework.interfaces.face import utilities as face_utilities
-
-
-    class ZipaiStub(object):
-        # missing associated documentation comment in .proto file
-        pass
-
-        def __init__(self, channel):
-            """Constructor.
-
-            Args:
-              channel: A grpc.Channel.
-            """
-            self.calculate = channel.unary_unary(
-                '/Zipai/calculate',
-                request_serializer=CalculateData.SerializeToString,
-                response_deserializer=CalculateResult.FromString,
-            )
-            self.settle = channel.unary_unary(
-                '/Zipai/settle',
-                request_serializer=SettleData.SerializeToString,
-                response_deserializer=SettleResult.FromString,
-            )
-            self.shuffle = channel.unary_unary(
-                '/Zipai/shuffle',
-                request_serializer=ShuffleData.SerializeToString,
-                response_deserializer=ShuffleResult.FromString,
-            )
-
-
-    class ZipaiServicer(object):
-        # missing associated documentation comment in .proto file
-        pass
-
-        def calculate(self, request, context):
-            """进行过程计算
-            """
-            context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-            context.set_details('Method not implemented!')
-            raise NotImplementedError('Method not implemented!')
-
-        def settle(self, request, context):
-            """结算
-            """
-            context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-            context.set_details('Method not implemented!')
-            raise NotImplementedError('Method not implemented!')
-
-        def shuffle(self, request, context):
-            """洗牌函数
-            """
-            context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-            context.set_details('Method not implemented!')
-            raise NotImplementedError('Method not implemented!')
-
-
-    def add_ZipaiServicer_to_server(servicer, server):
-        rpc_method_handlers = {
-            'calculate': grpc.unary_unary_rpc_method_handler(
-                servicer.calculate,
-                request_deserializer=CalculateData.FromString,
-                response_serializer=CalculateResult.SerializeToString,
-            ),
-            'settle': grpc.unary_unary_rpc_method_handler(
-                servicer.settle,
-                request_deserializer=SettleData.FromString,
-                response_serializer=SettleResult.SerializeToString,
-            ),
-            'shuffle': grpc.unary_unary_rpc_method_handler(
-                servicer.shuffle,
-                request_deserializer=ShuffleData.FromString,
-                response_serializer=ShuffleResult.SerializeToString,
-            ),
-        }
-        generic_handler = grpc.method_handlers_generic_handler(
-            'Zipai', rpc_method_handlers)
-        server.add_generic_rpc_handlers((generic_handler,))
-
-
-    class BetaZipaiServicer(object):
-        """The Beta API is deprecated for 0.15.0 and later.
-
-        It is recommended to use the GA API (classes and functions in this
-        file not marked beta) for all further purposes. This class was generated
-        only to ease transition from grpcio<0.15.0 to grpcio>=0.15.0."""
-        # missing associated documentation comment in .proto file
-        pass
-
-        def calculate(self, request, context):
-            """进行过程计算
-            """
-            context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
-
-        def settle(self, request, context):
-            """结算
-            """
-            context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
-
-        def shuffle(self, request, context):
-            """洗牌函数
-            """
-            context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
-
-
-    class BetaZipaiStub(object):
-        """The Beta API is deprecated for 0.15.0 and later.
-
-        It is recommended to use the GA API (classes and functions in this
-        file not marked beta) for all further purposes. This class was generated
-        only to ease transition from grpcio<0.15.0 to grpcio>=0.15.0."""
-        # missing associated documentation comment in .proto file
-        pass
-
-        def calculate(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
-            """进行过程计算
-            """
-            raise NotImplementedError()
-
-        calculate.future = None
-
-        def settle(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
-            """结算
-            """
-            raise NotImplementedError()
-
-        settle.future = None
-
-        def shuffle(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
-            """洗牌函数
-            """
-            raise NotImplementedError()
-
-        shuffle.future = None
-
-
-    def beta_create_Zipai_server(servicer, pool=None, pool_size=None, default_timeout=None, maximum_timeout=None):
-        """The Beta API is deprecated for 0.15.0 and later.
-
-        It is recommended to use the GA API (classes and functions in this
-        file not marked beta) for all further purposes. This function was
-        generated only to ease transition from grpcio<0.15.0 to grpcio>=0.15.0"""
-        request_deserializers = {
-            ('Zipai', 'calculate'): CalculateData.FromString,
-            ('Zipai', 'settle'): SettleData.FromString,
-            ('Zipai', 'shuffle'): ShuffleData.FromString,
-        }
-        response_serializers = {
-            ('Zipai', 'calculate'): CalculateResult.SerializeToString,
-            ('Zipai', 'settle'): SettleResult.SerializeToString,
-            ('Zipai', 'shuffle'): ShuffleResult.SerializeToString,
-        }
-        method_implementations = {
-            ('Zipai', 'calculate'): face_utilities.unary_unary_inline(servicer.calculate),
-            ('Zipai', 'settle'): face_utilities.unary_unary_inline(servicer.settle),
-            ('Zipai', 'shuffle'): face_utilities.unary_unary_inline(servicer.shuffle),
-        }
-        server_options = beta_implementations.server_options(request_deserializers=request_deserializers,
-                                                             response_serializers=response_serializers,
-                                                             thread_pool=pool, thread_pool_size=pool_size,
-                                                             default_timeout=default_timeout,
-                                                             maximum_timeout=maximum_timeout)
-        return beta_implementations.server(method_implementations, options=server_options)
-
-
-    def beta_create_Zipai_stub(channel, host=None, metadata_transformer=None, pool=None, pool_size=None):
-        """The Beta API is deprecated for 0.15.0 and later.
-
-        It is recommended to use the GA API (classes and functions in this
-        file not marked beta) for all further purposes. This function was
-        generated only to ease transition from grpcio<0.15.0 to grpcio>=0.15.0"""
-        request_serializers = {
-            ('Zipai', 'calculate'): CalculateData.SerializeToString,
-            ('Zipai', 'settle'): SettleData.SerializeToString,
-            ('Zipai', 'shuffle'): ShuffleData.SerializeToString,
-        }
-        response_deserializers = {
-            ('Zipai', 'calculate'): CalculateResult.FromString,
-            ('Zipai', 'settle'): SettleResult.FromString,
-            ('Zipai', 'shuffle'): ShuffleResult.FromString,
-        }
-        cardinalities = {
-            'calculate': cardinality.Cardinality.UNARY_UNARY,
-            'settle': cardinality.Cardinality.UNARY_UNARY,
-            'shuffle': cardinality.Cardinality.UNARY_UNARY,
-        }
-        stub_options = beta_implementations.stub_options(host=host, metadata_transformer=metadata_transformer,
-                                                         request_serializers=request_serializers,
-                                                         response_deserializers=response_deserializers,
-                                                         thread_pool=pool, thread_pool_size=pool_size)
-        return beta_implementations.dynamic_stub(channel, 'Zipai', cardinalities, options=stub_options)
-except ImportError:
-    pass
 # @@protoc_insertion_point(module_scope)

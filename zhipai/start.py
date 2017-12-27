@@ -2,6 +2,7 @@
 import random
 import time
 
+import grpc
 from concurrent import futures
 
 import zhipai_pb2_grpc
@@ -142,10 +143,10 @@ class Douniuniu(object):
         # 万州牛牛
         if 4 == allocid:
             # 五花牛
-            if gamerules % 2 == 1 and Niuniu.isWuhuaniu(temp):
+            if Niuniu.isWuhuaniu(temp):
                 return 12
             # 炸弹牛
-            if (gamerules >> 1) % 2 == 1 and Niuniu.isZhadanniu(temp):
+            if Niuniu.isZhadanniu(temp):
                 return 11
             for i in range(0, 4):
                 for j in range(i + 1, 5):

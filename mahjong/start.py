@@ -2,6 +2,7 @@
 import random
 import time
 
+import grpc
 from concurrent import futures
 
 import mahjong_pb2_grpc

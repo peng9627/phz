@@ -213,21 +213,21 @@ _GANGDATA = _descriptor.Descriptor(
             has_default_value=False, default_value=0,
             message_type=None, enum_type=None, containing_type=None,
             is_extension=False, extension_scope=None,
-            options=None),
+            options=None, file=DESCRIPTOR),
         _descriptor.FieldDescriptor(
             name='fighter', full_name='majong_rpc.GangData.fighter', index=1,
             number=2, type=5, cpp_type=1, label=3,
             has_default_value=False, default_value=[],
             message_type=None, enum_type=None, containing_type=None,
             is_extension=False, extension_scope=None,
-            options=None),
+            options=None, file=DESCRIPTOR),
         _descriptor.FieldDescriptor(
             name='gangvalue', full_name='majong_rpc.GangData.gangvalue', index=2,
             number=3, type=5, cpp_type=1, label=1,
             has_default_value=False, default_value=0,
             message_type=None, enum_type=None, containing_type=None,
             is_extension=False, extension_scope=None,
-            options=None),
+            options=None, file=DESCRIPTOR),
     ],
     extensions=[
     ],
@@ -257,42 +257,42 @@ _MAHJONGPLAYERDATA = _descriptor.Descriptor(
             has_default_value=False, default_value=0,
             message_type=None, enum_type=None, containing_type=None,
             is_extension=False, extension_scope=None,
-            options=None),
+            options=None, file=DESCRIPTOR),
         _descriptor.FieldDescriptor(
             name='handlist', full_name='majong_rpc.MahjongPlayerData.handlist', index=1,
             number=2, type=5, cpp_type=1, label=3,
             has_default_value=False, default_value=[],
             message_type=None, enum_type=None, containing_type=None,
             is_extension=False, extension_scope=None,
-            options=None),
+            options=None, file=DESCRIPTOR),
         _descriptor.FieldDescriptor(
             name='chi', full_name='majong_rpc.MahjongPlayerData.chi', index=2,
             number=3, type=5, cpp_type=1, label=3,
             has_default_value=False, default_value=[],
             message_type=None, enum_type=None, containing_type=None,
             is_extension=False, extension_scope=None,
-            options=None),
+            options=None, file=DESCRIPTOR),
         _descriptor.FieldDescriptor(
             name='peng', full_name='majong_rpc.MahjongPlayerData.peng', index=3,
             number=4, type=5, cpp_type=1, label=3,
             has_default_value=False, default_value=[],
             message_type=None, enum_type=None, containing_type=None,
             is_extension=False, extension_scope=None,
-            options=None),
+            options=None, file=DESCRIPTOR),
         _descriptor.FieldDescriptor(
             name='gang', full_name='majong_rpc.MahjongPlayerData.gang', index=4,
             number=5, type=11, cpp_type=10, label=3,
             has_default_value=False, default_value=[],
             message_type=None, enum_type=None, containing_type=None,
             is_extension=False, extension_scope=None,
-            options=None),
+            options=None, file=DESCRIPTOR),
         _descriptor.FieldDescriptor(
             name='baojiao', full_name='majong_rpc.MahjongPlayerData.baojiao', index=5,
             number=6, type=8, cpp_type=7, label=1,
             has_default_value=False, default_value=False,
             message_type=None, enum_type=None, containing_type=None,
             is_extension=False, extension_scope=None,
-            options=None),
+            options=None, file=DESCRIPTOR),
     ],
     extensions=[
     ],
@@ -322,21 +322,21 @@ _CALCULATEDATA = _descriptor.Descriptor(
             has_default_value=False, default_value=0,
             message_type=None, enum_type=None, containing_type=None,
             is_extension=False, extension_scope=None,
-            options=None),
+            options=None, file=DESCRIPTOR),
         _descriptor.FieldDescriptor(
             name='player', full_name='majong_rpc.CalculateData.player', index=1,
             number=2, type=11, cpp_type=10, label=1,
             has_default_value=False, default_value=None,
             message_type=None, enum_type=None, containing_type=None,
             is_extension=False, extension_scope=None,
-            options=None),
+            options=None, file=DESCRIPTOR),
         _descriptor.FieldDescriptor(
             name='rogue', full_name='majong_rpc.CalculateData.rogue', index=2,
             number=3, type=5, cpp_type=1, label=1,
             has_default_value=False, default_value=0,
             message_type=None, enum_type=None, containing_type=None,
             is_extension=False, extension_scope=None,
-            options=None),
+            options=None, file=DESCRIPTOR),
     ],
     extensions=[
     ],
@@ -366,42 +366,42 @@ _CALCULATERESULT = _descriptor.Descriptor(
             has_default_value=False, default_value=[],
             message_type=None, enum_type=None, containing_type=None,
             is_extension=False, extension_scope=None,
-            options=None),
+            options=None, file=DESCRIPTOR),
         _descriptor.FieldDescriptor(
             name='dui', full_name='majong_rpc.CalculateResult.dui', index=1,
             number=2, type=5, cpp_type=1, label=3,
             has_default_value=False, default_value=[],
             message_type=None, enum_type=None, containing_type=None,
             is_extension=False, extension_scope=None,
-            options=None),
+            options=None, file=DESCRIPTOR),
         _descriptor.FieldDescriptor(
             name='san', full_name='majong_rpc.CalculateResult.san', index=2,
             number=3, type=5, cpp_type=1, label=3,
             has_default_value=False, default_value=[],
             message_type=None, enum_type=None, containing_type=None,
             is_extension=False, extension_scope=None,
-            options=None),
+            options=None, file=DESCRIPTOR),
         _descriptor.FieldDescriptor(
             name='si', full_name='majong_rpc.CalculateResult.si', index=3,
             number=4, type=5, cpp_type=1, label=3,
             has_default_value=False, default_value=[],
             message_type=None, enum_type=None, containing_type=None,
             is_extension=False, extension_scope=None,
-            options=None),
+            options=None, file=DESCRIPTOR),
         _descriptor.FieldDescriptor(
             name='hu', full_name='majong_rpc.CalculateResult.hu', index=4,
             number=5, type=5, cpp_type=1, label=3,
             has_default_value=False, default_value=[],
             message_type=None, enum_type=None, containing_type=None,
             is_extension=False, extension_scope=None,
-            options=None),
+            options=None, file=DESCRIPTOR),
         _descriptor.FieldDescriptor(
             name='zimo', full_name='majong_rpc.CalculateResult.zimo', index=5,
             number=6, type=5, cpp_type=1, label=3,
             has_default_value=False, default_value=[],
             message_type=None, enum_type=None, containing_type=None,
             is_extension=False, extension_scope=None,
-            options=None),
+            options=None, file=DESCRIPTOR),
     ],
     extensions=[
     ],
@@ -431,28 +431,28 @@ _SETTLEDATA_HUDATA = _descriptor.Descriptor(
             has_default_value=False, default_value=0,
             message_type=None, enum_type=None, containing_type=None,
             is_extension=False, extension_scope=None,
-            options=None),
+            options=None, file=DESCRIPTOR),
         _descriptor.FieldDescriptor(
             name='loseUsers', full_name='majong_rpc.SettleData.HuData.loseUsers', index=1,
             number=2, type=5, cpp_type=1, label=3,
             has_default_value=False, default_value=[],
             message_type=None, enum_type=None, containing_type=None,
             is_extension=False, extension_scope=None,
-            options=None),
+            options=None, file=DESCRIPTOR),
         _descriptor.FieldDescriptor(
             name='settle', full_name='majong_rpc.SettleData.HuData.settle', index=2,
             number=3, type=14, cpp_type=8, label=3,
             has_default_value=False, default_value=[],
             message_type=None, enum_type=None, containing_type=None,
             is_extension=False, extension_scope=None,
-            options=None),
+            options=None, file=DESCRIPTOR),
         _descriptor.FieldDescriptor(
             name='majong', full_name='majong_rpc.SettleData.HuData.majong', index=3,
             number=4, type=5, cpp_type=1, label=1,
             has_default_value=False, default_value=0,
             message_type=None, enum_type=None, containing_type=None,
             is_extension=False, extension_scope=None,
-            options=None),
+            options=None, file=DESCRIPTOR),
     ],
     extensions=[
     ],
@@ -482,42 +482,42 @@ _SETTLEDATA = _descriptor.Descriptor(
             has_default_value=False, default_value=0,
             message_type=None, enum_type=None, containing_type=None,
             is_extension=False, extension_scope=None,
-            options=None),
+            options=None, file=DESCRIPTOR),
         _descriptor.FieldDescriptor(
             name='player', full_name='majong_rpc.SettleData.player', index=1,
             number=2, type=11, cpp_type=10, label=3,
             has_default_value=False, default_value=[],
             message_type=None, enum_type=None, containing_type=None,
             is_extension=False, extension_scope=None,
-            options=None),
+            options=None, file=DESCRIPTOR),
         _descriptor.FieldDescriptor(
             name='banker', full_name='majong_rpc.SettleData.banker', index=2,
             number=3, type=5, cpp_type=1, label=1,
             has_default_value=False, default_value=0,
             message_type=None, enum_type=None, containing_type=None,
             is_extension=False, extension_scope=None,
-            options=None),
+            options=None, file=DESCRIPTOR),
         _descriptor.FieldDescriptor(
             name='hudata', full_name='majong_rpc.SettleData.hudata', index=3,
             number=4, type=11, cpp_type=10, label=3,
             has_default_value=False, default_value=[],
             message_type=None, enum_type=None, containing_type=None,
             is_extension=False, extension_scope=None,
-            options=None),
+            options=None, file=DESCRIPTOR),
         _descriptor.FieldDescriptor(
             name='rogue', full_name='majong_rpc.SettleData.rogue', index=4,
             number=5, type=5, cpp_type=1, label=1,
             has_default_value=False, default_value=0,
             message_type=None, enum_type=None, containing_type=None,
             is_extension=False, extension_scope=None,
-            options=None),
+            options=None, file=DESCRIPTOR),
         _descriptor.FieldDescriptor(
             name='fengding', full_name='majong_rpc.SettleData.fengding', index=5,
             number=6, type=5, cpp_type=1, label=1,
             has_default_value=False, default_value=0,
             message_type=None, enum_type=None, containing_type=None,
             is_extension=False, extension_scope=None,
-            options=None),
+            options=None, file=DESCRIPTOR),
     ],
     extensions=[
     ],
@@ -547,7 +547,7 @@ _SETTLERESULT = _descriptor.Descriptor(
             has_default_value=False, default_value=[],
             message_type=None, enum_type=None, containing_type=None,
             is_extension=False, extension_scope=None,
-            options=None),
+            options=None, file=DESCRIPTOR),
     ],
     extensions=[
     ],
@@ -577,35 +577,35 @@ _USERSETTLERESULT = _descriptor.Descriptor(
             has_default_value=False, default_value=0,
             message_type=None, enum_type=None, containing_type=None,
             is_extension=False, extension_scope=None,
-            options=None),
+            options=None, file=DESCRIPTOR),
         _descriptor.FieldDescriptor(
             name='win', full_name='majong_rpc.UserSettleResult.win', index=1,
             number=2, type=5, cpp_type=1, label=1,
             has_default_value=False, default_value=0,
             message_type=None, enum_type=None, containing_type=None,
             is_extension=False, extension_scope=None,
-            options=None),
+            options=None, file=DESCRIPTOR),
         _descriptor.FieldDescriptor(
             name='gangScore', full_name='majong_rpc.UserSettleResult.gangScore', index=2,
             number=3, type=5, cpp_type=1, label=1,
             has_default_value=False, default_value=0,
             message_type=None, enum_type=None, containing_type=None,
             is_extension=False, extension_scope=None,
-            options=None),
+            options=None, file=DESCRIPTOR),
         _descriptor.FieldDescriptor(
             name='cardScore', full_name='majong_rpc.UserSettleResult.cardScore', index=3,
             number=4, type=5, cpp_type=1, label=1,
             has_default_value=False, default_value=0,
             message_type=None, enum_type=None, containing_type=None,
             is_extension=False, extension_scope=None,
-            options=None),
+            options=None, file=DESCRIPTOR),
         _descriptor.FieldDescriptor(
             name='settlePatterns', full_name='majong_rpc.UserSettleResult.settlePatterns', index=4,
             number=5, type=14, cpp_type=8, label=3,
             has_default_value=False, default_value=[],
             message_type=None, enum_type=None, containing_type=None,
             is_extension=False, extension_scope=None,
-            options=None),
+            options=None, file=DESCRIPTOR),
     ],
     extensions=[
     ],
@@ -635,21 +635,21 @@ _CHEATDATA = _descriptor.Descriptor(
             has_default_value=False, default_value=0,
             message_type=None, enum_type=None, containing_type=None,
             is_extension=False, extension_scope=None,
-            options=None),
+            options=None, file=DESCRIPTOR),
         _descriptor.FieldDescriptor(
             name='loc', full_name='majong_rpc.CheatData.loc', index=1,
             number=2, type=5, cpp_type=1, label=1,
             has_default_value=False, default_value=0,
             message_type=None, enum_type=None, containing_type=None,
             is_extension=False, extension_scope=None,
-            options=None),
+            options=None, file=DESCRIPTOR),
         _descriptor.FieldDescriptor(
             name='level', full_name='majong_rpc.CheatData.level', index=2,
             number=3, type=5, cpp_type=1, label=1,
             has_default_value=False, default_value=0,
             message_type=None, enum_type=None, containing_type=None,
             is_extension=False, extension_scope=None,
-            options=None),
+            options=None, file=DESCRIPTOR),
     ],
     extensions=[
     ],
@@ -679,14 +679,14 @@ _SHUFFLEDATA = _descriptor.Descriptor(
             has_default_value=False, default_value=0,
             message_type=None, enum_type=None, containing_type=None,
             is_extension=False, extension_scope=None,
-            options=None),
+            options=None, file=DESCRIPTOR),
         _descriptor.FieldDescriptor(
             name='cheats', full_name='majong_rpc.ShuffleData.cheats', index=1,
             number=2, type=11, cpp_type=10, label=3,
             has_default_value=False, default_value=[],
             message_type=None, enum_type=None, containing_type=None,
             is_extension=False, extension_scope=None,
-            options=None),
+            options=None, file=DESCRIPTOR),
     ],
     extensions=[
     ],
@@ -716,7 +716,7 @@ _SHUFFLERESULT = _descriptor.Descriptor(
             has_default_value=False, default_value=[],
             message_type=None, enum_type=None, containing_type=None,
             is_extension=False, extension_scope=None,
-            options=None),
+            options=None, file=DESCRIPTOR),
     ],
     extensions=[
     ],
@@ -880,205 +880,4 @@ _sym_db.RegisterServiceDescriptor(_MAJONGCALCULATE)
 
 DESCRIPTOR.services_by_name['MajongCalculate'] = _MAJONGCALCULATE
 
-try:
-    # THESE ELEMENTS WILL BE DEPRECATED.
-    # Please use the generated *_pb2_grpc.py files instead.
-    import grpc
-    from grpc.beta import implementations as beta_implementations
-    from grpc.beta import interfaces as beta_interfaces
-    from grpc.framework.common import cardinality
-    from grpc.framework.interfaces.face import utilities as face_utilities
-
-
-    class MajongCalculateStub(object):
-        # missing associated documentation comment in .proto file
-        pass
-
-        def __init__(self, channel):
-            """Constructor.
-
-            Args:
-              channel: A grpc.Channel.
-            """
-            self.calculate = channel.unary_unary(
-                '/majong_rpc.MajongCalculate/calculate',
-                request_serializer=CalculateData.SerializeToString,
-                response_deserializer=CalculateResult.FromString,
-            )
-            self.settle = channel.unary_unary(
-                '/majong_rpc.MajongCalculate/settle',
-                request_serializer=SettleData.SerializeToString,
-                response_deserializer=SettleResult.FromString,
-            )
-            self.shuffle = channel.unary_unary(
-                '/majong_rpc.MajongCalculate/shuffle',
-                request_serializer=ShuffleData.SerializeToString,
-                response_deserializer=ShuffleResult.FromString,
-            )
-
-
-    class MajongCalculateServicer(object):
-        # missing associated documentation comment in .proto file
-        pass
-
-        def calculate(self, request, context):
-            """进行麻将牌过程计算
-            """
-            context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-            context.set_details('Method not implemented!')
-            raise NotImplementedError('Method not implemented!')
-
-        def settle(self, request, context):
-            """结算
-            """
-            context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-            context.set_details('Method not implemented!')
-            raise NotImplementedError('Method not implemented!')
-
-        def shuffle(self, request, context):
-            """洗牌函数
-            """
-            context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-            context.set_details('Method not implemented!')
-            raise NotImplementedError('Method not implemented!')
-
-
-    def add_MajongCalculateServicer_to_server(servicer, server):
-        rpc_method_handlers = {
-            'calculate': grpc.unary_unary_rpc_method_handler(
-                servicer.calculate,
-                request_deserializer=CalculateData.FromString,
-                response_serializer=CalculateResult.SerializeToString,
-            ),
-            'settle': grpc.unary_unary_rpc_method_handler(
-                servicer.settle,
-                request_deserializer=SettleData.FromString,
-                response_serializer=SettleResult.SerializeToString,
-            ),
-            'shuffle': grpc.unary_unary_rpc_method_handler(
-                servicer.shuffle,
-                request_deserializer=ShuffleData.FromString,
-                response_serializer=ShuffleResult.SerializeToString,
-            ),
-        }
-        generic_handler = grpc.method_handlers_generic_handler(
-            'majong_rpc.MajongCalculate', rpc_method_handlers)
-        server.add_generic_rpc_handlers((generic_handler,))
-
-
-    class BetaMajongCalculateServicer(object):
-        """The Beta API is deprecated for 0.15.0 and later.
-
-        It is recommended to use the GA API (classes and functions in this
-        file not marked beta) for all further purposes. This class was generated
-        only to ease transition from grpcio<0.15.0 to grpcio>=0.15.0."""
-        # missing associated documentation comment in .proto file
-        pass
-
-        def calculate(self, request, context):
-            """进行麻将牌过程计算
-            """
-            context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
-
-        def settle(self, request, context):
-            """结算
-            """
-            context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
-
-        def shuffle(self, request, context):
-            """洗牌函数
-            """
-            context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
-
-
-    class BetaMajongCalculateStub(object):
-        """The Beta API is deprecated for 0.15.0 and later.
-
-        It is recommended to use the GA API (classes and functions in this
-        file not marked beta) for all further purposes. This class was generated
-        only to ease transition from grpcio<0.15.0 to grpcio>=0.15.0."""
-        # missing associated documentation comment in .proto file
-        pass
-
-        def calculate(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
-            """进行麻将牌过程计算
-            """
-            raise NotImplementedError()
-
-        calculate.future = None
-
-        def settle(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
-            """结算
-            """
-            raise NotImplementedError()
-
-        settle.future = None
-
-        def shuffle(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
-            """洗牌函数
-            """
-            raise NotImplementedError()
-
-        shuffle.future = None
-
-
-    def beta_create_MajongCalculate_server(servicer, pool=None, pool_size=None, default_timeout=None,
-                                           maximum_timeout=None):
-        """The Beta API is deprecated for 0.15.0 and later.
-
-        It is recommended to use the GA API (classes and functions in this
-        file not marked beta) for all further purposes. This function was
-        generated only to ease transition from grpcio<0.15.0 to grpcio>=0.15.0"""
-        request_deserializers = {
-            ('majong_rpc.MajongCalculate', 'calculate'): CalculateData.FromString,
-            ('majong_rpc.MajongCalculate', 'settle'): SettleData.FromString,
-            ('majong_rpc.MajongCalculate', 'shuffle'): ShuffleData.FromString,
-        }
-        response_serializers = {
-            ('majong_rpc.MajongCalculate', 'calculate'): CalculateResult.SerializeToString,
-            ('majong_rpc.MajongCalculate', 'settle'): SettleResult.SerializeToString,
-            ('majong_rpc.MajongCalculate', 'shuffle'): ShuffleResult.SerializeToString,
-        }
-        method_implementations = {
-            ('majong_rpc.MajongCalculate', 'calculate'): face_utilities.unary_unary_inline(servicer.calculate),
-            ('majong_rpc.MajongCalculate', 'settle'): face_utilities.unary_unary_inline(servicer.settle),
-            ('majong_rpc.MajongCalculate', 'shuffle'): face_utilities.unary_unary_inline(servicer.shuffle),
-        }
-        server_options = beta_implementations.server_options(request_deserializers=request_deserializers,
-                                                             response_serializers=response_serializers,
-                                                             thread_pool=pool, thread_pool_size=pool_size,
-                                                             default_timeout=default_timeout,
-                                                             maximum_timeout=maximum_timeout)
-        return beta_implementations.server(method_implementations, options=server_options)
-
-
-    def beta_create_MajongCalculate_stub(channel, host=None, metadata_transformer=None, pool=None, pool_size=None):
-        """The Beta API is deprecated for 0.15.0 and later.
-
-        It is recommended to use the GA API (classes and functions in this
-        file not marked beta) for all further purposes. This function was
-        generated only to ease transition from grpcio<0.15.0 to grpcio>=0.15.0"""
-        request_serializers = {
-            ('majong_rpc.MajongCalculate', 'calculate'): CalculateData.SerializeToString,
-            ('majong_rpc.MajongCalculate', 'settle'): SettleData.SerializeToString,
-            ('majong_rpc.MajongCalculate', 'shuffle'): ShuffleData.SerializeToString,
-        }
-        response_deserializers = {
-            ('majong_rpc.MajongCalculate', 'calculate'): CalculateResult.FromString,
-            ('majong_rpc.MajongCalculate', 'settle'): SettleResult.FromString,
-            ('majong_rpc.MajongCalculate', 'shuffle'): ShuffleResult.FromString,
-        }
-        cardinalities = {
-            'calculate': cardinality.Cardinality.UNARY_UNARY,
-            'settle': cardinality.Cardinality.UNARY_UNARY,
-            'shuffle': cardinality.Cardinality.UNARY_UNARY,
-        }
-        stub_options = beta_implementations.stub_options(host=host, metadata_transformer=metadata_transformer,
-                                                         request_serializers=request_serializers,
-                                                         response_deserializers=response_deserializers,
-                                                         thread_pool=pool, thread_pool_size=pool_size)
-        return beta_implementations.dynamic_stub(channel, 'majong_rpc.MajongCalculate', cardinalities,
-                                                 options=stub_options)
-except ImportError:
-    pass
 # @@protoc_insertion_point(module_scope)
