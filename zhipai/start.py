@@ -27,6 +27,8 @@ class Douniuniu(object):
         :param ruanniuniu:
         :return:
         """
+        print "获取牌值"
+        print cardlist
         sum_val = 0
         temp = list()
         for c in cardlist:
@@ -91,24 +93,31 @@ class Douniuniu(object):
         if 3 == allocid:
             # 同花顺
             if (gamerules >> 9) % 2 == 1 and Niuniu.sameColor(temp) and Niuniu.isShunziniu(temp):
+                print 17
                 return 17
             # 炸弹牛
             if (gamerules >> 1) % 2 == 1 and Niuniu.isZhadanniu(temp):
+                print 16
                 return 16
             # 五小牛
             if (gamerules >> 2) % 2 == 1 and Niuniu.isWuxiaoniu(temp):
+                print 15
                 return 15
             # 五花牛
             if gamerules % 2 == 1 and Niuniu.isWuhuaniu(temp):
+                print 14
                 return 14
             # 葫芦牛
             if (gamerules >> 5) % 2 == 1 and Niuniu.isHuluniu(temp):
+                print 13
                 return 13
             # 同花牛
             if (gamerules >> 8) % 2 == 1 and Niuniu.sameColor(temp):
+                print 12
                 return 12
             # 顺子牛
             if (gamerules >> 6) % 2 == 1 and Niuniu.isShunziniu(temp):
+                print 11
                 return 11
             val1 = 0
             for i in range(0, 4):
@@ -139,6 +148,7 @@ class Douniuniu(object):
                     val1 = (valuetemp[0] + valuetemp[1]) % 10
                     if 0 == val1:
                         val1 = 10
+            print val1
             return val1
         # 万州牛牛
         if 4 == allocid:
@@ -195,12 +205,12 @@ class Douniuniu(object):
             if 11 == value:
                 return 5
             if 10 == value:
-                return 3 if 1 == doubleRule else 4
+                return 3 if 2 == doubleRule else 4
             if 9 == value:
-                return 2 if 1 == doubleRule else 3
+                return 2 if 2 == doubleRule else 3
             if 8 == value:
                 return 2
-            if 6 < value and 2 == doubleRule:
+            if 6 < value and 1 == doubleRule:
                 return 2
             return 1
         if 4 == allocid:

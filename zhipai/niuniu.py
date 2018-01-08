@@ -28,7 +28,8 @@ class Niuniu(object):
     # 顺子牛
     @staticmethod
     def isShunziniu(cardlist):
-        return cardlist[0] % 100 == (cardlist[1] % 100) - 1 and cardlist[1] % 100 == (cardlist[2] % 100) - 1 and \
+        return (cardlist[0] % 100 == (cardlist[1] % 100) - 1 or cardlist[0] % 100 == (cardlist[1] % 100) - 9) and \
+               cardlist[1] % 100 == (cardlist[2] % 100) - 1 and \
                cardlist[2] % 100 == (cardlist[3] % 100) - 1 and cardlist[3] % 100 == (cardlist[4] % 100) - 1
 
     # 同花牛
@@ -45,7 +46,12 @@ class Niuniu(object):
         shunvalue = 0
         shundoutemp = list()
         for c in cardlist:
-            shundoutemp.append(c)
+            if c % 100 == 14:
+                shundoutemp.append((c - 13) % 100)
+            else:
+                shundoutemp.append(c % 100)
+        shundoutemp = sorted(shundoutemp, cmp=Niuniu.reversed_cmp)
+
         for i in range(0, 3):
             if shundoutemp[i] + 1 in shundoutemp and shundoutemp[i] + 2 in shundoutemp:
                 shundouvtemp = list()
@@ -54,7 +60,7 @@ class Niuniu(object):
                 shundouvtemp.remove(shundoutemp[i] + 1)
                 shundouvtemp.remove(shundoutemp[i] + 2)
                 value1 = 10 if shundouvtemp[0] > 10 else shundouvtemp[0]
-                value2 = 10 if shundouvtemp[0] > 10 else shundouvtemp[0]
+                value2 = 10 if shundouvtemp[1] > 10 else shundouvtemp[1]
                 tempvalue = value1 + value2
                 if tempvalue > 10:
                     tempvalue -= 10
@@ -69,7 +75,7 @@ class Niuniu(object):
             shundouvtemp.remove(12)
             shundouvtemp.remove(13)
             value1 = 10 if shundouvtemp[0] > 10 else shundouvtemp[0]
-            value2 = 10 if shundouvtemp[0] > 10 else shundouvtemp[0]
+            value2 = 10 if shundouvtemp[1] > 10 else shundouvtemp[1]
             tempvalue = value1 + value2
             if tempvalue > 10:
                 tempvalue -= 10

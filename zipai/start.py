@@ -474,10 +474,11 @@ class Daer(object):
         return size
 
     @staticmethod
-    def get_hu(u):
+    def get_hu(u, huCard):
         """
         :胡数
         :param u:
+        :param huCard:
         :return:
         """
         hu = 0
@@ -539,7 +540,11 @@ class Daer(object):
                 hu += 6
             elif chitemp[0] == 102 and chitemp[1] == 107 and chitemp[2] == 110:
                 hu += 9
-        hu += Daer.check_hu(u.handlist, 0)
+        handlist = list()
+        handlist.extend(u.handlist)
+        if 0 != huCard:
+            handlist.append(huCard)
+        hu += Daer.check_hu(handlist, 0)
         return hu
 
 
@@ -561,7 +566,7 @@ class Performance(zipai_pb2_grpc.ZipaiServicer):
         settle_type = set()
         for u in request.userData:
             if u.userId == request.huUserId:
-                hu = Daer.get_hu(u)
+                hu = Daer.get_hu(u, request.huCard)
                 if hu < 27:
                     bang = 2
                 if hu < 21:
@@ -651,7 +656,7 @@ class Performance(zipai_pb2_grpc.ZipaiServicer):
             Daer.chi(u.handlist, calculate)
             calculate.penglist.extend(Daer.peng(u.handlist))
             calculate.zhaolist.extend(Daer.get_san(u.handlist, u.kanlist))
-            calculate.hulist.extend(Daer.hu(u.handlist, u.penglist, Daer.get_hu(u)))
+            calculate.hulist.extend(Daer.hu(u.handlist, u.penglist, Daer.get_hu(u, 0)))
             print "calculate返回penglist", calculate.penglist
             print "calculate返回zhaolist", calculate.zhaolist
             print "calculate返回hulist", calculate.hulist
@@ -693,8 +698,8 @@ class Performance(zipai_pb2_grpc.ZipaiServicer):
             if 0 == user.level:
                 cardSize = request.banker == dealCards.userId and 21 or 20
                 for i in range(0, cardSize):
-                    # index = random.randint(0, len(surplusCards) - 1)
-                    index = random.randint(0, 15)
+                    index = random.randint(0, len(surplusCards) - 1)
+                    # index = random.randint(0, 15)
                     dealCards.cardlist.append(surplusCards[index])
                     surplusCards.remove(surplusCards[index])
                 # if request.banker == dealCards.userId:
@@ -759,7 +764,7 @@ class Performance(zipai_pb2_grpc.ZipaiServicer):
                 u = UserData()
                 u.longlist.extend(si)
                 u.kanlist.extend(san)
-                hu = Daer.get_hu(u)
+                hu = Daer.get_hu(u, 0)
                 dealCards.hulist.extend(Daer.hu(handTemp, san, hu))
                 dealCards.penglist.extend(Daer.peng(handTemp))
                 dealCards.zhaolist.extend(Daer.get_san(handTemp, []))
