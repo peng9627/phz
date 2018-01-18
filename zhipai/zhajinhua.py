@@ -12,28 +12,26 @@ class Zhajinhua(object):
         :param y:
         :return:
         """
-        x1 = 0
-        y1 = 0
-        if x % 100 == 14:
-            x1 = x - 13
-        if y % 100 == 14:
-            y1 = y - 13
-        if x1 % 100 > y1 % 100:
+        if x % 100 > y % 100:
             return 1
-        if x1 % 100 < y1 % 100:
+        if x % 100 < y % 100:
             return -1
-        return x1 > y1
+        if x > y:
+            return 1
+        if x < y:
+            return -1
+        return 0
 
     @staticmethod
-    def compare(cardlist, cards):
+    def compare(cardlist, cards, isTuolaji):
         """
         :炸金花比牌
         :param cardlist:
         :param cards:
         :return:
         """
-        cardlist_type = Zhajinhua.getCardType(cardlist)
-        cards_type = Zhajinhua.getCardType(cards)
+        cardlist_type = Zhajinhua.getCardType(cardlist, isTuolaji)
+        cards_type = Zhajinhua.getCardType(cards, isTuolaji)
         if cardlist_type != cards_type:
             return cardlist_type > cards_type
         cardlist_values = [cardlist[0] % 100, cardlist[1] % 100, cardlist[2] % 100]
@@ -107,22 +105,24 @@ class Zhajinhua(object):
         :param cardlist:
         """
         return cardlist[0] % 100 == cardlist[1] % 100 or cardlist[0] % 100 == cardlist[2] % 100 or (
-            cardlist[1] % 100 == cardlist[2] % 100
+                cardlist[1] % 100 == cardlist[2] % 100
         )
 
     @staticmethod
-    def getCardType(cardlist):
+    def getCardType(cardlist, isTuolaji):
         """
-        :牌型 0单牌 1对子 2顺子 3金花 4顺金 5豹子
+        :金花牌型 0单牌 1对子 2顺子 3金花 4顺金 5豹子
+        :拖拉机牌型 0单牌 1对子 2金花 3顺子 4顺金 5豹子
         :param cardlist:
+        :param isTuolaji:
         """
         if Zhajinhua.isSameThree(cardlist):
             return 5
         if Zhajinhua.isSameColor(cardlist) and Zhajinhua.isStraight(cardlist):
             return 4
-        if Zhajinhua.isSameColor(cardlist):
+        if (not isTuolaji and Zhajinhua.isSameColor(cardlist)) or (isTuolaji and Zhajinhua.isStraight(cardlist)):
             return 3
-        if Zhajinhua.isStraight(cardlist):
+        if (isTuolaji and Zhajinhua.isSameColor(cardlist)) or (not isTuolaji and Zhajinhua.isStraight(cardlist)):
             return 2
         if Zhajinhua.isDouble(cardlist):
             return 1

@@ -21,7 +21,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
     package='majong_rpc',
     syntax='proto3',
     serialized_pb=_b(
-        '\n\rmahjong.proto\x12\nmajong_rpc\"R\n\x08GangData\x12\"\n\x04type\x18\x01 \x01(\x0e\x32\x14.majong_rpc.GangType\x12\x0f\n\x07\x66ighter\x18\x02 \x03(\x05\x12\x11\n\tgangvalue\x18\x03 \x01(\x05\"\x88\x01\n\x11MahjongPlayerData\x12\x11\n\tplayer_id\x18\x01 \x01(\x05\x12\x10\n\x08handlist\x18\x02 \x03(\x05\x12\x0b\n\x03\x63hi\x18\x03 \x03(\x05\x12\x0c\n\x04peng\x18\x04 \x03(\x05\x12\"\n\x04gang\x18\x05 \x03(\x0b\x32\x14.majong_rpc.GangData\x12\x0f\n\x07\x62\x61ojiao\x18\x06 \x01(\x08\"^\n\rCalculateData\x12\x0f\n\x07\x61llocid\x18\x01 \x01(\x05\x12-\n\x06player\x18\x02 \x01(\x0b\x32\x1d.majong_rpc.MahjongPlayerData\x12\r\n\x05rogue\x18\x03 \x01(\x05\"^\n\x0f\x43\x61lculateResult\x12\x0b\n\x03\x63hi\x18\x01 \x03(\x05\x12\x0b\n\x03\x64ui\x18\x02 \x03(\x05\x12\x0b\n\x03san\x18\x03 \x03(\x05\x12\n\n\x02si\x18\x04 \x03(\x05\x12\n\n\x02hu\x18\x05 \x03(\x05\x12\x0c\n\x04zimo\x18\x06 \x03(\x05\"\x95\x02\n\nSettleData\x12\x10\n\x08\x61lloc_id\x18\x01 \x01(\x05\x12-\n\x06player\x18\x02 \x03(\x0b\x32\x1d.majong_rpc.MahjongPlayerData\x12\x0e\n\x06\x62\x61nker\x18\x03 \x01(\x05\x12-\n\x06hudata\x18\x04 \x03(\x0b\x32\x1d.majong_rpc.SettleData.HuData\x12\r\n\x05rogue\x18\x05 \x01(\x05\x12\x10\n\x08\x66\x65ngding\x18\x06 \x01(\x05\x1a\x66\n\x06HuData\x12\x0e\n\x06huUser\x18\x01 \x01(\x05\x12\x11\n\tloseUsers\x18\x02 \x03(\x05\x12)\n\x06settle\x18\x03 \x03(\x0e\x32\x19.majong_rpc.RpcSettleType\x12\x0e\n\x06majong\x18\x04 \x01(\x05\"F\n\x0cSettleResult\x12\x36\n\x10userSettleResule\x18\x01 \x03(\x0b\x32\x1c.majong_rpc.UserSettleResult\"\x89\x01\n\x10UserSettleResult\x12\x0e\n\x06userId\x18\x01 \x01(\x05\x12\x0b\n\x03win\x18\x02 \x01(\x05\x12\x11\n\tgangScore\x18\x03 \x01(\x05\x12\x11\n\tcardScore\x18\x04 \x01(\x05\x12\x32\n\x0esettlePatterns\x18\x05 \x03(\x0e\x32\x1a.majong_rpc.SettlePatterns\":\n\tCheatData\x12\x11\n\tplayer_id\x18\x01 \x01(\x05\x12\x0b\n\x03loc\x18\x02 \x01(\x05\x12\r\n\x05level\x18\x03 \x01(\x05\"F\n\x0bShuffleData\x12\x10\n\x08\x61lloc_id\x18\x01 \x01(\x05\x12%\n\x06\x63heats\x18\x02 \x03(\x0b\x32\x15.majong_rpc.CheatData\"!\n\rShuffleResult\x12\x10\n\x08\x63\x61rdlist\x18\x01 \x03(\x05*+\n\x08GangType\x12\t\n\x05\x42GANG\x10\x00\x12\t\n\x05MGANG\x10\x01\x12\t\n\x05\x41GANG\x10\x02*{\n\rRpcSettleType\x12\t\n\x05ZI_MO\x10\x00\x12\x0c\n\x08GANG_PAO\x10\x01\x12\x0c\n\x08GANG_HUA\x10\x02\x12\x0e\n\nQIANG_GANG\x10\x03\x12\x0b\n\x07QIAN_SI\x10\x04\x12\n\n\x06HOU_SI\x10\x05\x12\x0c\n\x08\x42\x41O_JIAO\x10\x06\x12\x0c\n\x08\x43HA_JIAO\x10\x07*\x87\x02\n\x0eSettlePatterns\x12\x08\n\x04PIHU\x10\x00\x12\t\n\x05\x44\x41\x44UI\x10\x01\x12\x0e\n\nJINGOUDIAO\x10\x02\x12\x0c\n\x08QINGYISE\x10\x03\x12\r\n\tQINGDADUI\x10\x04\x12\r\n\tQINGSANDA\x10\x05\x12\r\n\tQINGQIDUI\x10\x06\x12\x11\n\rQINGLONGQIDUI\x10\x07\x12\x17\n\x13QINGSHUANGLONGQIDUI\x10\x08\x12\x14\n\x10QINGSANLONGQIDUI\x10\t\x12\x12\n\x0eQINGJINGOUDIAO\x10\n\x12\t\n\x05QIDUI\x10\x0b\x12\r\n\tLONGQIDUI\x10\x0c\x12\x13\n\x0fSHUANGLONGQIDUI\x10\r\x12\x10\n\x0cSANLONGQIDUI\x10\x0e\x32\xd7\x01\n\x0fMajongCalculate\x12\x45\n\tcalculate\x12\x19.majong_rpc.CalculateData\x1a\x1b.majong_rpc.CalculateResult\"\x00\x12<\n\x06settle\x12\x16.majong_rpc.SettleData\x1a\x18.majong_rpc.SettleResult\"\x00\x12?\n\x07shuffle\x12\x17.majong_rpc.ShuffleData\x1a\x19.majong_rpc.ShuffleResult\"\x00\x42\x16\n\x12mahjong.mode.protoP\x01\x62\x06proto3')
+        '\n\rmahjong.proto\x12\nmajong_rpc\"\x16\n\x05\x43\x61rds\x12\r\n\x05\x63\x61rds\x18\x01 \x03(\x05\"R\n\x08GangData\x12\"\n\x04type\x18\x01 \x01(\x0e\x32\x14.majong_rpc.GangType\x12\x0f\n\x07\x66ighter\x18\x02 \x03(\x05\x12\x11\n\tgangvalue\x18\x03 \x01(\x05\"\x88\x01\n\x11MahjongPlayerData\x12\x11\n\tplayer_id\x18\x01 \x01(\x05\x12\x10\n\x08handlist\x18\x02 \x03(\x05\x12\x0b\n\x03\x63hi\x18\x03 \x03(\x05\x12\x0c\n\x04peng\x18\x04 \x03(\x05\x12\"\n\x04gang\x18\x05 \x03(\x0b\x32\x14.majong_rpc.GangData\x12\x0f\n\x07\x62\x61ojiao\x18\x06 \x01(\x08\"^\n\rCalculateData\x12\x0f\n\x07\x61llocid\x18\x01 \x01(\x05\x12-\n\x06player\x18\x02 \x01(\x0b\x32\x1d.majong_rpc.MahjongPlayerData\x12\r\n\x05rogue\x18\x03 \x01(\x05\"^\n\x0f\x43\x61lculateResult\x12\x0b\n\x03\x63hi\x18\x01 \x03(\x05\x12\x0b\n\x03\x64ui\x18\x02 \x03(\x05\x12\x0b\n\x03san\x18\x03 \x03(\x05\x12\n\n\x02si\x18\x04 \x03(\x05\x12\n\n\x02hu\x18\x05 \x03(\x05\x12\x0c\n\x04zimo\x18\x06 \x03(\x05\"\xfa\x01\n\nSettleData\x12\x10\n\x08\x61lloc_id\x18\x01 \x01(\x05\x12-\n\x06player\x18\x02 \x03(\x0b\x32\x1d.majong_rpc.MahjongPlayerData\x12\x0e\n\x06\x62\x61nker\x18\x03 \x01(\x05\x12-\n\x06hudata\x18\x04 \x03(\x0b\x32\x1d.majong_rpc.SettleData.HuData\x12\r\n\x05rogue\x18\x05 \x01(\x05\x12\x10\n\x08\x66\x65ngding\x18\x06 \x01(\x05\x1aK\n\x06HuData\x12\x0e\n\x06huUser\x18\x01 \x01(\x05\x12\x11\n\tloseUsers\x18\x02 \x03(\x05\x12\x0e\n\x06settle\x18\x03 \x03(\x05\x12\x0e\n\x06majong\x18\x04 \x01(\x05\"F\n\x0cSettleResult\x12\x36\n\x10userSettleResule\x18\x01 \x03(\x0b\x32\x1c.majong_rpc.UserSettleResult\"m\n\x10UserSettleResult\x12\x0e\n\x06userId\x18\x01 \x01(\x05\x12\x0b\n\x03win\x18\x02 \x01(\x05\x12\x11\n\tgangScore\x18\x03 \x01(\x05\x12\x11\n\tcardScore\x18\x04 \x01(\x05\x12\x16\n\x0esettlePatterns\x18\x05 \x03(\x05\":\n\tCheatData\x12\x11\n\tplayer_id\x18\x01 \x01(\x05\x12\x0b\n\x03loc\x18\x02 \x01(\x05\x12\r\n\x05level\x18\x03 \x01(\x05\"F\n\x0bShuffleData\x12\x10\n\x08\x61lloc_id\x18\x01 \x01(\x05\x12%\n\x06\x63heats\x18\x02 \x03(\x0b\x32\x15.majong_rpc.CheatData\"!\n\rShuffleResult\x12\x10\n\x08\x63\x61rdlist\x18\x01 \x03(\x05*+\n\x08GangType\x12\t\n\x05\x42GANG\x10\x00\x12\t\n\x05MGANG\x10\x01\x12\t\n\x05\x41GANG\x10\x02\x32\x96\x02\n\x0fMajongCalculate\x12\x45\n\tcalculate\x12\x19.majong_rpc.CalculateData\x1a\x1b.majong_rpc.CalculateResult\"\x00\x12<\n\x06settle\x12\x16.majong_rpc.SettleData\x1a\x18.majong_rpc.SettleResult\"\x00\x12?\n\x07shuffle\x12\x17.majong_rpc.ShuffleData\x1a\x19.majong_rpc.ShuffleResult\"\x00\x12=\n\x0b\x62\x61ojiaoGang\x12\x19.majong_rpc.CalculateData\x1a\x11.majong_rpc.Cards\"\x00\x42\x16\n\x12mahjong.mode.protoP\x01\x62\x06proto3')
 )
 
 _GANGTYPE = _descriptor.EnumDescriptor(
@@ -45,160 +45,45 @@ _GANGTYPE = _descriptor.EnumDescriptor(
     ],
     containing_type=None,
     options=None,
-    serialized_start=1103,
-    serialized_end=1146,
+    serialized_start=1071,
+    serialized_end=1114,
 )
 _sym_db.RegisterEnumDescriptor(_GANGTYPE)
 
 GangType = enum_type_wrapper.EnumTypeWrapper(_GANGTYPE)
-_RPCSETTLETYPE = _descriptor.EnumDescriptor(
-    name='RpcSettleType',
-    full_name='majong_rpc.RpcSettleType',
-    filename=None,
-    file=DESCRIPTOR,
-    values=[
-        _descriptor.EnumValueDescriptor(
-            name='ZI_MO', index=0, number=0,
-            options=None,
-            type=None),
-        _descriptor.EnumValueDescriptor(
-            name='GANG_PAO', index=1, number=1,
-            options=None,
-            type=None),
-        _descriptor.EnumValueDescriptor(
-            name='GANG_HUA', index=2, number=2,
-            options=None,
-            type=None),
-        _descriptor.EnumValueDescriptor(
-            name='QIANG_GANG', index=3, number=3,
-            options=None,
-            type=None),
-        _descriptor.EnumValueDescriptor(
-            name='QIAN_SI', index=4, number=4,
-            options=None,
-            type=None),
-        _descriptor.EnumValueDescriptor(
-            name='HOU_SI', index=5, number=5,
-            options=None,
-            type=None),
-        _descriptor.EnumValueDescriptor(
-            name='BAO_JIAO', index=6, number=6,
-            options=None,
-            type=None),
-        _descriptor.EnumValueDescriptor(
-            name='CHA_JIAO', index=7, number=7,
-            options=None,
-            type=None),
-    ],
-    containing_type=None,
-    options=None,
-    serialized_start=1148,
-    serialized_end=1271,
-)
-_sym_db.RegisterEnumDescriptor(_RPCSETTLETYPE)
-
-RpcSettleType = enum_type_wrapper.EnumTypeWrapper(_RPCSETTLETYPE)
-_SETTLEPATTERNS = _descriptor.EnumDescriptor(
-    name='SettlePatterns',
-    full_name='majong_rpc.SettlePatterns',
-    filename=None,
-    file=DESCRIPTOR,
-    values=[
-        _descriptor.EnumValueDescriptor(
-            name='PIHU', index=0, number=0,
-            options=None,
-            type=None),
-        _descriptor.EnumValueDescriptor(
-            name='DADUI', index=1, number=1,
-            options=None,
-            type=None),
-        _descriptor.EnumValueDescriptor(
-            name='JINGOUDIAO', index=2, number=2,
-            options=None,
-            type=None),
-        _descriptor.EnumValueDescriptor(
-            name='QINGYISE', index=3, number=3,
-            options=None,
-            type=None),
-        _descriptor.EnumValueDescriptor(
-            name='QINGDADUI', index=4, number=4,
-            options=None,
-            type=None),
-        _descriptor.EnumValueDescriptor(
-            name='QINGSANDA', index=5, number=5,
-            options=None,
-            type=None),
-        _descriptor.EnumValueDescriptor(
-            name='QINGQIDUI', index=6, number=6,
-            options=None,
-            type=None),
-        _descriptor.EnumValueDescriptor(
-            name='QINGLONGQIDUI', index=7, number=7,
-            options=None,
-            type=None),
-        _descriptor.EnumValueDescriptor(
-            name='QINGSHUANGLONGQIDUI', index=8, number=8,
-            options=None,
-            type=None),
-        _descriptor.EnumValueDescriptor(
-            name='QINGSANLONGQIDUI', index=9, number=9,
-            options=None,
-            type=None),
-        _descriptor.EnumValueDescriptor(
-            name='QINGJINGOUDIAO', index=10, number=10,
-            options=None,
-            type=None),
-        _descriptor.EnumValueDescriptor(
-            name='QIDUI', index=11, number=11,
-            options=None,
-            type=None),
-        _descriptor.EnumValueDescriptor(
-            name='LONGQIDUI', index=12, number=12,
-            options=None,
-            type=None),
-        _descriptor.EnumValueDescriptor(
-            name='SHUANGLONGQIDUI', index=13, number=13,
-            options=None,
-            type=None),
-        _descriptor.EnumValueDescriptor(
-            name='SANLONGQIDUI', index=14, number=14,
-            options=None,
-            type=None),
-    ],
-    containing_type=None,
-    options=None,
-    serialized_start=1274,
-    serialized_end=1537,
-)
-_sym_db.RegisterEnumDescriptor(_SETTLEPATTERNS)
-
-SettlePatterns = enum_type_wrapper.EnumTypeWrapper(_SETTLEPATTERNS)
 BGANG = 0
 MGANG = 1
 AGANG = 2
-ZI_MO = 0
-GANG_PAO = 1
-GANG_HUA = 2
-QIANG_GANG = 3
-QIAN_SI = 4
-HOU_SI = 5
-BAO_JIAO = 6
-CHA_JIAO = 7
-PIHU = 0
-DADUI = 1
-JINGOUDIAO = 2
-QINGYISE = 3
-QINGDADUI = 4
-QINGSANDA = 5
-QINGQIDUI = 6
-QINGLONGQIDUI = 7
-QINGSHUANGLONGQIDUI = 8
-QINGSANLONGQIDUI = 9
-QINGJINGOUDIAO = 10
-QIDUI = 11
-LONGQIDUI = 12
-SHUANGLONGQIDUI = 13
-SANLONGQIDUI = 14
+
+_CARDS = _descriptor.Descriptor(
+    name='Cards',
+    full_name='majong_rpc.Cards',
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name='cards', full_name='majong_rpc.Cards.cards', index=0,
+            number=1, type=5, cpp_type=1, label=3,
+            has_default_value=False, default_value=[],
+            message_type=None, enum_type=None, containing_type=None,
+            is_extension=False, extension_scope=None,
+            options=None, file=DESCRIPTOR),
+    ],
+    extensions=[
+    ],
+    nested_types=[],
+    enum_types=[
+    ],
+    options=None,
+    is_extendable=False,
+    syntax='proto3',
+    extension_ranges=[],
+    oneofs=[
+    ],
+    serialized_start=29,
+    serialized_end=51,
+)
 
 _GANGDATA = _descriptor.Descriptor(
     name='GangData',
@@ -240,8 +125,8 @@ _GANGDATA = _descriptor.Descriptor(
     extension_ranges=[],
     oneofs=[
     ],
-    serialized_start=29,
-    serialized_end=111,
+    serialized_start=53,
+    serialized_end=135,
 )
 
 _MAHJONGPLAYERDATA = _descriptor.Descriptor(
@@ -305,8 +190,8 @@ _MAHJONGPLAYERDATA = _descriptor.Descriptor(
     extension_ranges=[],
     oneofs=[
     ],
-    serialized_start=114,
-    serialized_end=250,
+    serialized_start=138,
+    serialized_end=274,
 )
 
 _CALCULATEDATA = _descriptor.Descriptor(
@@ -349,8 +234,8 @@ _CALCULATEDATA = _descriptor.Descriptor(
     extension_ranges=[],
     oneofs=[
     ],
-    serialized_start=252,
-    serialized_end=346,
+    serialized_start=276,
+    serialized_end=370,
 )
 
 _CALCULATERESULT = _descriptor.Descriptor(
@@ -414,8 +299,8 @@ _CALCULATERESULT = _descriptor.Descriptor(
     extension_ranges=[],
     oneofs=[
     ],
-    serialized_start=348,
-    serialized_end=442,
+    serialized_start=372,
+    serialized_end=466,
 )
 
 _SETTLEDATA_HUDATA = _descriptor.Descriptor(
@@ -441,7 +326,7 @@ _SETTLEDATA_HUDATA = _descriptor.Descriptor(
             options=None, file=DESCRIPTOR),
         _descriptor.FieldDescriptor(
             name='settle', full_name='majong_rpc.SettleData.HuData.settle', index=2,
-            number=3, type=14, cpp_type=8, label=3,
+            number=3, type=5, cpp_type=1, label=3,
             has_default_value=False, default_value=[],
             message_type=None, enum_type=None, containing_type=None,
             is_extension=False, extension_scope=None,
@@ -465,8 +350,8 @@ _SETTLEDATA_HUDATA = _descriptor.Descriptor(
     extension_ranges=[],
     oneofs=[
     ],
-    serialized_start=620,
-    serialized_end=722,
+    serialized_start=644,
+    serialized_end=719,
 )
 
 _SETTLEDATA = _descriptor.Descriptor(
@@ -530,8 +415,8 @@ _SETTLEDATA = _descriptor.Descriptor(
     extension_ranges=[],
     oneofs=[
     ],
-    serialized_start=445,
-    serialized_end=722,
+    serialized_start=469,
+    serialized_end=719,
 )
 
 _SETTLERESULT = _descriptor.Descriptor(
@@ -560,8 +445,8 @@ _SETTLERESULT = _descriptor.Descriptor(
     extension_ranges=[],
     oneofs=[
     ],
-    serialized_start=724,
-    serialized_end=794,
+    serialized_start=721,
+    serialized_end=791,
 )
 
 _USERSETTLERESULT = _descriptor.Descriptor(
@@ -601,7 +486,7 @@ _USERSETTLERESULT = _descriptor.Descriptor(
             options=None, file=DESCRIPTOR),
         _descriptor.FieldDescriptor(
             name='settlePatterns', full_name='majong_rpc.UserSettleResult.settlePatterns', index=4,
-            number=5, type=14, cpp_type=8, label=3,
+            number=5, type=5, cpp_type=1, label=3,
             has_default_value=False, default_value=[],
             message_type=None, enum_type=None, containing_type=None,
             is_extension=False, extension_scope=None,
@@ -618,8 +503,8 @@ _USERSETTLERESULT = _descriptor.Descriptor(
     extension_ranges=[],
     oneofs=[
     ],
-    serialized_start=797,
-    serialized_end=934,
+    serialized_start=793,
+    serialized_end=902,
 )
 
 _CHEATDATA = _descriptor.Descriptor(
@@ -662,8 +547,8 @@ _CHEATDATA = _descriptor.Descriptor(
     extension_ranges=[],
     oneofs=[
     ],
-    serialized_start=936,
-    serialized_end=994,
+    serialized_start=904,
+    serialized_end=962,
 )
 
 _SHUFFLEDATA = _descriptor.Descriptor(
@@ -699,8 +584,8 @@ _SHUFFLEDATA = _descriptor.Descriptor(
     extension_ranges=[],
     oneofs=[
     ],
-    serialized_start=996,
-    serialized_end=1066,
+    serialized_start=964,
+    serialized_end=1034,
 )
 
 _SHUFFLERESULT = _descriptor.Descriptor(
@@ -729,20 +614,19 @@ _SHUFFLERESULT = _descriptor.Descriptor(
     extension_ranges=[],
     oneofs=[
     ],
-    serialized_start=1068,
-    serialized_end=1101,
+    serialized_start=1036,
+    serialized_end=1069,
 )
 
 _GANGDATA.fields_by_name['type'].enum_type = _GANGTYPE
 _MAHJONGPLAYERDATA.fields_by_name['gang'].message_type = _GANGDATA
 _CALCULATEDATA.fields_by_name['player'].message_type = _MAHJONGPLAYERDATA
-_SETTLEDATA_HUDATA.fields_by_name['settle'].enum_type = _RPCSETTLETYPE
 _SETTLEDATA_HUDATA.containing_type = _SETTLEDATA
 _SETTLEDATA.fields_by_name['player'].message_type = _MAHJONGPLAYERDATA
 _SETTLEDATA.fields_by_name['hudata'].message_type = _SETTLEDATA_HUDATA
 _SETTLERESULT.fields_by_name['userSettleResule'].message_type = _USERSETTLERESULT
-_USERSETTLERESULT.fields_by_name['settlePatterns'].enum_type = _SETTLEPATTERNS
 _SHUFFLEDATA.fields_by_name['cheats'].message_type = _CHEATDATA
+DESCRIPTOR.message_types_by_name['Cards'] = _CARDS
 DESCRIPTOR.message_types_by_name['GangData'] = _GANGDATA
 DESCRIPTOR.message_types_by_name['MahjongPlayerData'] = _MAHJONGPLAYERDATA
 DESCRIPTOR.message_types_by_name['CalculateData'] = _CALCULATEDATA
@@ -754,9 +638,14 @@ DESCRIPTOR.message_types_by_name['CheatData'] = _CHEATDATA
 DESCRIPTOR.message_types_by_name['ShuffleData'] = _SHUFFLEDATA
 DESCRIPTOR.message_types_by_name['ShuffleResult'] = _SHUFFLERESULT
 DESCRIPTOR.enum_types_by_name['GangType'] = _GANGTYPE
-DESCRIPTOR.enum_types_by_name['RpcSettleType'] = _RPCSETTLETYPE
-DESCRIPTOR.enum_types_by_name['SettlePatterns'] = _SETTLEPATTERNS
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
+
+Cards = _reflection.GeneratedProtocolMessageType('Cards', (_message.Message,), dict(
+    DESCRIPTOR=_CARDS,
+    __module__='mahjong_pb2'
+    # @@protoc_insertion_point(class_scope:majong_rpc.Cards)
+))
+_sym_db.RegisterMessage(Cards)
 
 GangData = _reflection.GeneratedProtocolMessageType('GangData', (_message.Message,), dict(
     DESCRIPTOR=_GANGDATA,
@@ -845,8 +734,8 @@ _MAJONGCALCULATE = _descriptor.ServiceDescriptor(
     file=DESCRIPTOR,
     index=0,
     options=None,
-    serialized_start=1540,
-    serialized_end=1755,
+    serialized_start=1117,
+    serialized_end=1395,
     methods=[
         _descriptor.MethodDescriptor(
             name='calculate',
@@ -873,6 +762,15 @@ _MAJONGCALCULATE = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_SHUFFLEDATA,
             output_type=_SHUFFLERESULT,
+            options=None,
+        ),
+        _descriptor.MethodDescriptor(
+            name='baojiaoGang',
+            full_name='majong_rpc.MajongCalculate.baojiaoGang',
+            index=3,
+            containing_service=None,
+            input_type=_CALCULATEDATA,
+            output_type=_CARDS,
             options=None,
         ),
     ])

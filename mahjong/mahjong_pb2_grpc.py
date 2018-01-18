@@ -30,6 +30,11 @@ class MajongCalculateStub(object):
             request_serializer=mahjong__pb2.ShuffleData.SerializeToString,
             response_deserializer=mahjong__pb2.ShuffleResult.FromString,
         )
+        self.baojiaoGang = channel.unary_unary(
+            '/majong_rpc.MajongCalculate/baojiaoGang',
+            request_serializer=mahjong__pb2.CalculateData.SerializeToString,
+            response_deserializer=mahjong__pb2.Cards.FromString,
+        )
 
 
 class MajongCalculateServicer(object):
@@ -57,6 +62,13 @@ class MajongCalculateServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def baojiaoGang(self, request, context):
+        # missing associated documentation comment in .proto file
+        pass
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
 
 def add_MajongCalculateServicer_to_server(servicer, server):
     rpc_method_handlers = {
@@ -74,6 +86,11 @@ def add_MajongCalculateServicer_to_server(servicer, server):
             servicer.shuffle,
             request_deserializer=mahjong__pb2.ShuffleData.FromString,
             response_serializer=mahjong__pb2.ShuffleResult.SerializeToString,
+        ),
+        'baojiaoGang': grpc.unary_unary_rpc_method_handler(
+            servicer.baojiaoGang,
+            request_deserializer=mahjong__pb2.CalculateData.FromString,
+            response_serializer=mahjong__pb2.Cards.SerializeToString,
         ),
     }
     generic_handler = grpc.method_handlers_generic_handler(

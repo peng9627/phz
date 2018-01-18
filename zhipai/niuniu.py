@@ -23,7 +23,7 @@ class Niuniu(object):
     @staticmethod
     def isHuluniu(cardlist):
         return ((cardlist[0] % 100 == cardlist[1] % 100 and cardlist[2] % 100 == cardlist[4] % 100) or (
-            cardlist[0] % 100 == cardlist[2] % 100 and cardlist[3] % 100 == cardlist[4] % 100))
+                cardlist[0] % 100 == cardlist[2] % 100 and cardlist[3] % 100 == cardlist[4] % 100))
 
     # 顺子牛
     @staticmethod
@@ -103,4 +103,8 @@ class Niuniu(object):
             return 1
         if x1 % 100 < y1 % 100:
             return -1
-        return x1 > y1
+        if x > y:
+            return 1
+        if x < y:
+            return -1
+        return 0

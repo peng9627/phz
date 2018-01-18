@@ -68,10 +68,10 @@ class MahjongCardType(object):
         if 2 == rogueSize and ((1 == len(dui) and 3 == len(temp)) or 0 == len(temp)):
             return True
         if 3 == rogueSize and ((4 == len(dui) and 8 == len(temp)) or (
-                        2 == len(dui) and 5 == len(temp)) or 2 == len(temp)):
+                2 == len(dui) and 5 == len(temp)) or 2 == len(temp)):
             return True
         if 4 == rogueSize and ((5 == len(dui) and 10 == len(temp)) or (3 == len(dui) and 7 == len(temp)) or (
-                        0 < len(dui) and 4 == len(temp)) or 1 == len(temp)):
+                0 < len(dui) and 4 == len(temp)) or 1 == len(temp)):
             return True
 
         return False
@@ -104,11 +104,6 @@ class MahjongCardType(object):
                     temp1.remove(s)
             siCount += len(san)
             rogueSize -= len(san)
-            dui = MahjongUtils.get_dui(temp1)
-            for i in range(0, 2):
-                for s in dui:
-                    temp1.remove(s)
-            rogueSize -= len(dui)
-            siCount += len(dui)
+            siCount += rogueSize / 2
             return siCount
         return -1

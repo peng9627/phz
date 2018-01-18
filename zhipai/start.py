@@ -1,4 +1,5 @@
 # -*- encoding=utf-8 -*-
+import logging
 import random
 import time
 
@@ -8,6 +9,7 @@ from concurrent import futures
 import zhipai_pb2_grpc
 from niuniu import Niuniu
 from pibanban import Pibanban
+from tuitongzi import Tuitongzi
 from zhajinhua import Zhajinhua
 from zhipai_pb2 import *
 
@@ -27,8 +29,8 @@ class Douniuniu(object):
         :param ruanniuniu:
         :return:
         """
-        print "获取牌值"
-        print cardlist
+        logging.info("获取牌值")
+        logging.info(cardlist)
         sum_val = 0
         temp = list()
         for c in cardlist:
@@ -73,51 +75,60 @@ class Douniuniu(object):
             if ruanniuniu:
                 # 软牛牛
                 shunvalue = Niuniu.getShunDouValue(cardlist)
+                tempval = 0
                 if val < shunvalue:
                     val = shunvalue
-                if temp[0] % 100 == temp[2] % 100 and (valuetemp[3] + valuetemp[4]) % 10 > val:
-                    val = (valuetemp[3] + valuetemp[4]) % 10
-                    if 0 == val:
-                        val = 10
-                if temp[1] % 100 == temp[3] % 100 and (valuetemp[0] + valuetemp[4]) % 10 > val:
-                    val = (valuetemp[0] + valuetemp[4]) % 10
-                    if 0 == val:
-                        val = 10
-                if temp[2] % 100 == temp[4] % 100 and (valuetemp[0] + valuetemp[1]) % 10 > val:
-                    val = (valuetemp[0] + valuetemp[1]) % 10
-                    if 0 == val:
-                        val = 10
-
+                tempval = valuetemp[3] + valuetemp[4]
+                if tempval % 10 == 0:
+                    tempval = 10
+                else:
+                    tempval = tempval % 10
+                if temp[0] % 100 == temp[2] % 100 and tempval > val:
+                    val = tempval
+                tempval = valuetemp[0] + valuetemp[4]
+                if tempval % 10 == 0:
+                    tempval = 10
+                else:
+                    tempval = tempval % 10
+                if temp[1] % 100 == temp[3] % 100 and tempval > val:
+                    val = tempval
+                tempval = valuetemp[0] + valuetemp[1]
+                if tempval % 10 == 0:
+                    tempval = 10
+                else:
+                    tempval = tempval % 10
+                if temp[2] % 100 == temp[4] % 100 and tempval > val:
+                    val = tempval
             return val
         # 荣昌牛牛
         if 3 == allocid:
             # 同花顺
             if (gamerules >> 9) % 2 == 1 and Niuniu.sameColor(temp) and Niuniu.isShunziniu(temp):
-                print 17
+                logging.info(17)
                 return 17
             # 炸弹牛
             if (gamerules >> 1) % 2 == 1 and Niuniu.isZhadanniu(temp):
-                print 16
+                logging.info(16)
                 return 16
             # 五小牛
             if (gamerules >> 2) % 2 == 1 and Niuniu.isWuxiaoniu(temp):
-                print 15
+                logging.info(15)
                 return 15
             # 五花牛
             if gamerules % 2 == 1 and Niuniu.isWuhuaniu(temp):
-                print 14
+                logging.info(14)
                 return 14
             # 葫芦牛
             if (gamerules >> 5) % 2 == 1 and Niuniu.isHuluniu(temp):
-                print 13
+                logging.info(13)
                 return 13
             # 同花牛
             if (gamerules >> 8) % 2 == 1 and Niuniu.sameColor(temp):
-                print 12
+                logging.info(12)
                 return 12
             # 顺子牛
             if (gamerules >> 6) % 2 == 1 and Niuniu.isShunziniu(temp):
-                print 11
+                logging.info(11)
                 return 11
             val1 = 0
             for i in range(0, 4):
@@ -134,21 +145,31 @@ class Douniuniu(object):
             # 软牛牛
             if (gamerules >> 7) % 2 == 1:
                 shunvalue = Niuniu.getShunDouValue(cardlist)
+                tempval = 0
                 if val1 < shunvalue:
                     val1 = shunvalue
-                if temp[0] % 100 == temp[2] % 100 and (valuetemp[3] + valuetemp[4]) % 10 > val1:
-                    val1 = (valuetemp[3] + valuetemp[4]) % 10
-                    if 0 == val1:
-                        val1 = 10
-                if temp[1] % 100 == temp[3] % 100 and (valuetemp[0] + valuetemp[4]) % 10 > val1:
-                    val1 = (valuetemp[0] + valuetemp[4]) % 10
-                    if 0 == val1:
-                        val1 = 10
-                if temp[2] % 100 == temp[4] % 100 and (valuetemp[0] + valuetemp[1]) % 10 > val1:
-                    val1 = (valuetemp[0] + valuetemp[1]) % 10
-                    if 0 == val1:
-                        val1 = 10
-            print val1
+                tempval = valuetemp[3] + valuetemp[4]
+                if tempval % 10 == 0:
+                    tempval = 10
+                else:
+                    tempval = tempval % 10
+                if temp[0] % 100 == temp[2] % 100 and tempval > val1:
+                    val1 = tempval
+                tempval = valuetemp[0] + valuetemp[4]
+                if tempval % 10 == 0:
+                    tempval = 10
+                else:
+                    tempval = tempval % 10
+                if temp[1] % 100 == temp[3] % 100 and tempval > val1:
+                    val1 = tempval
+                tempval = valuetemp[0] + valuetemp[1]
+                if tempval % 10 == 0:
+                    tempval = 10
+                else:
+                    tempval = tempval % 10
+                if temp[2] % 100 == temp[4] % 100 and tempval > val1:
+                    val1 = tempval
+            logging.info(val1)
             return val1
         # 万州牛牛
         if 4 == allocid:
@@ -223,12 +244,27 @@ class Douniuniu(object):
             if 6 < value:
                 return 2
             return 1
+        if 7 == allocid:
+            if 1 == value:
+                return 2
+            if 2 == value:
+                return 3
+            if 3 == value:
+                return 5
+            return 1
 
 
 class Performance(zhipai_pb2_grpc.ZhipaiServicer):
     """
     :实现grpc
     """
+
+    def __init__(self):
+        logging.basicConfig(level=logging.DEBUG,
+                            format='%(asctime)s %(filename)s[line:%(lineno)d] %(levelname)s %(message)s',
+                            datefmt='%a, %d %b %Y %H:%M:%S',
+                            filename='zhipai.log',
+                            filemode='w')
 
     def settle(self, request, context):
         """
@@ -353,13 +389,90 @@ class Performance(zhipai_pb2_grpc.ZhipaiServicer):
         if 5 == request.allocid:
             u1 = request.userSettleData[0]
             u2 = request.userSettleData[1]
-            win = Zhajinhua.compare(u1.cardlist, u2.cardlist)
+            win = Zhajinhua.compare(u1.cardlist, u2.cardlist, False)
             userSettleResult = settle.userSettleResule.add()
             userSettleResult.userId = u1.userId
             userSettleResult.win = win
             userSettleResult = settle.userSettleResule.add()
             userSettleResult.userId = u2.userId
             userSettleResult.win = -win
+        if 6 == request.allocid:
+            u1 = request.userSettleData[0]
+            u2 = request.userSettleData[1]
+            win = Zhajinhua.compare(u1.cardlist, u2.cardlist, True)
+            userSettleResult = settle.userSettleResule.add()
+            userSettleResult.userId = u1.userId
+            userSettleResult.win = win
+            userSettleResult.cardValue = Zhajinhua.getCardType(u1.cardlist, True)
+            userSettleResult = settle.userSettleResule.add()
+            userSettleResult.userId = u2.userId
+            userSettleResult.cardValue = Zhajinhua.getCardType(u2.cardlist, True)
+            userSettleResult.win = -win
+        if 7 == request.allocid:
+            data = NiuniuSettleData()
+            data.ParseFromString(request.extraData)
+            if 0 == request.banker:
+                maxUser = request.userSettleData[0]
+                max_value = Douniuniu.get_card_value(maxUser.cardlist, request.allocid, data.playRule == 2,
+                                                     data.gameRules)
+                for u in request.userSettleData:
+                    user_value = Douniuniu.get_card_value(u.cardlist, request.allocid, data.playRule == 2,
+                                                          data.gameRules)
+                    if user_value > max_value:
+                        max_value = user_value
+                        maxUser = u
+                    if user_value == max_value:
+                        max_array_card = sorted(maxUser.cardlist, cmp=Niuniu.reversed_cmp)
+                        user_array_card = sorted(u.cardlist, cmp=Niuniu.reversed_cmp)
+                        if max_array_card[4] % 100 < user_array_card[4] % 100 \
+                                or (max_array_card[4] % 100 == user_array_card[4] % 100
+                                    and max_array_card[4] < user_array_card[4]):
+                            max_value = user_value
+                            maxUser = u
+
+            for b in request.userSettleData:
+                if b.userId == request.banker:
+                    banker_type = Tuitongzi.getCardType(b.cardlist)
+                    banker_value = Tuitongzi.get_card_value(b.cardlist, banker_type)
+                    banker_multiple = Douniuniu.get_multiple(banker_type, 7, False)
+                    banker_multiple *= b.grab
+                    win = 0
+                    banker_array_cards = sorted(b.cardlist, cmp=Niuniu.reversed_cmp)
+                    for u in request.userSettleData:
+                        if u.userId != request.banker:
+                            userSettleResult = settle.userSettleResule.add()
+                            user_type = Tuitongzi.getCardType(u.cardlist)
+                            user_value = Tuitongzi.get_card_value(u.cardlist, user_type)
+                            userSettleResult.userId = u.userId
+                            userSettleResult.cardValue = user_type
+                            user_multiple = Douniuniu.get_multiple(user_type, request.allocid, False)
+                            user_multiple *= b.grab
+                            if user_type < banker_type or (user_type == banker_type and user_value < banker_type):
+                                userSettleResult.win = -banker_multiple * u.score
+                                win += banker_multiple * u.score
+                            elif user_value > banker_value or (user_type == banker_type and user_value > banker_type):
+                                userSettleResult.win = user_multiple * u.score
+                                win -= user_multiple * u.score
+                            else:
+                                user_array_cards = sorted(u.cardlist, cmp=Niuniu.reversed_cmp)
+                                if banker_array_cards[1] % 10 > user_array_cards[1] % 10:
+                                    userSettleResult.win = -banker_multiple * u.score
+                                    win += banker_multiple * u.score
+                                elif banker_array_cards[1] % 10 < user_array_cards[1] % 10:
+                                    userSettleResult.win = user_multiple * u.score
+                                    win -= user_multiple * u.score
+                                elif banker_array_cards[0] % 10 > user_array_cards[0] % 10:
+                                    userSettleResult.win = -banker_multiple * u.score
+                                    win += banker_multiple * u.score
+                                else:
+                                    userSettleResult.win = user_multiple * u.score
+                                    win -= user_multiple * u.score
+
+                    userSettleResult = settle.userSettleResule.add()
+                    userSettleResult.userId = b.userId
+                    userSettleResult.cardValue = banker_value
+                    userSettleResult.win = win
+                    break
         return settle
 
     def shuffle(self, request, context):
@@ -420,7 +533,33 @@ class Performance(zhipai_pb2_grpc.ZhipaiServicer):
                                  112, 212, 312, 412,
                                  113, 213, 313, 413,
                                  114, 214, 314, 414])
-        random.shuffle(cardlist)
+        if 6 == request.allocid:
+            cardlist.extend([102, 203, 304, 2,
+                             103, 203, 303, 3,
+                             104, 204, 304, 4,
+                             105, 205, 305, 5,
+                             106, 206, 306, 6,
+                             107, 207, 307, 7,
+                             108, 208, 308, 8,
+                             109, 209, 309, 9,
+                             110, 210, 310, 10,
+                             111, 211, 311, 11,
+                             112, 212, 312, 12,
+                             113, 213, 313, 13,
+                             114, 214, 314, 14])
+        if 7 == request.allocid:
+            cardlist.extend([11, 11, 11, 11,
+                             12, 12, 12, 12,
+                             13, 13, 13, 13,
+                             14, 14, 14, 14,
+                             15, 15, 15, 15,
+                             16, 16, 16, 16,
+                             17, 17, 17, 17,
+                             18, 18, 18, 18,
+                             19, 19, 19, 19,
+                             31, 31, 31, 31])
+        if 6 != request.allocid:
+            random.shuffle(cardlist)
         shuffle.cardlist.extend(cardlist)
         return shuffle
 
@@ -430,6 +569,7 @@ def rpc_server():
     :启动grpc服务
     :return:
     """
+    logging.info("started!")
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
     zhipai_pb2_grpc.add_ZhipaiServicer_to_server(Performance(), server)
     server.add_insecure_port('[::]:50001')
@@ -442,7 +582,11 @@ def rpc_server():
 
 
 if __name__ == '__main__':
+    logging.basicConfig(level=logging.DEBUG,
+                        format='%(asctime)s %(filename)s[line:%(lineno)d] %(levelname)s %(message)s',
+                        datefmt='%a, %d %b %Y %H:%M:%S',
+                        filename='zhipai.log',
+                        filemode='w')
     rpc_server()
-    # temp = [111, 104, 211, 304, 411]
-    # temp = sorted(temp, cmp=Niuniu.reversed_cmp)
-    # print Niuniu.isHuluniu(temp)
+    # cardlist = [101, 102, 113, 104, 204]
+    # print Douniuniu.get_card_value(cardlist, 3, False, 0)
