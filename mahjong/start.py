@@ -221,7 +221,18 @@ class Performance(mahjong_pb2_grpc.MajongCalculateServicer):
             user_score = {}
             if 1 < len(cannothu_user):
                 for c in cannothu_user:
-                    hucards = MahjongUtils.get_hu(users[c].handlist, request.rogue)
+                    hasCard = set()
+                    for u in request.player:
+                        if u.player_id != c:
+                            hasCard.union(u.handlist)
+                            for g in u.gang:
+                                if g.type == AGANG:
+                                    hasCard.add(g.gangvalue)
+                    hucards = set()
+                    huTemp = MahjongUtils.get_hu(users[c].handlist, request.rogue)
+                    for h in huTemp:
+                        if h in hasCard:
+                            hucards.add(h)
                     # 有叫
                     if 0 < len(hucards):
                         score = 0

@@ -186,6 +186,34 @@ class Douniuniu(object):
                     if (temp1 % 100 + temp2 % 100) % 10 == sum_val % 10:
                         return 10 if sum_val % 10 == 0 else sum_val % 10
             return 0
+        # 南陵牛牛
+        if 8 == allocid:
+            # 五小牛
+            if (gamerules >> 2) % 2 == 1 and Niuniu.isWuxiaoniu(temp):
+                logging.info(15)
+                return 14
+            # 炸弹牛
+            if (gamerules >> 1) % 2 == 1 and Niuniu.isZhadanniu(temp):
+                logging.info(16)
+                return 13
+            # 葫芦牛
+            if (gamerules >> 5) % 2 == 1 and Niuniu.isHuluniu(temp):
+                logging.info(13)
+                return 12
+            # 五花牛
+            if gamerules % 2 == 1 and Niuniu.isWuhuaniu(temp):
+                logging.info(14)
+                return 11
+            val1 = 0
+            for i in range(0, 4):
+                for j in range(i + 1, 5):
+                    temp1 = 0 if temp[i] % 100 > 10 else temp[i] % 100
+                    temp2 = 0 if temp[j] % 100 > 10 else temp[j] % 100
+                    if (temp1 % 100 + temp2 % 100) % 10 == sum_val % 10:
+                        val1 = (10 if sum_val % 10 == 0 else sum_val % 10)
+                        break
+            logging.info(val1)
+            return val1
 
     @staticmethod
     def get_multiple(value, allocid, doubleRule):
@@ -251,6 +279,24 @@ class Douniuniu(object):
                 return 3
             if 3 == value:
                 return 5
+            return 1
+        if 8 == allocid:
+            if 14 == value:
+                return 8
+            if 13 == value:
+                return 7
+            if 12 == value:
+                return 6
+            if 11 == value:
+                return 5
+            if 10 == value:
+                return 3 if 2 == doubleRule else 4
+            if 9 == value:
+                return 2 if 2 == doubleRule else 3
+            if 8 == value:
+                return 2
+            if 6 < value and 1 == doubleRule:
+                return 2
             return 1
 
 
@@ -321,7 +367,7 @@ class Performance(zhipai_pb2_grpc.ZhipaiServicer):
                     userSettleResult.cardValue = banker_value
                     userSettleResult.win = win
                     break
-        if 2 == request.allocid or 3 == request.allocid or 4 == request.allocid:
+        if 2 == request.allocid or 3 == request.allocid or 4 == request.allocid or 8 == request.allocid:
             data = NiuniuSettleData()
             data.ParseFromString(request.extraData)
             if 0 == request.banker:
@@ -495,7 +541,7 @@ class Performance(zhipai_pb2_grpc.ZhipaiServicer):
                              9, 109, 209, 309,
                              10, 110, 210, 310,
                              14, 114, 214, 314])
-        if 2 == request.allocid or 3 == request.allocid or 4 == request.allocid:
+        if 2 == request.allocid or 3 == request.allocid or 4 == request.allocid or 8 == request.allocid:
             cardlist.extend([102, 202, 302, 402,
                              103, 203, 303, 403,
                              104, 204, 304, 404,

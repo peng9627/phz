@@ -30,6 +30,8 @@ def getCardType(handlist, penglist, gangdata, rogue):
         card_type.append(9)
     if 0 < double7:
         card_type.append(10)
+        if 3 in card_type:
+            card_type.remove(3)
     print "结果"
     print card_type
     return card_type
@@ -61,7 +63,7 @@ def getScore(card_types):
         elif 8 == card_type:
             score += 6
         elif 9 == card_type:
-            score += 4
+            score += 6
         elif 10 == card_type:
             score += 10
         elif 11 == card_type:
