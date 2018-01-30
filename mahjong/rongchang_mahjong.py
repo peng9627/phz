@@ -1,8 +1,9 @@
 # coding=utf-8
+from mahjong_utils import MahjongUtils
 from mahjong_cardtype import MahjongCardType
 
 
-def getCardType(handlist, penglist, gangdata, rogue):
+def getCardType(handlist, penglist, gangdata, rogue, hucard):
     """
     :获取牌型
     :return:
@@ -26,12 +27,11 @@ def getCardType(handlist, penglist, gangdata, rogue):
     if MahjongCardType.same_color(allcard, rogue):
         card_type.append(8)
     double7 = MahjongCardType.double7(handlist, rogue)
-    if 0 == double7:
-        card_type.append(9)
-    if 0 < double7:
-        card_type.append(10)
-        if 3 in card_type:
-            card_type.remove(3)
+    if 0 <= double7:
+        if 4 == MahjongUtils.containSize(handlist, hucard):
+            card_type.append(10)
+        else:
+            card_type.append(9)
     print "结果"
     print card_type
     return card_type

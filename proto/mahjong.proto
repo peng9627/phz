@@ -46,6 +46,7 @@ message MahjongPlayerData {
     repeated int32 peng = 4; //碰过的牌
     repeated GangData gang = 5; //杠过的牌
     bool baojiao = 6; //报叫
+    int32 score = 7;
 }
 
 //申请麻将游戏的逻辑计算
@@ -112,36 +113,47 @@ message ShuffleResult {
 }
 
 //enum SettlePatterns {
-//    PIHU = 0; //屁胡x2
-//    DADUI = 1; //大对x12
-//    JINGOUDIAO = 2; //金勾钓x24
-//    QINGYISE = 3; //清一色x12
-//    QINGDADUI = 4; //清大对x24
-//    QINGSANDA = 5; //清三搭x48
-//    QINGQIDUI = 6; //清七对x24
-//    QINGLONGQIDUI = 7; //清龙七对x48
-//    QINGSHUANGLONGQIDUI = 8; //清双龙七对x96
-//    QINGSANLONGQIDUI = 9; //清三龙七对x96
-//    QINGJINGOUDIAO = 10; //清金勾钓x96
-//    QIDUI = 11; //七对x12
-//    LONGQIDUI = 12; //龙七对x24
-//    SHUANGLONGQIDUI = 13; //双龙七对x48
-//    SANLONGQIDUI = 14; //三龙七对x96
+
+//    ZI_MO = 0; //自摸
+//    GANG_PAO = 1; //杠上炮
+//    GANG_HUA = 2; //杠上花
+//    QIANG_GANG = 3; //抢杠
+//    QIAN_SI = 4; //前四
+//    HOU_SI = 5; //后四
+//    BAO_JIAO = 6; //报叫
+//    CHA_JIAO = 7; //查叫
+//    TIANHU = 8;//天胡
+//    DIHU = 9;//地胡
+//    PIHU = 10; //屁胡x2
+//    DADUI = 11; //大对x12
+//    JINGOUDIAO = 12; //金勾钓x24
+//    QINGYISE = 13; //清一色x12
+//    QINGDADUI = 14; //清大对x24
+//    QINGSANDA = 15; //清三搭x48
+//    QINGQIDUI = 16; //清七对x24
+//    QINGLONGQIDUI = 17; //清龙七对x48
+//    QINGSHUANGLONGQIDUI = 18; //清双龙七对x96
+//    QINGSANLONGQIDUI = 19; //清三龙七对x96
+//    QINGJINGOUDIAO = 20; //清金勾钓x96
+//    QIDUI = 21; //七对x12
+//    LONGQIDUI = 22; //龙七对x24
+//    SHUANGLONGQIDUI = 23; //双龙七对x48
+//    SANLONGQIDUI = 24; //三龙七对x96
 //}
 //enum SettlePatterns {
-//    PINGHU = 0;//1分
-//    ZIMOHU = 1;//+1分
-//    GUI = 2;//+4分
-//    SHOUGUI = 3;//+6分
-//    TIANHU = 4;//+10分
-//    DIHU = 5;//+4分
-//    BAOJIAO = 6;//+6分
-//    DADUI = 7;//+4分
-//    QINGYISE = 8;//+6分
-//    QIDUI = 9;//+4分
-//    LONGQIDUI = 10;//+10分
-//    JINGOUDIAO = 11;//+10分
-//    GANGSHANGPAO = 12;//+4分
-//    GANGSHANGHUA = 13;//+4分
-//    QIANGGANG = 14;//+4分
+//    PINGHU = 0;
+//    ZIMOHU = 1;
+//    GUI = 2;
+//    SHOUGUI = 3;
+//    TIANHU = 4;
+//    DIHU = 5;
+//    BAOJIAO = 6;
+//    DADUI = 7;
+//    QINGYISE = 8;
+//    QIDUI = 9;
+//    LONGQIDUI = 10;
+//    JINGOUDIAO = 11;
+//    GANGSHANGPAO = 12;
+//    GANGSHANGHUA = 13;
+//    QIANGGANG = 14;
 //}

@@ -21,7 +21,7 @@ class Tuitongzi(object):
                 cardvalue += (cardlist[1] % 10) * 2
             else:
                 cardvalue += 1
-            if cardvalue > 20:
+            while cardvalue >= 20:
                 cardvalue -= 20
             return cardvalue
         elif 1 == cardtype:

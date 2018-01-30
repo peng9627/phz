@@ -53,6 +53,7 @@ message UserSettleResult {
 message ShuffleData {
     int32 allocid = 1; //1.劈板板2.斗牛牛
     bytes extraData = 2;
+    repeated CheatData cheatData = 3;
 }
 
 message ShuffleResult {
@@ -61,4 +62,11 @@ message ShuffleResult {
 
 message JinhuaData {
     bool gameType = 1;
+}
+
+//作弊的数据
+message CheatData {
+    int32 player_id = 1;
+    int32 loc = 2;
+    int32 level = 3;
 }

@@ -33,7 +33,7 @@ class Zhajinhua(object):
         cardlist_type = Zhajinhua.getCardType(cardlist, isTuolaji)
         cards_type = Zhajinhua.getCardType(cards, isTuolaji)
         if cardlist_type != cards_type:
-            return cardlist_type > cards_type
+            return 1 if cardlist_type > cards_type else -1
         cardlist_values = [cardlist[0] % 100, cardlist[1] % 100, cardlist[2] % 100]
         cardlist_values = sorted(cardlist_values)
         cards_values = [cards[0] % 100, cards[1] % 100, cards[2] % 100]

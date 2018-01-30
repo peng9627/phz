@@ -185,6 +185,7 @@ class MahjongUtils(object):
             temp.remove(rogue)
             for i in range(0, rogueSize - 1):
                 temp.remove(rogue)
+            temp = sorted(temp)
             if MahjongUtils.check_lug_rogue(temp, rogueSize - 1):
                 hu.add(-1)
                 return hu
