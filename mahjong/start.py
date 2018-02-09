@@ -1,4 +1,6 @@
 # coding=utf-8
+import datetime
+import logging
 import random
 import time
 
@@ -10,6 +12,8 @@ import rongchang_mahjong
 import wanzhou_mahjong
 from mahjong_pb2 import *
 from mahjong_utils import MahjongUtils
+
+thislog = logging
 
 
 class Performance(mahjong_pb2_grpc.MajongCalculateServicer):
@@ -59,6 +63,7 @@ class Performance(mahjong_pb2_grpc.MajongCalculateServicer):
                 cardtype = wanzhou_mahjong.getCardType(tempcard, users[hudata.huUser].peng,
                                                        users[hudata.huUser].gang, request.rogue)
                 user_settles[hudata.huUser].settlePatterns.append(cardtype)
+                user_settles[hudata.huUser].settlePatterns.extend(hudata.settle)
                 score = wanzhou_mahjong.getScore(cardtype)
                 for s in hudata.settle:
                     if s != 0:
@@ -81,32 +86,33 @@ class Performance(mahjong_pb2_grpc.MajongCalculateServicer):
                     else:
                         user_settles[u].cardScore -= score
                         user_settles[hudata.huUser].cardScore += score
-            peijiao_users = list()
-            user_score = {}
-            if 1 < len(cannothu_user):
-                for c in cannothu_user:
-                    hucards = MahjongUtils.get_hu(users[c].handlist, request.rogue)
-                    # 有叫
-                    if 0 < len(hucards):
-                        score = 0
-                        for h in hucards:
-                            tempcard = list()
-                            tempcard.extend(users[c].handlist)
-                            tempcard.append(h)
-                            cardtype = wanzhou_mahjong.getCardType(tempcard, users[c].peng, users[c].gang,
-                                                                   request.rogue)
-                            cardscore = wanzhou_mahjong.getScore(cardtype)
-                            if cardscore > score:
-                                score = cardscore
-                        if score > 0:
-                            user_score.setdefault(c, score)
-                    else:
-                        peijiao_users.append(c)
-                if 0 < len(user_score) and 0 < len(peijiao_users):
-                    for key, value in user_score.items():
-                        for p in peijiao_users:
-                            user_settles[p].cardScore -= value
-                            user_settles[key].cardScore += value
+            if request.peijiao:
+                peijiao_users = list()
+                user_score = {}
+                if 1 < len(cannothu_user):
+                    for c in cannothu_user:
+                        hucards = MahjongUtils.get_hu(users[c].handlist, request.rogue)
+                        # 有叫
+                        if 0 < len(hucards):
+                            score = 0
+                            for h in hucards:
+                                tempcard = list()
+                                tempcard.extend(users[c].handlist)
+                                tempcard.append(h)
+                                cardtype = wanzhou_mahjong.getCardType(tempcard, users[c].peng, users[c].gang,
+                                                                       request.rogue)
+                                cardscore = wanzhou_mahjong.getScore(cardtype)
+                                if cardscore > score:
+                                    score = cardscore
+                            if score > 0:
+                                user_score.setdefault(c, score)
+                        else:
+                            peijiao_users.append(c)
+                    if 0 < len(user_score) and 0 < len(peijiao_users):
+                        for key, value in user_score.items():
+                            for p in peijiao_users:
+                                user_settles[p].cardScore -= value
+                                user_settles[key].cardScore += value
         if 2 == request.alloc_id:
             for user in request.player:
                 for g in user.gang:
@@ -319,10 +325,7 @@ class Performance(mahjong_pb2_grpc.MajongCalculateServicer):
         :param context:
         :return:
         """
-        print '请求计算'
-        print request.player.handlist
         calculate = CalculateResult()
-        print request.player.player_id
         san = MahjongUtils.get_san(request.player.handlist)
         if not request.player.baojiao:
             calculate.dui.extend(MahjongUtils.get_dui(request.player.handlist))
@@ -350,18 +353,13 @@ class Performance(mahjong_pb2_grpc.MajongCalculateServicer):
                 handlist = list()
                 handlist.extend(request.player.handlist)
                 handlist.append(z)
-                if 0 != wanzhou_mahjong.getCardType(handlist, request.player.peng, request.player.gang, request.rogue):
+                if 10 != wanzhou_mahjong.getCardType(handlist, request.player.peng, request.player.gang, request.rogue):
                     hu.append(z)
             calculate.hu.extend(hu)
-            print calculate.hu
         if 2 == request.allocid or 3 == request.allocid:
             zimo = MahjongUtils.get_hu(request.player.handlist, request.rogue)
             calculate.zimo.extend(zimo)
             calculate.hu.extend(zimo)
-        print calculate.dui
-        print calculate.san
-        print calculate.si
-        print calculate.zimo
         return calculate
 
     def shuffle(self, request, context):
@@ -459,17 +457,58 @@ def rpc_server():
     :启动grpc服务
     :return:
     """
+    thislog.info("started!")
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
     mahjong_pb2_grpc.add_MajongCalculateServicer_to_server(Performance(), server)
     server.add_insecure_port('[::]:50002')
     server.start()
     try:
         while True:
-            time.sleep(60 * 60 * 24)
+            time.sleep(60 * 60)
+            thislog.root.handlers = []
+            thislog.basicConfig(level=thislog.DEBUG,
+                                format='%(asctime)s %(filename)s[line:%(lineno)d] %(levelname)s %(message)s',
+                                datefmt=None,
+                                filename='../logs/mahjong-%s.log' % time.strftime("%Y-%m-%d_%H"),
+                                filemode='w')
     except KeyboardInterrupt:
         server.stop(0)
 
 
 if __name__ == '__main__':
+    thislog.basicConfig(level=thislog.DEBUG,
+                        format='%(asctime)s %(filename)s[line:%(lineno)d] %(levelname)s %(message)s',
+                        datefmt=None,
+                        filename='../logs/mahjong-%s.log' % time.strftime("%Y-%m-%d_%H"),
+                        filemode='w')
     rpc_server()
     # print wanzhou_mahjong.getCardType([5, 7, 22, 22, 9, 29, 9, 29, 14, 17, 14, 17, 5, 7], [], [], 21)
+
+
+class Formatter(logging.Formatter):
+    def formatTime(self, record, datefmt=None):
+        """
+        Return the creation time of the specified LogRecord as formatted text.
+
+        This method should be called from format() by a formatter which
+        wants to make use of a formatted time. This method can be overridden
+        in formatters to provide for any specific requirement, but the
+        basic behaviour is as follows: if datefmt (a string) is specified,
+        it is used with time.strftime() to format the creation time of the
+        record. Otherwise, the ISO8601 format is used. The resulting
+        string is returned. This function uses a user-configurable function
+        to convert the creation time to a tuple. By default, time.localtime()
+        is used; to change this for a particular formatter instance, set the
+        'converter' attribute to a function with the same signature as
+        time.localtime() or time.gmtime(). To change it for all formatters,
+        for example if you want all logging times to be shown in GMT,
+        set the 'converter' attribute in the Formatter class.
+        """
+        ct = self.converter(record.created)
+        if datefmt:
+            s = time.strftime(datefmt, ct)
+        else:
+            # t = time.strftime("%Y-%m-%d %H:%M:%S", ct)
+            # s = "%s,%03d" % (t, record.msecs)
+            s = str(datetime.datetime.now())
+        return s

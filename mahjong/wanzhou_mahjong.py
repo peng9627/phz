@@ -7,17 +7,11 @@ def getCardType(handlist, penglist, gangdata, rogue):
     :获取牌型
     :return:
     """
-    print "计算牌型"
-    print handlist
-    print "计算牌型"
-    print penglist
     card_type = 10
     allcard = list()
     allcard.extend(handlist)
     allcard.extend(penglist)
     for gang in gangdata:
-        print "杠"
-        print gang.gangvalue
         allcard.append(gang.gangvalue)
     allcard = sorted(allcard)
     if MahjongCardType.big_double(handlist, rogue):
@@ -39,8 +33,6 @@ def getCardType(handlist, penglist, gangdata, rogue):
             card_type = 20
         else:
             card_type = 13
-    print "结果"
-    print card_type
     return card_type
 
 

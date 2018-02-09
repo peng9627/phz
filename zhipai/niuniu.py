@@ -7,7 +7,7 @@ class Niuniu(object):
     # 五小牛
     @staticmethod
     def isWuxiaoniu(cardlist):
-        return cardlist[4] % 100 < 5 and sum(cardlist) % 100 < 11
+        return cardlist[4] % 100 < 6 and sum(cardlist) % 100 < 11
 
     # 炸弹牛
     @staticmethod

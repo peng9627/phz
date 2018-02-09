@@ -1,6 +1,6 @@
 # coding=utf-8
-from mahjong_utils import MahjongUtils
 from mahjong_cardtype import MahjongCardType
+from mahjong_utils import MahjongUtils
 
 
 def getCardType(handlist, penglist, gangdata, rogue, hucard):
@@ -8,16 +8,11 @@ def getCardType(handlist, penglist, gangdata, rogue, hucard):
     :获取牌型
     :return:
     """
-    print "计算牌型"
-    print handlist
-    print "计算牌型"
-    print penglist
     card_type = list()
     allcard = list()
     allcard.extend(handlist)
     allcard.extend(penglist)
     for gang in gangdata:
-        print gang.gangvalue
         allcard.append(gang.gangvalue)
     allcard = sorted(allcard)
     if MahjongCardType.gold_hook(handlist):
@@ -32,8 +27,6 @@ def getCardType(handlist, penglist, gangdata, rogue, hucard):
             card_type.append(10)
         else:
             card_type.append(9)
-    print "结果"
-    print card_type
     return card_type
 
 

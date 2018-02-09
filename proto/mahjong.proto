@@ -73,6 +73,7 @@ message SettleData {
     repeated HuData hudata = 4;
     int32 rogue = 5;
     int32 fengding = 6; //封顶
+    bool peijiao = 7; //是否赔叫
     message HuData {
         int32 huUser = 1; //胡牌的人
         repeated int32 loseUsers = 2; //输家

@@ -1,0 +1,37 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "paodekuai.mode.proto";
+
+service Paodekuai {
+    //出牌
+    rpc playcard (PlayData) returns (PlayResult) {
+
+    }
+    //洗牌函数
+    rpc shuffle (ShuffleData) returns (ShuffleResult) {
+    }
+}
+
+message PlayData {
+    repeated int32 handcards = 1; //手牌
+    repeated int32 playcards = 2; //出的牌
+    repeated int32 lastcards = 3; //牌
+    int32 cardtype = 4; //牌型
+    int32 count = 5; //人数
+}
+
+message PlayResult {
+    repeated int32 result = 1; //出的牌
+    int32 cardtype = 2; //牌型
+}
+
+message ShuffleData {
+    int32 count = 1; //人数
+}
+
+message ShuffleResult {
+    repeated int32 cardlist = 1; //牌
+    int32 first = 2; //第一家出牌人下标
+    int32 min = 3; //第一手牌
+}
