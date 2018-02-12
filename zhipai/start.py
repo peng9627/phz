@@ -171,12 +171,33 @@ class Douniuniu(object):
             return val1
         # 万州牛牛
         if 4 == allocid:
-            # 五花牛
-            if Niuniu.isWuhuaniu(temp):
-                return 12
+
+            # 九州
+            # 五小牛
+            if Niuniu.isWuxiaoniu(temp):
+                return 16
             # 炸弹牛
             if Niuniu.isZhadanniu(temp):
+                return 15
+            # 葫芦牛
+            if Niuniu.isHuluniu(temp):
+                return 14
+            # 同花牛
+            if Niuniu.sameColor(temp):
+                return 13
+            # 顺子牛
+            if Niuniu.isShunziniu(temp):
+                return 12
+            # 五花牛
+            if Niuniu.isWuhuaniu(temp):
                 return 11
+            # 万州
+            # 五花牛
+            # if Niuniu.isWuhuaniu(temp):
+            #     return 12
+            # # 炸弹牛
+            # if Niuniu.isZhadanniu(temp):
+            #     return 11
             for i in range(0, 4):
                 for j in range(i + 1, 5):
                     temp1 = 0 if temp[i] % 100 > 10 else temp[i] % 100
@@ -261,6 +282,7 @@ class Douniuniu(object):
                 return 2
             return 1
         if 4 == allocid:
+            # 万州
             # if 12 == value:
             #     return 5
             # if 11 == value:
@@ -271,8 +293,28 @@ class Douniuniu(object):
             #     return 2
             # return 1
             # 全民
+            # if 12 == value:
+            #     return 5
+            # if 11 == value:
+            #     return 5
+            # if 10 == value:
+            #     return 4
+            # if 9 == value:
+            #     return 3
+            # if 6 < value:
+            #     return 2
+            # return 1
+            # 九州
+            if 16 == value:
+                return 10
+            if 15 == value:
+                return 9
+            if 14 == value:
+                return 8
+            if 13 == value:
+                return 7
             if 12 == value:
-                return 5
+                return 6
             if 11 == value:
                 return 5
             if 10 == value:
@@ -282,6 +324,7 @@ class Douniuniu(object):
             if 6 < value:
                 return 2
             return 1
+
         if 7 == allocid:
             if 1 == value:
                 return 2
