@@ -153,7 +153,7 @@ class Performance(paodekuai_pb2_grpc.PaodekuaiServicer):
                          112, 212, 312, 412,
                          113, 213, 313, 413,
                          114, 214, 314, 414])
-        #random.shuffle(cardlist)
+        random.shuffle(cardlist)
 
         first = 0
         mincard = 415

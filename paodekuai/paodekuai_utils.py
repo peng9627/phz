@@ -1,6 +1,6 @@
 # coding=utf-8
 from paodekuai.common import PaodekuaiType
-from utils.card_utils import CardUtils
+from card_utils import CardUtils
 
 
 class PaodekuaiUtils(object):
