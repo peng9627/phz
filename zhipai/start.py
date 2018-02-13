@@ -605,7 +605,7 @@ class Performance(zhipai_pb2_grpc.ZhipaiServicer):
                              10, 110, 210, 310,
                              14, 114, 214, 314])
         if 2 == request.allocid or 3 == request.allocid or 4 == request.allocid or 8 == request.allocid:
-            cardlist.extend([204, 304, 404, 402,
+            cardlist.extend([102, 202, 302, 402,
                              103, 203, 303, 403,
                              104, 204, 304, 404,
                              105, 205, 305, 405,
