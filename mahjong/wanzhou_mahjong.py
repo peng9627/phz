@@ -20,7 +20,7 @@ def getCardType(handlist, penglist, gangdata, rogue):
         card_type = 12
     double7 = MahjongCardType.double7(handlist, rogue)
     if -1 != double7:
-        card_type = double7 + 16
+        card_type = double7 + 21
     if MahjongCardType.same_color(allcard, rogue):
         if 11 == card_type:
             if MahjongCardType.san_da(handlist, rogue):
