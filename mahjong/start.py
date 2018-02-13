@@ -12,6 +12,7 @@ import rongchang_mahjong
 import wanzhou_mahjong
 from mahjong_pb2 import *
 from mahjong_utils import MahjongUtils
+from utils.card_utils import CardUtils
 
 thislog = logging
 
@@ -62,9 +63,10 @@ class Performance(mahjong_pb2_grpc.MajongCalculateServicer):
                 tempcard.append(hudata.majong)
                 cardtype = wanzhou_mahjong.getCardType(tempcard, users[hudata.huUser].peng,
                                                        users[hudata.huUser].gang, request.rogue)
-                user_settles[hudata.huUser].settlePatterns.append(cardtype)
-                user_settles[hudata.huUser].settlePatterns.extend(hudata.settle)
                 score = wanzhou_mahjong.getScore(cardtype)
+                if score < 48 and request.rogue != 0 and 21 in CardUtils.get_si(tempcard):
+                    cardtype = 25
+                    score = 48
                 for s in hudata.settle:
                     if s != 0:
                         if 1 == score:
@@ -75,9 +77,12 @@ class Performance(mahjong_pb2_grpc.MajongCalculateServicer):
                     score += 1
                 if score > request.fengding:
                     score = request.fengding
+
+                user_settles[hudata.huUser].settlePatterns.append(cardtype)
+                user_settles[hudata.huUser].settlePatterns.extend(hudata.settle)
                 for u in hudata.loseUsers:
                     if users[u].baojiao:
-                        if 2 == score:
+                        if 2 == score or 1 == score:
                             user_settles[u].cardScore -= 12
                             user_settles[hudata.huUser].cardScore += 12
                         else:
@@ -102,6 +107,9 @@ class Performance(mahjong_pb2_grpc.MajongCalculateServicer):
                                 cardtype = wanzhou_mahjong.getCardType(tempcard, users[c].peng, users[c].gang,
                                                                        request.rogue)
                                 cardscore = wanzhou_mahjong.getScore(cardtype)
+                                if score < 48 and request.rogue != 0 and 21 in CardUtils.get_si(tempcard):
+                                    cardtype = 25
+                                    score = 48
                                 if cardscore > score:
                                     score = cardscore
                             if score > 0:
@@ -150,7 +158,7 @@ class Performance(mahjong_pb2_grpc.MajongCalculateServicer):
                     score = request.fengding
                 for u in hudata.loseUsers:
                     if users[u].baojiao:
-                        if 2 == score:
+                        if 2 == score or 1 == score:
                             user_settles[u].cardScore -= 12
                             user_settles[hudata.huUser].cardScore += 12
                         else:
@@ -316,6 +324,15 @@ class Performance(mahjong_pb2_grpc.MajongCalculateServicer):
                                     for f in g.fighter:
                                         user_settles[f].gangScore -= 3
                             break
+        for sett in settle.userSettleResule:
+            logging.info("userid")
+            logging.info(sett.userId)
+            logging.info("cardScore")
+            logging.info(sett.cardScore)
+            logging.info("gangScore")
+            logging.info(sett.gangScore)
+            logging.info("settlePatterns")
+            logging.info(sett.settlePatterns)
         return settle
 
     def calculate(self, request, context):

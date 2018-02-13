@@ -71,4 +71,6 @@ def getScore(card_type):
         return 48
     if 24 == card_type:
         return 96
+    if 25 == card_type:
+        return 48
     return 1

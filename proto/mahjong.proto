@@ -74,6 +74,7 @@ message SettleData {
     int32 rogue = 5;
     int32 fengding = 6; //封顶
     bool peijiao = 7; //是否赔叫
+    bool yinghu = 8; //硬胡
     message HuData {
         int32 huUser = 1; //胡牌的人
         repeated int32 loseUsers = 2; //输家
@@ -140,6 +141,8 @@ message ShuffleResult {
 //    LONGQIDUI = 22; //龙七对x24
 //    SHUANGLONGQIDUI = 23; //双龙七对x48
 //    SANLONGQIDUI = 24; //三龙七对x96
+//    SIYAOJI = 25; //四个幺鸡x48
+//    YINGHU = 26; //硬胡
 //}
 //enum SettlePatterns {
 //    PINGHU = 0;

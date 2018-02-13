@@ -20,6 +20,35 @@ class Douniuniu(object):
     """
 
     @staticmethod
+    def compare(cardlist, cards, allocid, ruanniuniu, gamerules):
+        """
+        :斗牛牛比牌
+        :param cardlist:
+        :param cards:
+        :param allocid:
+        :param ruanniuniu:
+        :param gamerules:
+        :return:
+        """
+        banker_value = Douniuniu.get_card_value(cardlist, allocid, ruanniuniu, gamerules)
+        banker_array_cards = sorted(cardlist, cmp=Niuniu.reversed_cmp)
+        user_value = Douniuniu.get_card_value(cards, allocid, ruanniuniu, gamerules)
+        if user_value < banker_value:
+            return 1
+        elif user_value > banker_value:
+            return -1
+        else:
+            user_array_cards = sorted(cards, cmp=Niuniu.reversed_cmp)
+            if banker_array_cards[4] % 100 > user_array_cards[4] % 100:
+                return 1
+            elif banker_array_cards[4] % 100 < user_array_cards[4] % 100:
+                return -1
+            elif banker_array_cards[4] > user_array_cards[4]:
+                return 1
+            else:
+                return -1
+
+    @staticmethod
     def get_card_value(cardlist, allocid, ruanniuniu, gamerules):
         """
         :获取牌值
@@ -576,7 +605,7 @@ class Performance(zhipai_pb2_grpc.ZhipaiServicer):
                              10, 110, 210, 310,
                              14, 114, 214, 314])
         if 2 == request.allocid or 3 == request.allocid or 4 == request.allocid or 8 == request.allocid:
-            cardlist.extend([102, 202, 302, 402,
+            cardlist.extend([204, 304, 404, 402,
                              103, 203, 303, 403,
                              104, 204, 304, 404,
                              105, 205, 305, 405,
@@ -589,6 +618,74 @@ class Performance(zhipai_pb2_grpc.ZhipaiServicer):
                              112, 212, 312, 412,
                              113, 213, 313, 413,
                              114, 214, 314, 414])
+            random.shuffle(cardlist)
+            cheat_index = 0
+            cheat_probability = 0
+            for c in range(0, len(request.cheatData)):
+                if request.cheatData[c].level != 0:
+                    cheat_index = c
+                    cheat_probability = request.cheatData[c].level
+                    break
+            if 0 != cheat_probability:
+                data = NiuniuSettleData()
+                data.ParseFromString(request.extraData)
+                if random.random() * 100 < cheat_probability:
+                    max_card = [cardlist[cheat_index * 5], cardlist[cheat_index * 5 + 1], cardlist[cheat_index * 5 + 2],
+                                cardlist[cheat_index * 5 + 3], cardlist[cheat_index * 5 + 4]]
+                    for i in range(0, len(request.cheatData)):
+                        if i != cheat_index:
+                            if -1 == Douniuniu.compare(max_card,
+                                                       [cardlist[i * 5],
+                                                        cardlist[i * 5 + 1],
+                                                        cardlist[i * 5 + 2],
+                                                        cardlist[i * 5 + 3],
+                                                        cardlist[i * 5 + 4]],
+                                                       request.allocid, data.playRule == 2, data.gameRules):
+                                cardlist[cheat_index * 5] = cardlist[i * 5]
+                                cardlist[cheat_index * 5 + 1] = cardlist[i * 5 + 1]
+                                cardlist[cheat_index * 5 + 2] = cardlist[i * 5 + 2]
+                                cardlist[cheat_index * 5 + 3] = cardlist[i * 5 + 3]
+                                cardlist[cheat_index * 5 + 4] = cardlist[i * 5 + 4]
+
+                                cardlist[i * 5] = max_card[0]
+                                cardlist[i * 5 + 1] = max_card[1]
+                                cardlist[i * 5 + 2] = max_card[2]
+                                cardlist[i * 5 + 3] = max_card[3]
+                                cardlist[i * 5 + 4] = max_card[4]
+                                max_card = [cardlist[cheat_index * 5],
+                                            cardlist[cheat_index * 5 + 1],
+                                            cardlist[cheat_index * 5 + 2],
+                                            cardlist[cheat_index * 5 + 3],
+                                            cardlist[cheat_index * 5 + 4]]
+                else:
+                    max_card = [cardlist[cheat_index * 5], cardlist[cheat_index * 5 + 1], cardlist[cheat_index * 5 + 2],
+                                cardlist[cheat_index * 5 + 3], cardlist[cheat_index * 5 + 4]]
+                    for i in range(0, len(request.cheatData)):
+                        if i != cheat_index:
+                            if 1 == Douniuniu.compare(max_card,
+                                                      [cardlist[i * 5],
+                                                       cardlist[i * 5 + 1],
+                                                       cardlist[i * 5 + 2],
+                                                       cardlist[i * 5 + 3],
+                                                       cardlist[i * 5 + 4]],
+                                                      request.allocid, data.playRule == 2, data.gameRules):
+                                cardlist[cheat_index * 5] = cardlist[i * 5]
+                                cardlist[cheat_index * 5 + 1] = cardlist[i * 5 + 1]
+                                cardlist[cheat_index * 5 + 2] = cardlist[i * 5 + 2]
+                                cardlist[cheat_index * 5 + 3] = cardlist[i * 5 + 3]
+                                cardlist[cheat_index * 5 + 4] = cardlist[i * 5 + 4]
+
+                                cardlist[i * 5] = max_card[0]
+                                cardlist[i * 5 + 1] = max_card[1]
+                                cardlist[i * 5 + 2] = max_card[2]
+                                cardlist[i * 5 + 3] = max_card[3]
+                                cardlist[i * 5 + 4] = max_card[4]
+                                max_card = [cardlist[cheat_index * 5],
+                                            cardlist[cheat_index * 5 + 1],
+                                            cardlist[cheat_index * 5 + 2],
+                                            cardlist[cheat_index * 5 + 3],
+                                            cardlist[cheat_index * 5 + 4]]
+
         if 5 == request.allocid:
             jinhuaData = JinhuaData()
             jinhuaData.ParseFromString(request.extraData)
@@ -711,7 +808,7 @@ class Performance(zhipai_pb2_grpc.ZhipaiServicer):
                                 max_card = [cardlist[cheat_index * 3], cardlist[cheat_index * 3 + 1],
                                             cardlist[cheat_index * 3 + 2]]
         if 7 == request.allocid:
-            cardlist.extend([31, 31, 31, 11,
+            cardlist.extend([11, 11, 11, 11,
                              12, 12, 12, 12,
                              13, 13, 13, 13,
                              14, 14, 14, 14,
@@ -721,7 +818,7 @@ class Performance(zhipai_pb2_grpc.ZhipaiServicer):
                              18, 18, 18, 18,
                              19, 19, 19, 19,
                              31, 31, 31, 31])
-        if 6 != request.allocid and 5 != request.allocid:
+        if 7 == request.allocid or 1 == request.allocid:
             random.shuffle(cardlist)
         shuffle.cardlist.extend(cardlist)
         return shuffle
