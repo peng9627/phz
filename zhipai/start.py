@@ -208,15 +208,15 @@ class Douniuniu(object):
             # 炸弹牛
             if Niuniu.isZhadanniu(temp):
                 return 15
-            # 葫芦牛
-            if Niuniu.isHuluniu(temp):
-                return 14
-            # 同花牛
-            if Niuniu.sameColor(temp):
-                return 13
-            # 顺子牛
-            if Niuniu.isShunziniu(temp):
-                return 12
+            # # 葫芦牛
+            # if Niuniu.isHuluniu(temp):
+            #     return 14
+            # # 同花牛
+            # if Niuniu.sameColor(temp):
+            #     return 13
+            # # 顺子牛
+            # if Niuniu.isShunziniu(temp):
+            #     return 12
             # 五花牛
             if Niuniu.isWuhuaniu(temp):
                 return 11
@@ -335,15 +335,15 @@ class Douniuniu(object):
             # return 1
             # 九州
             if 16 == value:
-                return 10
+                return 5
             if 15 == value:
-                return 9
+                return 5
             if 14 == value:
-                return 8
+                return 5
             if 13 == value:
-                return 7
+                return 5
             if 12 == value:
-                return 6
+                return 5
             if 11 == value:
                 return 5
             if 10 == value:
