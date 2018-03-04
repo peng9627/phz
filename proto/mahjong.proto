@@ -114,6 +114,7 @@ message ShuffleResult {
     repeated int32 cardlist = 1; //牌
 }
 
+//万州麻将
 //enum SettlePatterns {
 
 //    ZI_MO = 0; //自摸
@@ -144,6 +145,7 @@ message ShuffleResult {
 //    SIYAOJI = 25; //四个幺鸡x48
 //    YINGHU = 26; //硬胡
 //}
+//荣昌麻将
 //enum SettlePatterns {
 //    PINGHU = 0;
 //    ZIMOHU = 1;
@@ -161,6 +163,7 @@ message ShuffleResult {
 //    GANGSHANGHUA = 13;
 //    QIANGGANG = 14;
 //}
+//成麻
 //enum SettlePatterns {
 //    ZI_MO = 0; //自摸
 //    GANG_PAO = 1; //杠上炮
@@ -173,4 +176,18 @@ message ShuffleResult {
 //    JINGOUDIAO = 8; //金勾钓
 //    QINGYISE = 9; //清一色
 //    QIDUI = 10; //七对
+//}
+//陕西麻将
+//enum SettlePatterns {
+//    ZI_MO = 0; //自摸
+//    GANG_PAO = 1; //杠上炮
+//    GANG_HUA = 2; //杠上花
+//    QIANG_GANG = 3; //抢杠
+//    TIANHU = 4;//天胡
+//    DIHU = 5;//地胡
+//    PIHU = 6; //屁胡
+//    QINGYISE = 7; //清一色
+//    QIDUI = 8; //七对
+//    HU_258 = 9; //胡258
+//    JIANG_258 = 10; //将258
 //}

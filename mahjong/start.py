@@ -107,9 +107,13 @@ class Performance(mahjong_pb2_grpc.MajongCalculateServicer):
                                 cardtype = wanzhou_mahjong.getCardType(tempcard, users[c].peng, users[c].gang,
                                                                        request.rogue)
                                 cardscore = wanzhou_mahjong.getScore(cardtype)
-                                if score < 48 and request.rogue != 0 and 21 in CardUtils.get_si(tempcard):
+                                if cardscore < 48 and request.rogue != 0 and 21 in CardUtils.get_si(tempcard):
                                     cardtype = 25
-                                    score = 48
+                                    cardscore = 48
+                                if 1 == cardscore:
+                                    cardscore = 12
+                                else:
+                                    cardscore *= 2
                                 if cardscore > score:
                                     score = cardscore
                             if score > 0:
@@ -499,7 +503,7 @@ if __name__ == '__main__':
                         filename='../logs/mahjong-%s.log' % time.strftime("%Y-%m-%d_%H"),
                         filemode='w')
     rpc_server()
-    # print wanzhou_mahjong.getCardType([5, 7, 22, 22, 9, 29, 9, 29, 14, 17, 14, 17, 5, 7], [], [], 21)
+    # print wanzhou_mahjong.getCardType([1, 1, 9, 9, 11, 15, 15, 16, 18, 18, 21, 21, 25, 25], [], [], 21)
 
 
 class Formatter(logging.Formatter):

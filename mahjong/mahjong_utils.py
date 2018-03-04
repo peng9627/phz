@@ -209,7 +209,7 @@ class MahjongUtils(object):
                     if MahjongUtils.check_lug_rogue(hutemp, rogueSize):
                         hu.add(p)
                         break
-                else:
+                elif rogueSize > 0:
                     hutemp = list()
                     hutemp.extend(temp)
                     hutemp.remove(s)

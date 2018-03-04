@@ -106,6 +106,11 @@ class MahjongCardType(object):
                     temp1.remove(s)
             siCount += len(san)
             rogueSize -= len(san)
+            dui = MahjongUtils.get_dui(temp1)
+            for i in range(0, 2):
+                for d in dui:
+                    temp1.remove(d)
+            rogueSize -= len(temp1)
             siCount += rogueSize / 2
             return siCount
         return -1

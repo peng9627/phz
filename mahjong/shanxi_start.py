@@ -8,7 +8,7 @@ import grpc
 from concurrent import futures
 
 import mahjong_pb2_grpc
-from mahjong import chengdu_mahjong
+from mahjong import shanxi_mahjong
 from mahjong_pb2 import *
 from mahjong_utils import MahjongUtils
 
@@ -45,9 +45,9 @@ class Performance(mahjong_pb2_grpc.MajongCalculateServicer):
                     for f in g.fighter:
                         user_settles[f].gangScore -= 1
                 if g.type == MGANG:
-                    user_settles[user.player_id].gangScore += 2 * len(g.fighter)
+                    user_settles[user.player_id].gangScore += len(g.fighter)
                     for f in g.fighter:
-                        user_settles[f].gangScore -= 2
+                        user_settles[f].gangScore -= 1
                 if g.type == AGANG:
                     user_settles[user.player_id].gangScore += 2 * len(g.fighter)
                     for f in g.fighter:
@@ -61,55 +61,14 @@ class Performance(mahjong_pb2_grpc.MajongCalculateServicer):
             tempcard.extend(users[hudata.huUser].handlist)
             tempcard.append(hudata.majong)
             # 获取牌型
-            ct = chengdu_mahjong.getCardType(tempcard, users[hudata.huUser].peng, users[hudata.huUser].gang, 0)
+            ct = shanxi_mahjong.getCardType(tempcard, users[hudata.huUser].peng, users[hudata.huUser].gang,
+                                            request.rogue, hudata.majong)
             ct.extend(hudata.settle)
             user_settles[hudata.huUser].settlePatterns.extend(ct)
-            score = chengdu_mahjong.getScore(ct)
-            # 带跟翻倍
-            for i in range(0, len(MahjongUtils.get_si(tempcard))):
-                score *= 2
+            score = shanxi_mahjong.getScore(ct)
             for u in hudata.loseUsers:
-                if users[u].baojiao:
-                    if 1 == score:
-                        user_settles[u].cardScore -= 6
-                        user_settles[hudata.huUser].cardScore += 6
-                    else:
-                        user_settles[u].cardScore -= score + 6
-                        user_settles[hudata.huUser].cardScore += score + 6
-                else:
-                    user_settles[u].cardScore -= score
-                    user_settles[hudata.huUser].cardScore += score
-        if request.peijiao:
-            peijiao_users = list()
-            user_score = {}
-            if 1 < len(cannothu_user):
-                for c in cannothu_user:
-                    huTemp = MahjongUtils.get_hu(users[c].handlist, request.rogue)
-                    # 有叫
-                    if 0 < len(huTemp):
-                        score = 0
-                        for h in huTemp:
-                            tempcard = list()
-                            tempcard.extend(users[c].handlist)
-                            tempcard.append(h)
-                            # 获取牌型
-                            cardtype = chengdu_mahjong.getCardType(tempcard, users[c].peng, users[c].gang,
-                                                                   request.rogue)
-                            cardscore = chengdu_mahjong.getScore(cardtype)
-                            # 带跟翻倍
-                            for i in range(0, len(MahjongUtils.get_si(tempcard))):
-                                cardscore *= 2
-                            if cardscore > score:
-                                score = cardscore
-                        if score > 0:
-                            user_score.setdefault(c, score)
-                    else:
-                        peijiao_users.append(c)
-                if 0 < len(user_score) and 0 < len(peijiao_users):
-                    for key, value in user_score.items():
-                        for p in peijiao_users:
-                            user_settles[p].cardScore -= value
-                            user_settles[key].cardScore += value
+                user_settles[u].cardScore -= score
+                user_settles[hudata.huUser].cardScore += score
         for sett in settle.userSettleResule:
             logging.info("userid")
             logging.info(sett.userId)
