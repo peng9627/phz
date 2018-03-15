@@ -1,4 +1,5 @@
 # -*- encoding=utf-8 -*-
+import datetime
 import logging
 import random
 import time
@@ -12,6 +13,8 @@ from pibanban import Pibanban
 from tuitongzi import Tuitongzi
 from zhajinhua import Zhajinhua
 from zhipai_pb2 import *
+
+thislog = logging
 
 
 class Douniuniu(object):
@@ -322,26 +325,6 @@ class Douniuniu(object):
             #     return 2
             # return 1
             # 全民
-            # if 12 == value:
-            #     return 5
-            # if 11 == value:
-            #     return 5
-            # if 10 == value:
-            #     return 4
-            # if 9 == value:
-            #     return 3
-            # if 6 < value:
-            #     return 2
-            # return 1
-            # 九州
-            if 16 == value:
-                return 5
-            if 15 == value:
-                return 5
-            if 14 == value:
-                return 5
-            if 13 == value:
-                return 5
             if 12 == value:
                 return 5
             if 11 == value:
@@ -353,6 +336,26 @@ class Douniuniu(object):
             if 6 < value:
                 return 2
             return 1
+            # 九州
+            # if 16 == value:
+            #     return 5
+            # if 15 == value:
+            #     return 5
+            # if 14 == value:
+            #     return 5
+            # if 13 == value:
+            #     return 5
+            # if 12 == value:
+            #     return 5
+            # if 11 == value:
+            #     return 5
+            # if 10 == value:
+            #     return 4
+            # if 9 == value:
+            #     return 3
+            # if 6 < value:
+            #     return 2
+            # return 1
 
         if 7 == allocid:
             if 1 == value:
@@ -836,17 +839,52 @@ def rpc_server():
     server.start()
     try:
         while True:
-            time.sleep(60 * 60 * 24)
+            time.sleep(60 * 60)
+            thislog.root.handlers = []
+            thislog.basicConfig(level=thislog.DEBUG,
+                                format='%(asctime)s %(filename)s[line:%(lineno)d] %(levelname)s %(message)s',
+                                datefmt=None,
+                                filename='../logs/zhipai-%s.log' % time.strftime("%Y-%m-%d_%H"),
+                                filemode='w')
     except KeyboardInterrupt:
         server.stop(0)
 
 
 if __name__ == '__main__':
-    logging.basicConfig(level=logging.DEBUG,
+    thislog.basicConfig(level=thislog.DEBUG,
                         format='%(asctime)s %(filename)s[line:%(lineno)d] %(levelname)s %(message)s',
-                        datefmt='%a, %d %b %Y %H:%M:%S',
-                        filename='zhipai.log',
+                        datefmt=None,
+                        filename='../logs/zhipai-%s.log' % time.strftime("%Y-%m-%d_%H"),
                         filemode='w')
     rpc_server()
     # cardlist = [101, 102, 113, 104, 204]
     # print Douniuniu.get_card_value(cardlist, 3, False, 0)
+
+
+class Formatter(logging.Formatter):
+    def formatTime(self, record, datefmt=None):
+        """
+        Return the creation time of the specified LogRecord as formatted text.
+
+        This method should be called from format() by a formatter which
+        wants to make use of a formatted time. This method can be overridden
+        in formatters to provide for any specific requirement, but the
+        basic behaviour is as follows: if datefmt (a string) is specified,
+        it is used with time.strftime() to format the creation time of the
+        record. Otherwise, the ISO8601 format is used. The resulting
+        string is returned. This function uses a user-configurable function
+        to convert the creation time to a tuple. By default, time.localtime()
+        is used; to change this for a particular formatter instance, set the
+        'converter' attribute to a function with the same signature as
+        time.localtime() or time.gmtime(). To change it for all formatters,
+        for example if you want all logging times to be shown in GMT,
+        set the 'converter' attribute in the Formatter class.
+        """
+        ct = self.converter(record.created)
+        if datefmt:
+            s = time.strftime(datefmt, ct)
+        else:
+            # t = time.strftime("%Y-%m-%d %H:%M:%S", ct)
+            # s = "%s,%03d" % (t, record.msecs)
+            s = str(datetime.datetime.now())
+        return s

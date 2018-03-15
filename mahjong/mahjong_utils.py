@@ -137,33 +137,33 @@ class MahjongUtils(object):
             tempSame.remove(md_val)
             if MahjongUtils.check_lug_rogue(tempSame, rogue_count):
                 return True
-        elif md_val + 1 in temp and md_val + 2 in temp:
+        if md_val + 1 in temp and md_val + 2 in temp:
             tempShun = list()
             tempShun.extend(temp)
             tempShun.remove(md_val + 1)
             tempShun.remove(md_val + 2)
             if MahjongUtils.check_lug_rogue(tempShun, rogue_count):
                 return True
-        elif rogue_count > 0:
+        if rogue_count > 0:
             if 1 == MahjongUtils.containSize(temp, md_val):
                 tempSame = list()
                 tempSame.extend(temp)
                 tempSame.remove(md_val)
                 if MahjongUtils.check_lug_rogue(tempSame, rogue_count - 1):
                     return True
-            elif md_val + 1 in temp:
+            if md_val + 1 in temp:
                 tempSame = list()
                 tempSame.extend(temp)
                 tempSame.remove(md_val + 1)
                 if MahjongUtils.check_lug_rogue(tempSame, rogue_count - 1):
                     return True
-            elif md_val + 2 in temp and md_val % 10 != 9:
+            if md_val + 2 in temp and md_val % 10 != 9:
                 tempSame = list()
                 tempSame.extend(temp)
                 tempSame.remove(md_val + 2)
                 if MahjongUtils.check_lug_rogue(tempSame, rogue_count - 1):
                     return True
-            elif 1 < rogue_count:
+            if 1 < rogue_count:
                 if MahjongUtils.check_lug_rogue(temp, rogue_count - 2):
                     return True
         return False
@@ -209,7 +209,7 @@ class MahjongUtils(object):
                     if MahjongUtils.check_lug_rogue(hutemp, rogueSize):
                         hu.add(p)
                         break
-                elif rogueSize > 0:
+                if rogueSize > 0:
                     hutemp = list()
                     hutemp.extend(temp)
                     hutemp.remove(s)

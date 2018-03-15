@@ -2,7 +2,9 @@
 import datetime
 import logging
 import random
+import re
 import time
+from logging.handlers import TimedRotatingFileHandler
 
 import grpc
 from concurrent import futures
@@ -12,7 +14,8 @@ from mahjong import shanxi_mahjong
 from mahjong_pb2 import *
 from mahjong_utils import MahjongUtils
 
-thislog = logging
+logging.basicConfig(level=logging.INFO)
+thislog = logging.getLogger()
 
 
 class Performance(mahjong_pb2_grpc.MajongCalculateServicer):
@@ -89,24 +92,9 @@ class Performance(mahjong_pb2_grpc.MajongCalculateServicer):
         """
         calculate = CalculateResult()
         san = MahjongUtils.get_san(request.player.handlist)
-        if not request.player.baojiao:
-            calculate.dui.extend(MahjongUtils.get_dui(request.player.handlist))
-            calculate.san.extend(san)
-            calculate.si.extend(MahjongUtils.get_si(request.player.handlist))
-        else:
-            gang = list()
-            for s in san:
-                temp = list()
-                temp.extend(request.player.handlist)
-                temp.remove(s)
-                temp.remove(s)
-                temp.remove(s)
-                if 0 < len(MahjongUtils.get_hu(temp, 0)):
-                    gang.append(s)
-                temp.append(s)
-                temp.append(s)
-                temp.append(s)
-            calculate.san.extend(gang)
+        calculate.dui.extend(MahjongUtils.get_dui(request.player.handlist))
+        calculate.san.extend(san)
+        calculate.si.extend(MahjongUtils.get_si(request.player.handlist))
         zimo = MahjongUtils.get_hu(request.player.handlist, request.rogue)
         calculate.zimo.extend(zimo)
         calculate.hu.extend(zimo)
@@ -147,7 +135,8 @@ class Performance(mahjong_pb2_grpc.MajongCalculateServicer):
                          26, 26, 26, 26,
                          27, 27, 27, 27,
                          28, 28, 28, 28,
-                         29, 29, 29, 29])
+                         29, 29, 29, 29,
+                         31, 31, 31, 31])
         random.shuffle(cardlist)
         shuffle.cardlist.extend(cardlist)
         return shuffle
@@ -161,28 +150,29 @@ def rpc_server():
     thislog.info("started!")
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
     mahjong_pb2_grpc.add_MajongCalculateServicer_to_server(Performance(), server)
-    server.add_insecure_port('[::]:50002')
+    server.add_insecure_port('[::]:50006')
     server.start()
     try:
         while True:
-            time.sleep(60 * 60)
-            thislog.root.handlers = []
-            thislog.basicConfig(level=thislog.DEBUG,
-                                format='%(asctime)s %(filename)s[line:%(lineno)d] %(levelname)s %(message)s',
-                                datefmt=None,
-                                filename='../logs/chengdu_mahjong-%s.log' % time.strftime("%Y-%m-%d_%H"),
-                                filemode='w')
+            time.sleep(60 * 60 * 24)
     except KeyboardInterrupt:
         server.stop(0)
 
 
 if __name__ == '__main__':
-    thislog.basicConfig(level=thislog.DEBUG,
-                        format='%(asctime)s %(filename)s[line:%(lineno)d] %(levelname)s %(message)s',
-                        datefmt=None,
-                        filename='../logs/chengdu_mahjong-%s.log' % time.strftime("%Y-%m-%d_%H"),
-                        filemode='w')
+    log_fmt = '%(asctime)s %(filename)s[line:%(lineno)d] %(levelname)s %(message)s'
+    formatter = logging.Formatter(log_fmt)
+    log_file_handler = TimedRotatingFileHandler(
+        filename='../logs/shanxi_mahjong/shanxi_mahjong-%s.log' % time.strftime("%Y-%m-%d"), when="H", interval=1,
+        backupCount=7)
+    log_file_handler.suffix = "%Y-%m-%d_%H-%M.log"
+    log_file_handler.extMatch = re.compile(r"^\d{4}-\d{2}-\d{2}_\d{2}-\d{2}.log$")
+    log_file_handler.setFormatter(formatter)
+    log_file_handler.setLevel(logging.DEBUG)
+    thislog.addHandler(log_file_handler)
+
     rpc_server()
+    thislog.removeHandler(log_file_handler)()
     # print wanzhou_mahjong.getCardType([5, 7, 22, 22, 9, 29, 9, 29, 14, 17, 14, 17, 5, 7], [], [], 21)
 
 

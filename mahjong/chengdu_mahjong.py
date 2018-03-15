@@ -52,6 +52,4 @@ def getScore(card_types):
             score *= 4
         if 10 == card_type:
             score *= 4
-    if 0 in score:
-        score += 1
     return score

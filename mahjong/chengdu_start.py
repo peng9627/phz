@@ -27,6 +27,10 @@ class Performance(mahjong_pb2_grpc.MajongCalculateServicer):
         :param context:
         :return:
         """
+        logging.info("封顶")
+        logging.info(request.fengding)
+        logging.info("赔叫")
+        logging.info(request.peijiao)
         settle = SettleResult()
         user_settles = {}
         users = {}
@@ -37,21 +41,22 @@ class Performance(mahjong_pb2_grpc.MajongCalculateServicer):
             user_settles.setdefault(user.player_id, user_settle)
             users.setdefault(user.player_id, user)
             cannothu_user.append(user.player_id)
-        # 杠分计算
-        for user in request.player:
-            for g in user.gang:
-                if g.type == BGANG:
-                    user_settles[user.player_id].gangScore += len(g.fighter)
-                    for f in g.fighter:
-                        user_settles[f].gangScore -= 1
-                if g.type == MGANG:
-                    user_settles[user.player_id].gangScore += 2 * len(g.fighter)
-                    for f in g.fighter:
-                        user_settles[f].gangScore -= 2
-                if g.type == AGANG:
-                    user_settles[user.player_id].gangScore += 2 * len(g.fighter)
-                    for f in g.fighter:
-                        user_settles[f].gangScore -= 2
+        if not request.peijiao:
+            # 杠分计算
+            for user in request.player:
+                for g in user.gang:
+                    if g.type == BGANG:
+                        user_settles[user.player_id].gangScore += len(g.fighter)
+                        for f in g.fighter:
+                            user_settles[f].gangScore -= 1
+                    if g.type == MGANG:
+                        user_settles[user.player_id].gangScore += 2 * len(g.fighter)
+                        for f in g.fighter:
+                            user_settles[f].gangScore -= 2
+                    if g.type == AGANG:
+                        user_settles[user.player_id].gangScore += 2 * len(g.fighter)
+                        for f in g.fighter:
+                            user_settles[f].gangScore -= 2
 
         # 胡牌计算
         for hudata in request.hudata:
@@ -66,19 +71,26 @@ class Performance(mahjong_pb2_grpc.MajongCalculateServicer):
             user_settles[hudata.huUser].settlePatterns.extend(ct)
             score = chengdu_mahjong.getScore(ct)
             # 带跟翻倍
-            for i in range(0, len(MahjongUtils.get_si(tempcard))):
+            allcard = []
+            allcard.extend(tempcard)
+            for p in users[hudata.huUser].peng:
+                allcard.append(p)
+                allcard.append(p)
+                allcard.append(p)
+            for g in users[hudata.huUser].gang:
+                allcard.append(g.gangvalue)
+                allcard.append(g.gangvalue)
+                allcard.append(g.gangvalue)
+                allcard.append(g.gangvalue)
+            for i in range(0, len(MahjongUtils.get_si(allcard))):
                 score *= 2
+            if score > request.fengding:
+                score = request.fengding
+            if 0 in ct:
+                score += 1
             for u in hudata.loseUsers:
-                if users[u].baojiao:
-                    if 1 == score:
-                        user_settles[u].cardScore -= 6
-                        user_settles[hudata.huUser].cardScore += 6
-                    else:
-                        user_settles[u].cardScore -= score + 6
-                        user_settles[hudata.huUser].cardScore += score + 6
-                else:
-                    user_settles[u].cardScore -= score
-                    user_settles[hudata.huUser].cardScore += score
+                user_settles[u].cardScore -= score
+                user_settles[hudata.huUser].cardScore += score
         if request.peijiao:
             peijiao_users = list()
             user_score = {}
@@ -97,10 +109,23 @@ class Performance(mahjong_pb2_grpc.MajongCalculateServicer):
                                                                    request.rogue)
                             cardscore = chengdu_mahjong.getScore(cardtype)
                             # 带跟翻倍
-                            for i in range(0, len(MahjongUtils.get_si(tempcard))):
+                            allcard = []
+                            allcard.extend(tempcard)
+                            for p in users[c].peng:
+                                allcard.append(p)
+                                allcard.append(p)
+                                allcard.append(p)
+                            for g in users[c].gang:
+                                allcard.append(g.gangvalue)
+                                allcard.append(g.gangvalue)
+                                allcard.append(g.gangvalue)
+                                allcard.append(g.gangvalue)
+                            for i in range(0, len(MahjongUtils.get_si(allcard))):
                                 cardscore *= 2
                             if cardscore > score:
                                 score = cardscore
+                            if score > request.fengding:
+                                score = request.fengding
                         if score > 0:
                             user_score.setdefault(c, score)
                     else:
@@ -130,24 +155,9 @@ class Performance(mahjong_pb2_grpc.MajongCalculateServicer):
         """
         calculate = CalculateResult()
         san = MahjongUtils.get_san(request.player.handlist)
-        if not request.player.baojiao:
-            calculate.dui.extend(MahjongUtils.get_dui(request.player.handlist))
-            calculate.san.extend(san)
-            calculate.si.extend(MahjongUtils.get_si(request.player.handlist))
-        else:
-            gang = list()
-            for s in san:
-                temp = list()
-                temp.extend(request.player.handlist)
-                temp.remove(s)
-                temp.remove(s)
-                temp.remove(s)
-                if 0 < len(MahjongUtils.get_hu(temp, 0)):
-                    gang.append(s)
-                temp.append(s)
-                temp.append(s)
-                temp.append(s)
-            calculate.san.extend(gang)
+        calculate.dui.extend(MahjongUtils.get_dui(request.player.handlist))
+        calculate.san.extend(san)
+        calculate.si.extend(MahjongUtils.get_si(request.player.handlist))
         zimo = MahjongUtils.get_hu(request.player.handlist, request.rogue)
         calculate.zimo.extend(zimo)
         calculate.hu.extend(zimo)
@@ -202,7 +212,7 @@ def rpc_server():
     thislog.info("started!")
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
     mahjong_pb2_grpc.add_MajongCalculateServicer_to_server(Performance(), server)
-    server.add_insecure_port('[::]:50002')
+    server.add_insecure_port('[::]:50005')
     server.start()
     try:
         while True:
@@ -224,7 +234,7 @@ if __name__ == '__main__':
                         filename='../logs/chengdu_mahjong-%s.log' % time.strftime("%Y-%m-%d_%H"),
                         filemode='w')
     rpc_server()
-    # print wanzhou_mahjong.getCardType([5, 7, 22, 22, 9, 29, 9, 29, 14, 17, 14, 17, 5, 7], [], [], 21)
+    # print MahjongUtils.get_hu([4, 4, 5, 6, 7, 12, 12, 13, 15, 18, 18, 31, 31], 31)
 
 
 class Formatter(logging.Formatter):
