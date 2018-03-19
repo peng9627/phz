@@ -2,7 +2,9 @@
 import datetime
 import logging
 import random
+import re
 import time
+from logging.handlers import TimedRotatingFileHandler
 
 import grpc
 from concurrent import futures
@@ -14,7 +16,8 @@ from mahjong_pb2 import *
 from mahjong_utils import MahjongUtils
 from utils.card_utils import CardUtils
 
-thislog = logging
+logging.basicConfig(level=logging.INFO)
+thislog = logging.getLogger()
 
 
 class Performance(mahjong_pb2_grpc.MajongCalculateServicer):
@@ -485,25 +488,26 @@ def rpc_server():
     server.start()
     try:
         while True:
-            time.sleep(60 * 60)
-            thislog.root.handlers = []
-            thislog.basicConfig(level=thislog.DEBUG,
-                                format='%(asctime)s %(filename)s[line:%(lineno)d] %(levelname)s %(message)s',
-                                datefmt=None,
-                                filename='../logs/mahjong-%s.log' % time.strftime("%Y-%m-%d_%H"),
-                                filemode='w')
+            time.sleep(60 * 60 * 24)
     except KeyboardInterrupt:
         server.stop(0)
 
 
 if __name__ == '__main__':
-    thislog.basicConfig(level=thislog.DEBUG,
-                        format='%(asctime)s %(filename)s[line:%(lineno)d] %(levelname)s %(message)s',
-                        datefmt=None,
-                        filename='../logs/mahjong-%s.log' % time.strftime("%Y-%m-%d_%H"),
-                        filemode='w')
+    log_fmt = '%(asctime)s %(filename)s[line:%(lineno)d] %(levelname)s %(message)s'
+    formatter = logging.Formatter(log_fmt)
+    log_file_handler = TimedRotatingFileHandler(
+        filename='../logs/mahjong/mahjong-%s.log' % time.strftime("%Y-%m-%d"), when="H", interval=1,
+        backupCount=7)
+    log_file_handler.suffix = "%Y-%m-%d_%H-%M.log"
+    log_file_handler.extMatch = re.compile(r"^\d{4}-\d{2}-\d{2}_\d{2}-\d{2}.log$")
+    log_file_handler.setFormatter(formatter)
+    log_file_handler.setLevel(logging.DEBUG)
+    thislog.addHandler(log_file_handler)
+
     rpc_server()
-    # print wanzhou_mahjong.getCardType([1, 1, 9, 9, 11, 15, 15, 16, 18, 18, 21, 21, 25, 25], [], [], 21)
+    thislog.removeHandler(log_file_handler)()
+    # print wanzhou_mahjong.getCardType([5, 7, 22, 22, 9, 29, 9, 29, 14, 17, 14, 17, 5, 7], [], [], 21)
 
 
 class Formatter(logging.Formatter):

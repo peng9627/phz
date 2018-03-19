@@ -2,7 +2,9 @@
 import datetime
 import logging
 import random
+import re
 import time
+from logging.handlers import TimedRotatingFileHandler
 
 import grpc
 from concurrent import futures
@@ -14,7 +16,8 @@ from tuitongzi import Tuitongzi
 from zhajinhua import Zhajinhua
 from zhipai_pb2 import *
 
-thislog = logging
+logging.basicConfig(level=logging.INFO)
+thislog = logging.getLogger()
 
 
 class Douniuniu(object):
@@ -211,15 +214,15 @@ class Douniuniu(object):
             # 炸弹牛
             if Niuniu.isZhadanniu(temp):
                 return 15
-            # # 葫芦牛
-            # if Niuniu.isHuluniu(temp):
-            #     return 14
-            # # 同花牛
-            # if Niuniu.sameColor(temp):
-            #     return 13
-            # # 顺子牛
-            # if Niuniu.isShunziniu(temp):
-            #     return 12
+            # 葫芦牛
+            if Niuniu.isHuluniu(temp):
+                return 14
+            # 同花牛
+            if Niuniu.sameColor(temp):
+                return 13
+            # 顺子牛
+            if Niuniu.isShunziniu(temp):
+                return 12
             # 五花牛
             if Niuniu.isWuhuaniu(temp):
                 return 11
@@ -325,26 +328,6 @@ class Douniuniu(object):
             #     return 2
             # return 1
             # 全民
-            if 12 == value:
-                return 5
-            if 11 == value:
-                return 5
-            if 10 == value:
-                return 4
-            if 9 == value:
-                return 3
-            if 6 < value:
-                return 2
-            return 1
-            # 九州
-            # if 16 == value:
-            #     return 5
-            # if 15 == value:
-            #     return 5
-            # if 14 == value:
-            #     return 5
-            # if 13 == value:
-            #     return 5
             # if 12 == value:
             #     return 5
             # if 11 == value:
@@ -356,6 +339,26 @@ class Douniuniu(object):
             # if 6 < value:
             #     return 2
             # return 1
+            # 九州
+            if 16 == value:
+                return 5
+            if 15 == value:
+                return 5
+            if 14 == value:
+                return 5
+            if 13 == value:
+                return 5
+            if 12 == value:
+                return 5
+            if 11 == value:
+                return 5
+            if 10 == value:
+                return 4
+            if 9 == value:
+                return 3
+            if 6 < value:
+                return 2
+            return 1
 
         if 7 == allocid:
             if 1 == value:
@@ -839,26 +842,26 @@ def rpc_server():
     server.start()
     try:
         while True:
-            time.sleep(60 * 60)
-            thislog.root.handlers = []
-            thislog.basicConfig(level=thislog.DEBUG,
-                                format='%(asctime)s %(filename)s[line:%(lineno)d] %(levelname)s %(message)s',
-                                datefmt=None,
-                                filename='../logs/zhipai-%s.log' % time.strftime("%Y-%m-%d_%H"),
-                                filemode='w')
+            time.sleep(60 * 60 * 24)
     except KeyboardInterrupt:
         server.stop(0)
 
 
 if __name__ == '__main__':
-    thislog.basicConfig(level=thislog.DEBUG,
-                        format='%(asctime)s %(filename)s[line:%(lineno)d] %(levelname)s %(message)s',
-                        datefmt=None,
-                        filename='../logs/zhipai-%s.log' % time.strftime("%Y-%m-%d_%H"),
-                        filemode='w')
+    log_fmt = '%(asctime)s %(filename)s[line:%(lineno)d] %(levelname)s %(message)s'
+    formatter = logging.Formatter(log_fmt)
+    log_file_handler = TimedRotatingFileHandler(
+        filename='../logs/zhipai/zhipai-%s.log' % time.strftime("%Y-%m-%d"), when="H", interval=1,
+        backupCount=7)
+    log_file_handler.suffix = "%Y-%m-%d_%H-%M.log"
+    log_file_handler.extMatch = re.compile(r"^\d{4}-\d{2}-\d{2}_\d{2}-\d{2}.log$")
+    log_file_handler.setFormatter(formatter)
+    log_file_handler.setLevel(logging.DEBUG)
+    thislog.addHandler(log_file_handler)
+
     rpc_server()
-    # cardlist = [101, 102, 113, 104, 204]
-    # print Douniuniu.get_card_value(cardlist, 3, False, 0)
+    thislog.removeHandler(log_file_handler)()
+    # print wanzhou_mahjong.getCardType([5, 7, 22, 22, 9, 29, 9, 29, 14, 17, 14, 17, 5, 7], [], [], 21)
 
 
 class Formatter(logging.Formatter):

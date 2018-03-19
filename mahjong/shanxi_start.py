@@ -69,7 +69,15 @@ class Performance(mahjong_pb2_grpc.MajongCalculateServicer):
             ct.extend(hudata.settle)
             user_settles[hudata.huUser].settlePatterns.extend(ct)
             score = shanxi_mahjong.getScore(ct)
+            # 庄家加倍
+            # if request.banker == hudata.huUser:
+            #     score *= 2
             for u in hudata.loseUsers:
+                # 庄家加倍
+                # if request.banker == u:
+                #     user_settles[u].cardScore -= 2 * score
+                #     user_settles[hudata.huUser].cardScore += 2 * score
+                # else:
                 user_settles[u].cardScore -= score
                 user_settles[hudata.huUser].cardScore += score
         for sett in settle.userSettleResule:

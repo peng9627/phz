@@ -2,17 +2,20 @@
 import datetime
 import logging
 import random
+import re
 import time
+from logging.handlers import TimedRotatingFileHandler
 
 import grpc
 from concurrent import futures
 
 import mahjong_pb2_grpc
-from mahjong import chengdu_mahjong
+import chengdu_mahjong
 from mahjong_pb2 import *
 from mahjong_utils import MahjongUtils
 
-thislog = logging
+logging.basicConfig(level=logging.INFO)
+thislog = logging.getLogger()
 
 
 class Performance(mahjong_pb2_grpc.MajongCalculateServicer):
@@ -216,25 +219,26 @@ def rpc_server():
     server.start()
     try:
         while True:
-            time.sleep(60 * 60)
-            thislog.root.handlers = []
-            thislog.basicConfig(level=thislog.DEBUG,
-                                format='%(asctime)s %(filename)s[line:%(lineno)d] %(levelname)s %(message)s',
-                                datefmt=None,
-                                filename='../logs/chengdu_mahjong-%s.log' % time.strftime("%Y-%m-%d_%H"),
-                                filemode='w')
+            time.sleep(60 * 60 * 24)
     except KeyboardInterrupt:
         server.stop(0)
 
 
 if __name__ == '__main__':
-    thislog.basicConfig(level=thislog.DEBUG,
-                        format='%(asctime)s %(filename)s[line:%(lineno)d] %(levelname)s %(message)s',
-                        datefmt=None,
-                        filename='../logs/chengdu_mahjong-%s.log' % time.strftime("%Y-%m-%d_%H"),
-                        filemode='w')
+    log_fmt = '%(asctime)s %(filename)s[line:%(lineno)d] %(levelname)s %(message)s'
+    formatter = logging.Formatter(log_fmt)
+    log_file_handler = TimedRotatingFileHandler(
+        filename='../logs/chengdu_mahjong/chengdu_mahjong-%s.log' % time.strftime("%Y-%m-%d"), when="H", interval=1,
+        backupCount=7)
+    log_file_handler.suffix = "%Y-%m-%d_%H-%M.log"
+    log_file_handler.extMatch = re.compile(r"^\d{4}-\d{2}-\d{2}_\d{2}-\d{2}.log$")
+    log_file_handler.setFormatter(formatter)
+    log_file_handler.setLevel(logging.DEBUG)
+    thislog.addHandler(log_file_handler)
+
     rpc_server()
-    # print MahjongUtils.get_hu([4, 4, 5, 6, 7, 12, 12, 13, 15, 18, 18, 31, 31], 31)
+    thislog.removeHandler(log_file_handler)()
+    # print wanzhou_mahjong.getCardType([5, 7, 22, 22, 9, 29, 9, 29, 14, 17, 14, 17, 5, 7], [], [], 21)
 
 
 class Formatter(logging.Formatter):
