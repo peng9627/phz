@@ -37,6 +37,7 @@ message GangData {
     GangType type = 1;
     repeated int32 fighter = 2; //放杠者的ID
     int32 gangvalue = 3; //杠了哪张牌
+    int32 gangscore = 4;
 }
 
 message MahjongPlayerData {
@@ -132,7 +133,7 @@ message ShuffleResult {
 //    JINGOUDIAO = 12; //金勾钓x24
 //    QINGYISE = 13; //清一色x12
 //    QINGDADUI = 14; //清大对x24
-//    QINGSANDA = 15; //清三搭x48
+//    QINGSANDADADUI = 15; //清三搭+大对x48
 //    QINGQIDUI = 16; //清七对x24
 //    QINGLONGQIDUI = 17; //清龙七对x48
 //    QINGSHUANGLONGQIDUI = 18; //清双龙七对x96
@@ -144,6 +145,7 @@ message ShuffleResult {
 //    SANLONGQIDUI = 24; //三龙七对x96
 //    SIYAOJI = 25; //四个幺鸡x48
 //    YINGHU = 26; //硬胡
+//    QINSANDA = 27
 //}
 //荣昌麻将
 //enum SettlePatterns {

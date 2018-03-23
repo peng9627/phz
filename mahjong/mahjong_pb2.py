@@ -21,7 +21,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
     package='majong_rpc',
     syntax='proto3',
     serialized_pb=_b(
-        '\n\rmahjong.proto\x12\nmajong_rpc\"\x16\n\x05\x43\x61rds\x12\r\n\x05\x63\x61rds\x18\x01 \x03(\x05\"R\n\x08GangData\x12\"\n\x04type\x18\x01 \x01(\x0e\x32\x14.majong_rpc.GangType\x12\x0f\n\x07\x66ighter\x18\x02 \x03(\x05\x12\x11\n\tgangvalue\x18\x03 \x01(\x05\"\x97\x01\n\x11MahjongPlayerData\x12\x11\n\tplayer_id\x18\x01 \x01(\x05\x12\x10\n\x08handlist\x18\x02 \x03(\x05\x12\x0b\n\x03\x63hi\x18\x03 \x03(\x05\x12\x0c\n\x04peng\x18\x04 \x03(\x05\x12\"\n\x04gang\x18\x05 \x03(\x0b\x32\x14.majong_rpc.GangData\x12\x0f\n\x07\x62\x61ojiao\x18\x06 \x01(\x08\x12\r\n\x05score\x18\x07 \x01(\x05\"^\n\rCalculateData\x12\x0f\n\x07\x61llocid\x18\x01 \x01(\x05\x12-\n\x06player\x18\x02 \x01(\x0b\x32\x1d.majong_rpc.MahjongPlayerData\x12\r\n\x05rogue\x18\x03 \x01(\x05\"^\n\x0f\x43\x61lculateResult\x12\x0b\n\x03\x63hi\x18\x01 \x03(\x05\x12\x0b\n\x03\x64ui\x18\x02 \x03(\x05\x12\x0b\n\x03san\x18\x03 \x03(\x05\x12\n\n\x02si\x18\x04 \x03(\x05\x12\n\n\x02hu\x18\x05 \x03(\x05\x12\x0c\n\x04zimo\x18\x06 \x03(\x05\"\x9b\x02\n\nSettleData\x12\x10\n\x08\x61lloc_id\x18\x01 \x01(\x05\x12-\n\x06player\x18\x02 \x03(\x0b\x32\x1d.majong_rpc.MahjongPlayerData\x12\x0e\n\x06\x62\x61nker\x18\x03 \x01(\x05\x12-\n\x06hudata\x18\x04 \x03(\x0b\x32\x1d.majong_rpc.SettleData.HuData\x12\r\n\x05rogue\x18\x05 \x01(\x05\x12\x10\n\x08\x66\x65ngding\x18\x06 \x01(\x05\x12\x0f\n\x07peijiao\x18\x07 \x01(\x08\x12\x0e\n\x06yinghu\x18\x08 \x01(\x08\x1aK\n\x06HuData\x12\x0e\n\x06huUser\x18\x01 \x01(\x05\x12\x11\n\tloseUsers\x18\x02 \x03(\x05\x12\x0e\n\x06settle\x18\x03 \x03(\x05\x12\x0e\n\x06majong\x18\x04 \x01(\x05\"F\n\x0cSettleResult\x12\x36\n\x10userSettleResule\x18\x01 \x03(\x0b\x32\x1c.majong_rpc.UserSettleResult\"m\n\x10UserSettleResult\x12\x0e\n\x06userId\x18\x01 \x01(\x05\x12\x0b\n\x03win\x18\x02 \x01(\x05\x12\x11\n\tgangScore\x18\x03 \x01(\x05\x12\x11\n\tcardScore\x18\x04 \x01(\x05\x12\x16\n\x0esettlePatterns\x18\x05 \x03(\x05\":\n\tCheatData\x12\x11\n\tplayer_id\x18\x01 \x01(\x05\x12\x0b\n\x03loc\x18\x02 \x01(\x05\x12\r\n\x05level\x18\x03 \x01(\x05\"F\n\x0bShuffleData\x12\x10\n\x08\x61lloc_id\x18\x01 \x01(\x05\x12%\n\x06\x63heats\x18\x02 \x03(\x0b\x32\x15.majong_rpc.CheatData\"!\n\rShuffleResult\x12\x10\n\x08\x63\x61rdlist\x18\x01 \x03(\x05*+\n\x08GangType\x12\t\n\x05\x42GANG\x10\x00\x12\t\n\x05MGANG\x10\x01\x12\t\n\x05\x41GANG\x10\x02\x32\x96\x02\n\x0fMajongCalculate\x12\x45\n\tcalculate\x12\x19.majong_rpc.CalculateData\x1a\x1b.majong_rpc.CalculateResult\"\x00\x12<\n\x06settle\x12\x16.majong_rpc.SettleData\x1a\x18.majong_rpc.SettleResult\"\x00\x12?\n\x07shuffle\x12\x17.majong_rpc.ShuffleData\x1a\x19.majong_rpc.ShuffleResult\"\x00\x12=\n\x0b\x62\x61ojiaoGang\x12\x19.majong_rpc.CalculateData\x1a\x11.majong_rpc.Cards\"\x00\x42\x16\n\x12mahjong.mode.protoP\x01\x62\x06proto3')
+        '\n\rmahjong.proto\x12\nmajong_rpc\"\x16\n\x05\x43\x61rds\x12\r\n\x05\x63\x61rds\x18\x01 \x03(\x05\"e\n\x08GangData\x12\"\n\x04type\x18\x01 \x01(\x0e\x32\x14.majong_rpc.GangType\x12\x0f\n\x07\x66ighter\x18\x02 \x03(\x05\x12\x11\n\tgangvalue\x18\x03 \x01(\x05\x12\x11\n\tgangscore\x18\x04 \x01(\x05\"\x97\x01\n\x11MahjongPlayerData\x12\x11\n\tplayer_id\x18\x01 \x01(\x05\x12\x10\n\x08handlist\x18\x02 \x03(\x05\x12\x0b\n\x03\x63hi\x18\x03 \x03(\x05\x12\x0c\n\x04peng\x18\x04 \x03(\x05\x12\"\n\x04gang\x18\x05 \x03(\x0b\x32\x14.majong_rpc.GangData\x12\x0f\n\x07\x62\x61ojiao\x18\x06 \x01(\x08\x12\r\n\x05score\x18\x07 \x01(\x05\"^\n\rCalculateData\x12\x0f\n\x07\x61llocid\x18\x01 \x01(\x05\x12-\n\x06player\x18\x02 \x01(\x0b\x32\x1d.majong_rpc.MahjongPlayerData\x12\r\n\x05rogue\x18\x03 \x01(\x05\"^\n\x0f\x43\x61lculateResult\x12\x0b\n\x03\x63hi\x18\x01 \x03(\x05\x12\x0b\n\x03\x64ui\x18\x02 \x03(\x05\x12\x0b\n\x03san\x18\x03 \x03(\x05\x12\n\n\x02si\x18\x04 \x03(\x05\x12\n\n\x02hu\x18\x05 \x03(\x05\x12\x0c\n\x04zimo\x18\x06 \x03(\x05\"\x9b\x02\n\nSettleData\x12\x10\n\x08\x61lloc_id\x18\x01 \x01(\x05\x12-\n\x06player\x18\x02 \x03(\x0b\x32\x1d.majong_rpc.MahjongPlayerData\x12\x0e\n\x06\x62\x61nker\x18\x03 \x01(\x05\x12-\n\x06hudata\x18\x04 \x03(\x0b\x32\x1d.majong_rpc.SettleData.HuData\x12\r\n\x05rogue\x18\x05 \x01(\x05\x12\x10\n\x08\x66\x65ngding\x18\x06 \x01(\x05\x12\x0f\n\x07peijiao\x18\x07 \x01(\x08\x12\x0e\n\x06yinghu\x18\x08 \x01(\x08\x1aK\n\x06HuData\x12\x0e\n\x06huUser\x18\x01 \x01(\x05\x12\x11\n\tloseUsers\x18\x02 \x03(\x05\x12\x0e\n\x06settle\x18\x03 \x03(\x05\x12\x0e\n\x06majong\x18\x04 \x01(\x05\"F\n\x0cSettleResult\x12\x36\n\x10userSettleResule\x18\x01 \x03(\x0b\x32\x1c.majong_rpc.UserSettleResult\"m\n\x10UserSettleResult\x12\x0e\n\x06userId\x18\x01 \x01(\x05\x12\x0b\n\x03win\x18\x02 \x01(\x05\x12\x11\n\tgangScore\x18\x03 \x01(\x05\x12\x11\n\tcardScore\x18\x04 \x01(\x05\x12\x16\n\x0esettlePatterns\x18\x05 \x03(\x05\":\n\tCheatData\x12\x11\n\tplayer_id\x18\x01 \x01(\x05\x12\x0b\n\x03loc\x18\x02 \x01(\x05\x12\r\n\x05level\x18\x03 \x01(\x05\"F\n\x0bShuffleData\x12\x10\n\x08\x61lloc_id\x18\x01 \x01(\x05\x12%\n\x06\x63heats\x18\x02 \x03(\x0b\x32\x15.majong_rpc.CheatData\"!\n\rShuffleResult\x12\x10\n\x08\x63\x61rdlist\x18\x01 \x03(\x05*+\n\x08GangType\x12\t\n\x05\x42GANG\x10\x00\x12\t\n\x05MGANG\x10\x01\x12\t\n\x05\x41GANG\x10\x02\x32\x96\x02\n\x0fMajongCalculate\x12\x45\n\tcalculate\x12\x19.majong_rpc.CalculateData\x1a\x1b.majong_rpc.CalculateResult\"\x00\x12<\n\x06settle\x12\x16.majong_rpc.SettleData\x1a\x18.majong_rpc.SettleResult\"\x00\x12?\n\x07shuffle\x12\x17.majong_rpc.ShuffleData\x1a\x19.majong_rpc.ShuffleResult\"\x00\x12=\n\x0b\x62\x61ojiaoGang\x12\x19.majong_rpc.CalculateData\x1a\x11.majong_rpc.Cards\"\x00\x42\x16\n\x12mahjong.mode.protoP\x01\x62\x06proto3')
 )
 
 _GANGTYPE = _descriptor.EnumDescriptor(
@@ -45,8 +45,8 @@ _GANGTYPE = _descriptor.EnumDescriptor(
     ],
     containing_type=None,
     options=None,
-    serialized_start=1119,
-    serialized_end=1162,
+    serialized_start=1138,
+    serialized_end=1181,
 )
 _sym_db.RegisterEnumDescriptor(_GANGTYPE)
 
@@ -113,6 +113,13 @@ _GANGDATA = _descriptor.Descriptor(
             message_type=None, enum_type=None, containing_type=None,
             is_extension=False, extension_scope=None,
             options=None, file=DESCRIPTOR),
+        _descriptor.FieldDescriptor(
+            name='gangscore', full_name='majong_rpc.GangData.gangscore', index=3,
+            number=4, type=5, cpp_type=1, label=1,
+            has_default_value=False, default_value=0,
+            message_type=None, enum_type=None, containing_type=None,
+            is_extension=False, extension_scope=None,
+            options=None, file=DESCRIPTOR),
     ],
     extensions=[
     ],
@@ -126,7 +133,7 @@ _GANGDATA = _descriptor.Descriptor(
     oneofs=[
     ],
     serialized_start=53,
-    serialized_end=135,
+    serialized_end=154,
 )
 
 _MAHJONGPLAYERDATA = _descriptor.Descriptor(
@@ -197,8 +204,8 @@ _MAHJONGPLAYERDATA = _descriptor.Descriptor(
     extension_ranges=[],
     oneofs=[
     ],
-    serialized_start=138,
-    serialized_end=289,
+    serialized_start=157,
+    serialized_end=308,
 )
 
 _CALCULATEDATA = _descriptor.Descriptor(
@@ -241,8 +248,8 @@ _CALCULATEDATA = _descriptor.Descriptor(
     extension_ranges=[],
     oneofs=[
     ],
-    serialized_start=291,
-    serialized_end=385,
+    serialized_start=310,
+    serialized_end=404,
 )
 
 _CALCULATERESULT = _descriptor.Descriptor(
@@ -306,8 +313,8 @@ _CALCULATERESULT = _descriptor.Descriptor(
     extension_ranges=[],
     oneofs=[
     ],
-    serialized_start=387,
-    serialized_end=481,
+    serialized_start=406,
+    serialized_end=500,
 )
 
 _SETTLEDATA_HUDATA = _descriptor.Descriptor(
@@ -357,8 +364,8 @@ _SETTLEDATA_HUDATA = _descriptor.Descriptor(
     extension_ranges=[],
     oneofs=[
     ],
-    serialized_start=692,
-    serialized_end=767,
+    serialized_start=711,
+    serialized_end=786,
 )
 
 _SETTLEDATA = _descriptor.Descriptor(
@@ -436,8 +443,8 @@ _SETTLEDATA = _descriptor.Descriptor(
     extension_ranges=[],
     oneofs=[
     ],
-    serialized_start=484,
-    serialized_end=767,
+    serialized_start=503,
+    serialized_end=786,
 )
 
 _SETTLERESULT = _descriptor.Descriptor(
@@ -466,8 +473,8 @@ _SETTLERESULT = _descriptor.Descriptor(
     extension_ranges=[],
     oneofs=[
     ],
-    serialized_start=769,
-    serialized_end=839,
+    serialized_start=788,
+    serialized_end=858,
 )
 
 _USERSETTLERESULT = _descriptor.Descriptor(
@@ -524,8 +531,8 @@ _USERSETTLERESULT = _descriptor.Descriptor(
     extension_ranges=[],
     oneofs=[
     ],
-    serialized_start=841,
-    serialized_end=950,
+    serialized_start=860,
+    serialized_end=969,
 )
 
 _CHEATDATA = _descriptor.Descriptor(
@@ -568,8 +575,8 @@ _CHEATDATA = _descriptor.Descriptor(
     extension_ranges=[],
     oneofs=[
     ],
-    serialized_start=952,
-    serialized_end=1010,
+    serialized_start=971,
+    serialized_end=1029,
 )
 
 _SHUFFLEDATA = _descriptor.Descriptor(
@@ -605,8 +612,8 @@ _SHUFFLEDATA = _descriptor.Descriptor(
     extension_ranges=[],
     oneofs=[
     ],
-    serialized_start=1012,
-    serialized_end=1082,
+    serialized_start=1031,
+    serialized_end=1101,
 )
 
 _SHUFFLERESULT = _descriptor.Descriptor(
@@ -635,8 +642,8 @@ _SHUFFLERESULT = _descriptor.Descriptor(
     extension_ranges=[],
     oneofs=[
     ],
-    serialized_start=1084,
-    serialized_end=1117,
+    serialized_start=1103,
+    serialized_end=1136,
 )
 
 _GANGDATA.fields_by_name['type'].enum_type = _GANGTYPE
@@ -755,8 +762,8 @@ _MAJONGCALCULATE = _descriptor.ServiceDescriptor(
     file=DESCRIPTOR,
     index=0,
     options=None,
-    serialized_start=1165,
-    serialized_end=1443,
+    serialized_start=1184,
+    serialized_end=1462,
     methods=[
         _descriptor.MethodDescriptor(
             name='calculate',

@@ -31,14 +31,14 @@ class MahjongCardType(object):
         return 2 == len(handlist)
 
     @staticmethod
-    def san_da(handlist, rogue):
+    def san_da(handlist):
         """
         :三搭
         :param handlist:
         :param rogue:
         :return:
         """
-        return 5 == len(handlist) and MahjongCardType.big_double(handlist, rogue)
+        return 5 == len(handlist)
 
     @staticmethod
     def big_double(handlist, rogue):

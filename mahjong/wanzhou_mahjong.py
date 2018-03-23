@@ -23,8 +23,11 @@ def getCardType(handlist, penglist, gangdata, rogue):
         card_type = double7 + 21
     if MahjongCardType.same_color(allcard, rogue):
         if 11 == card_type:
-            if MahjongCardType.san_da(handlist, rogue):
-                card_type = 15
+            if MahjongCardType.san_da(handlist):
+                if MahjongCardType.big_double(handlist, rogue):
+                    card_type = 15
+                else:
+                    card_type = 27
             else:
                 card_type = 14
         elif 20 < card_type:
@@ -73,4 +76,6 @@ def getScore(card_type):
         return 96
     if 25 == card_type:
         return 48
+    if 27 == card_type:
+        return 24
     return 1
