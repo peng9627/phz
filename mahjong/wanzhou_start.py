@@ -56,9 +56,9 @@ class Performance(mahjong_pb2_grpc.MajongCalculateServicer):
             cardtype = wanzhou_mahjong.getCardType(tempcard, users[hudata.huUser].peng,
                                                    users[hudata.huUser].gang, request.rogue)
             score = wanzhou_mahjong.getScore(cardtype)
-            if score < 48 and request.rogue != 0 and 21 in CardUtils.get_si(tempcard):
+            if request.rogue != 0 and 21 in CardUtils.get_si(tempcard):
                 cardtype = 25
-                score = 48
+                score = request.fengding
             for s in hudata.settle:
                 if s != 0:
                     if 1 == score:
@@ -98,9 +98,9 @@ class Performance(mahjong_pb2_grpc.MajongCalculateServicer):
                             cardtype = wanzhou_mahjong.getCardType(tempcard, users[c].peng, users[c].gang,
                                                                    request.rogue)
                             cardscore = wanzhou_mahjong.getScore(cardtype)
-                            if cardscore < 48 and request.rogue != 0 and 21 in CardUtils.get_si(tempcard):
+                            if request.rogue != 0 and 21 in CardUtils.get_si(tempcard):
                                 cardtype = 25
-                                cardscore = 48
+                                cardscore = request.fengding
                             if 1 == cardscore:
                                 cardscore = 12
                             else:
@@ -159,12 +159,21 @@ class Performance(mahjong_pb2_grpc.MajongCalculateServicer):
         zimo = MahjongUtils.get_hu(request.player.handlist, request.rogue)
         calculate.zimo.extend(zimo)
         hu = list()
-        for z in zimo:
-            handlist = list()
-            handlist.extend(request.player.handlist)
-            handlist.append(z)
-            if 10 != wanzhou_mahjong.getCardType(handlist, request.player.peng, request.player.gang, request.rogue):
-                hu.append(z)
+        if -1 in zimo:
+            for z in [1, 2, 3, 4, 5, 6, 7, 8, 9, 11, 12, 13, 14, 15, 16, 17, 18, 19, 21, 22, 23, 24, 25, 26, 27, 28,
+                      29]:
+                handlist = list()
+                handlist.extend(request.player.handlist)
+                handlist.append(z)
+                if 10 != wanzhou_mahjong.getCardType(handlist, request.player.peng, request.player.gang, request.rogue):
+                    hu.append(z)
+        else:
+            for z in zimo:
+                handlist = list()
+                handlist.extend(request.player.handlist)
+                handlist.append(z)
+                if 10 != wanzhou_mahjong.getCardType(handlist, request.player.peng, request.player.gang, request.rogue):
+                    hu.append(z)
         calculate.hu.extend(hu)
         return calculate
 
@@ -269,7 +278,12 @@ if __name__ == '__main__':
 
     rpc_server()
     thislog.removeHandler(log_file_handler)()
-    # print wanzhou_mahjong.getCardType([5, 7, 22, 22, 9, 29, 9, 29, 14, 17, 14, 17, 5, 7], [], [], 21)
+    # cardtype = wanzhou_mahjong.getCardType([21, 21, 21, 21, 12, 12, 15, 15,16,16,16], [28],
+    #                                        [], 21)
+    # t = CardUtils.get_si([21, 21, 21, 21, 12, 12, 15, 15,16,16,16])
+    # score = wanzhou_mahjong.getScore(cardtype)
+    # print(cardtype)
+    # print(score)
 
 
 class Formatter(logging.Formatter):

@@ -405,23 +405,23 @@ class PaodekuaiUtils(object):
                 playcards.extend(si[0:4])
                 return playcards
         elif cardtype == PaodekuaiType.FEIJI:
+            sanlian = []
             if len(cards) < lastsize:
                 return playcards
-            if 0 == len(cardlist) % 4:
-                lastsize = len(cardlist) / 4 * 3
-            elif 0 == len(cardlist) % 5:
-                lastsize = len(cardlist) / 5 * 3
-            sanlian = PaodekuaiUtils.get_sanlian(cards, lastvalue, lastsize)
-            if len(sanlian) == lastsize:
+            if 0 == lastsize % 4:
+                sanlian = PaodekuaiUtils.get_sanlian(cards, lastvalue, lastsize / 4)
+            elif 0 == lastsize % 5:
+                sanlian = PaodekuaiUtils.get_sanlian(cards, lastvalue, lastsize / 5)
+            if len(sanlian) != 0:
                 playcards.extend(sanlian)
                 tempcards = list()
                 tempcards.extend(cards)
                 for s in sanlian:
                     tempcards.remove(s)
-                if 0 == len(cardlist) % 4 and len(tempcards) >= len(sanlian) / 3:
+                if 0 == lastsize % 4 and len(tempcards) >= len(sanlian) / 3:
                     playcards.extend(tempcards[0:len(sanlian) / 3])
                     return playcards
-                elif 0 == len(cardlist) % 5 and len(tempcards) >= 2 * len(sanlian) / 3:
+                elif 0 == lastsize % 5 and len(tempcards) >= 2 * len(sanlian) / 3:
                     playcards.extend(tempcards[0:2 * len(sanlian) / 3])
                     return playcards
             if len(si) > 0:

@@ -71,9 +71,11 @@ class Performance(mahjong_pb2_grpc.MajongCalculateServicer):
                 allcard.append(g.gangvalue)
             for i in range(0, len(MahjongUtils.get_si(allcard))):
                 score *= 2
+            if 0 in ct and request.zimojiafan:
+                score *= 2
             if score > request.fengding:
                 score = request.fengding
-            if 0 in ct:
+            if 0 in ct and not request.zimojiafan:
                 score += 1
             for u in hudata.loseUsers:
                 user_settles[u].cardScore -= score
@@ -243,7 +245,8 @@ if __name__ == '__main__':
     log_fmt = '%(asctime)s %(filename)s[line:%(lineno)d] %(levelname)s %(message)s'
     formatter = logging.Formatter(log_fmt)
     log_file_handler = TimedRotatingFileHandler(
-        filename='../logs/chengdu_card_mahjong/chengdu_card_mahjong-%s.log' % time.strftime("%Y-%m-%d"), when="H", interval=1,
+        filename='../logs/chengdu_card_mahjong/chengdu_card_mahjong-%s.log' % time.strftime("%Y-%m-%d"), when="H",
+        interval=1,
         backupCount=7)
     log_file_handler.suffix = "%Y-%m-%d_%H-%M.log"
     log_file_handler.extMatch = re.compile(r"^\d{4}-\d{2}-\d{2}_\d{2}-\d{2}.log$")

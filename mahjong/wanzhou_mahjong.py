@@ -22,18 +22,17 @@ def getCardType(handlist, penglist, gangdata, rogue):
     if -1 != double7:
         card_type = double7 + 21
     if MahjongCardType.same_color(allcard, rogue):
-        if 11 == card_type:
-            if MahjongCardType.san_da(handlist):
-                if MahjongCardType.big_double(handlist, rogue):
-                    card_type = 15
-                else:
-                    card_type = 27
-            else:
-                card_type = 14
-        elif 20 < card_type:
+        if 20 < card_type:
             card_type -= 5
         elif 12 == card_type:
             card_type = 20
+        elif MahjongCardType.san_da(handlist):
+            if MahjongCardType.big_double(handlist, rogue):
+                card_type = 15
+            else:
+                card_type = 27
+        elif 11 == card_type:
+            card_type = 14
         else:
             card_type = 13
     return card_type

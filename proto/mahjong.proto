@@ -38,6 +38,7 @@ message GangData {
     repeated int32 fighter = 2; //放杠者的ID
     int32 gangvalue = 3; //杠了哪张牌
     int32 gangscore = 4;
+    int32 zhuanyi = 5;
 }
 
 message MahjongPlayerData {
@@ -76,6 +77,7 @@ message SettleData {
     int32 fengding = 6; //封顶
     bool peijiao = 7; //是否赔叫
     bool yinghu = 8; //硬胡
+    bool zimojiafan = 9; //硬胡
     message HuData {
         int32 huUser = 1; //胡牌的人
         repeated int32 loseUsers = 2; //输家

@@ -58,5 +58,5 @@ class CardUtils(object):
                 si.add(temp[i])
                 i += 3
         silist = []
-        silist.extend(silist)
+        silist.extend(si)
         return silist
