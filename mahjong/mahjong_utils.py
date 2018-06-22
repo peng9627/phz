@@ -182,6 +182,11 @@ class MahjongUtils(object):
         if rogueSize > 0:
             temp = list()
             temp.extend(handlist)
+            temp.append(-1)
+            if -1 != MahjongUtils.double7(temp, rogue):
+                hu.add(-1)
+                return hu
+            temp.remove(-1)
             temp.remove(rogue)
             for i in range(0, rogueSize - 1):
                 temp.remove(rogue)
@@ -252,7 +257,12 @@ class MahjongUtils(object):
             for i in range(0, 2):
                 for s in dui:
                     temp1.remove(s)
-            rogueSize -= len(dui)
-            siCount += len(dui)
+            rogueSize -= len(temp1)
+            if rogueSize / 2 > len(dui):
+                siCount += len(dui)
+                rogueSize -= 2 * len(dui)
+                siCount += rogueSize / 4
+            else:
+                siCount += rogueSize / 2
             return siCount
         return -1

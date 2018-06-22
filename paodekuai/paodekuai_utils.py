@@ -1,6 +1,6 @@
 # coding=utf-8
-from paodekuai.common import PaodekuaiType
-from card_utils import CardUtils
+
+from common import PaodekuaiType
 
 
 class PaodekuaiUtils(object):
@@ -75,7 +75,7 @@ class PaodekuaiUtils(object):
             if istype:
                 return PaodekuaiType.LIANDUI
             istype = True
-            san = CardUtils.get_san(temp)
+            san = PaodekuaiUtils.get_san(temp)
             if len(san) > 1:
                 if len(san) * 3 == len(temp):
                     for c in range(2, len(san) - 3, 3):
@@ -87,12 +87,16 @@ class PaodekuaiUtils(object):
                 istype = True
                 if 0 == len(temp) % 4:
                     if len(temp) / 4 <= len(san):
-                        if san[0] != san[1] - 1:
+                        if san[0] != san[4] - 1:
+                            san.remove(san[2])
+                            san.remove(san[1])
                             san.remove(san[0])
-                        else:
+                        elif san[len(san) - 1] != san[len(san) - 4] + 1:
+                            san.remove(san[len(san) - 3])
+                            san.remove(san[len(san) - 2])
                             san.remove(san[len(san) - 1])
-                        for c in range(3, len(san) - 1, 4):
-                            if san[c] != san[c + 1] - 1:
+                        for c in range(3, len(san) - 4, 3):
+                            if san[c] != san[c + 3] - 1:
                                 istype = False
                                 break
                     elif len(temp) / 3 > len(san):
@@ -174,12 +178,15 @@ class PaodekuaiUtils(object):
         """
         zhadan = list()
         if len(cardlist) > 3:
-            for i in range(0, len(cardlist) - 3):
+            i = 0
+            while i < len(cardlist) - 3:
                 if cardlist[i] % 100 == cardlist[i + 3] % 100:
                     zhadan.append(cardlist[i])
                     zhadan.append(cardlist[i + 1])
                     zhadan.append(cardlist[i + 2])
                     zhadan.append(cardlist[i + 3])
+                    i += 2
+                i += 1
         return zhadan
 
     @staticmethod
@@ -190,11 +197,14 @@ class PaodekuaiUtils(object):
         """
         san = list()
         if len(cardlist) >= 3:
-            for i in range(0, len(cardlist) - 2):
+            i = 0
+            while i < len(cardlist) - 2:
                 if cardlist[i] % 100 == cardlist[i + 2] % 100:
                     san.append(cardlist[i])
                     san.append(cardlist[i + 1])
                     san.append(cardlist[i + 2])
+                    i += 2
+                i += 1
         return san
 
     @staticmethod
@@ -205,10 +215,13 @@ class PaodekuaiUtils(object):
         """
         duizi = list()
         if len(cardlist) >= 2:
-            for i in range(0, len(cardlist) - 1):
+            i = 0
+            while i < len(cardlist) - 1:
                 if cardlist[i] % 100 == cardlist[i + 1] % 100:
                     duizi.append(cardlist[i])
                     duizi.append(cardlist[i + 1])
+                    i += 1
+                i += 1
         return duizi
 
     @staticmethod
@@ -241,7 +254,7 @@ class PaodekuaiUtils(object):
                             return shunzi
                     elif dan[j] % 100 > lastvalue:
                         break
-        return shunzi
+        return []
 
     @staticmethod
     def get_liandui(cardlist, value, size):
@@ -274,7 +287,7 @@ class PaodekuaiUtils(object):
                             return liandui
                     elif dui[j] % 100 > lastvalue:
                         break
-        return liandui
+        return []
 
     @staticmethod
     def get_sanlian(cardlist, value, size):
@@ -292,7 +305,7 @@ class PaodekuaiUtils(object):
                 removed.append(s)
         for r in removed:
             san.remove(r)
-        if len(san) >= size:
+        if len(san) / 3 >= size:
             for i in range(0, len(san) - 4, 2):
                 sanlian = list()
                 sanlian.append(san[i])
@@ -305,11 +318,11 @@ class PaodekuaiUtils(object):
                         sanlian.append(san[j + 1])
                         sanlian.append(san[j + 2])
                         lastvalue = san[j] % 100
-                        if len(sanlian) == size:
+                        if len(sanlian) / 3 == size:
                             return sanlian
                     elif san[j] % 100 > lastvalue:
                         break
-        return sanlian
+        return []
 
     @staticmethod
     def auto_play(cardlist, cardtype, lastvalue, lastsize, count):
@@ -322,7 +335,7 @@ class PaodekuaiUtils(object):
         :param count
         """
         playcards = list()
-        if 3 == count and 114 in cardlist and 214 in cardlist and 314 in cardlist:
+        if 4 != count and 114 in cardlist and 214 in cardlist and 314 in cardlist:
             playcards.append(114)
             playcards.append(214)
             playcards.append(314)
@@ -397,7 +410,7 @@ class PaodekuaiUtils(object):
                 playcards.append(si[len(si) - 4])
                 return playcards
         elif cardtype == PaodekuaiType.SANLIAN:
-            sanlian = PaodekuaiUtils.get_sanlian(cards, lastvalue, lastsize)
+            sanlian = PaodekuaiUtils.get_sanlian(cards, lastvalue, lastsize / 3)
             if len(sanlian) == lastsize:
                 playcards.extend(sanlian)
                 return playcards
@@ -417,7 +430,10 @@ class PaodekuaiUtils(object):
                 tempcards = list()
                 tempcards.extend(cards)
                 for s in sanlian:
-                    tempcards.remove(s)
+                    if s in tempcards:
+                        tempcards.remove(s)
+                    else:
+                        return []
                 if 0 == lastsize % 4 and len(tempcards) >= len(sanlian) / 3:
                     playcards.extend(tempcards[0:len(sanlian) / 3])
                     return playcards

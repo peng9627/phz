@@ -126,33 +126,39 @@ class Performance(mahjong_pb2_grpc.MajongCalculateServicer):
                             user_settles[key].cardScore += value
                 # 杠分计算
                 for user in request.player:
-                    if user not in peijiao_users:
-                        for g in user.gang:
+                    for g in user.gang:
+                        winuser = user.player_id
+                        if 0 != g.zhuanyi:
+                            winuser = g.zhuanyi
+                        if winuser not in peijiao_users:
                             if g.type == BGANG:
-                                user_settles[user.player_id].gangScore += len(g.fighter)
+                                user_settles[winuser].gangScore += len(g.fighter)
                                 for f in g.fighter:
                                     user_settles[f].gangScore -= 1
                             if g.type == MGANG:
-                                user_settles[user.player_id].gangScore += 2 * len(g.fighter)
+                                user_settles[winuser].gangScore += 2 * len(g.fighter)
                                 for f in g.fighter:
                                     user_settles[f].gangScore -= 2
                             if g.type == AGANG:
-                                user_settles[user.player_id].gangScore += 2 * len(g.fighter)
+                                user_settles[winuser].gangScore += 2 * len(g.fighter)
                                 for f in g.fighter:
                                     user_settles[f].gangScore -= 2
             else:
                 for user in request.player:
                     for g in user.gang:
+                        winuser = user.player_id
+                        if 0 != g.zhuanyi:
+                            winuser = g.zhuanyi
                         if g.type == BGANG:
-                            user_settles[user.player_id].gangScore += len(g.fighter)
+                            user_settles[winuser].gangScore += len(g.fighter)
                             for f in g.fighter:
                                 user_settles[f].gangScore -= 1
                         if g.type == MGANG:
-                            user_settles[user.player_id].gangScore += 2 * len(g.fighter)
+                            user_settles[winuser].gangScore += 2 * len(g.fighter)
                             for f in g.fighter:
                                 user_settles[f].gangScore -= 2
                         if g.type == AGANG:
-                            user_settles[user.player_id].gangScore += 2 * len(g.fighter)
+                            user_settles[winuser].gangScore += 2 * len(g.fighter)
                             for f in g.fighter:
                                 user_settles[f].gangScore -= 2
         for sett in settle.userSettleResule:
@@ -192,8 +198,7 @@ class Performance(mahjong_pb2_grpc.MajongCalculateServicer):
         """
         shuffle = ShuffleResult()
         cardlist = list()
-        cardlist.extend([1, 1, 1, 1,
-                         2, 2, 2, 2,
+        cardlist.extend([
                          3, 3, 3, 3,
                          4, 4, 4, 4,
                          5, 5, 5, 5,
@@ -219,7 +224,9 @@ class Performance(mahjong_pb2_grpc.MajongCalculateServicer):
                          27, 27, 27, 27,
                          28, 28, 28, 28,
                          29, 29, 29, 29])
-        random.shuffle(cardlist)
+        #random.shuffle(cardlist)
+        shuffle.cardlist.extend([1, 1, 1, 1,
+                                 2, 2, 2, 2])
         shuffle.cardlist.extend(cardlist)
         return shuffle
 
@@ -256,6 +263,22 @@ if __name__ == '__main__':
 
     rpc_server()
     thislog.removeHandler(log_file_handler)()
+    # huTemp = MahjongUtils.get_hu([13,13,14,14,15,18,18,19,19,25,25,29,29], 0)
+    # for h in huTemp:
+    #     tempcard = list()
+    #     tempcard.extend([13,13,14,14,15,18,18,19,19,25,25,29,29])
+    #     tempcard.append(h)
+    #     # 获取牌型
+    #     cardtype = chengdu_mahjong.getCardType(tempcard, [], [],
+    #                                            0)
+    #     cardscore = chengdu_mahjong.getScore(cardtype)
+    #     # 带跟翻倍
+    #     allcard = []
+    #     allcard.extend(tempcard)
+    #     for i in range(0, len(MahjongUtils.get_si(allcard))):
+    #         cardscore *= 2
+    #     if cardscore > score:
+    #         score = cardscore
     # print wanzhou_mahjong.getCardType([5, 7, 22, 22, 9, 29, 9, 29, 14, 17, 14, 17, 5, 7], [], [], 21)
 
 

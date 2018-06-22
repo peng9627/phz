@@ -19,6 +19,7 @@ message PlayData {
     repeated int32 lastcards = 3; //牌
     int32 cardtype = 4; //牌型
     int32 count = 5; //人数
+    bool baodan = 6;
 }
 
 message PlayResult {

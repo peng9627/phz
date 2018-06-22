@@ -147,7 +147,7 @@ message ShuffleResult {
 //    SANLONGQIDUI = 24; //三龙七对x96
 //    SIYAOJI = 25; //四个幺鸡x48
 //    YINGHU = 26; //硬胡
-//    QINSANDA = 27
+//    QINGSANDA = 27
 //}
 //荣昌麻将
 //enum SettlePatterns {

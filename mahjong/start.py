@@ -222,9 +222,9 @@ class Performance(mahjong_pb2_grpc.MajongCalculateServicer):
                     score += 1
                 for u in hudata.loseUsers:
                     if users[u].baojiao:
-                        if 1 == score:
-                            user_settles[u].cardScore -= 6
-                            user_settles[hudata.huUser].cardScore += 6
+                        if 1 == score or 2 == score:
+                            user_settles[u].cardScore -= score + 5
+                            user_settles[hudata.huUser].cardScore += score + 5
                         else:
                             user_settles[u].cardScore -= score + 6
                             user_settles[hudata.huUser].cardScore += score + 6
@@ -507,7 +507,7 @@ if __name__ == '__main__':
 
     rpc_server()
     thislog.removeHandler(log_file_handler)()
-    # print wanzhou_mahjong.getCardType([5, 7, 22, 22, 9, 29, 9, 29, 14, 17, 14, 17, 5, 7], [], [], 21)
+    # print MahjongUtils.double7([1,1,1,2,2,2,2,4,4,4,4,5,7,6],1)
 
 
 class Formatter(logging.Formatter):

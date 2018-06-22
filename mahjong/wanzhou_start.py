@@ -65,23 +65,31 @@ class Performance(mahjong_pb2_grpc.MajongCalculateServicer):
                         score = 12
                     else:
                         score *= 2
+            if request.yinghu and request.rogue != 0:
+                allcard = list()
+                allcard.extend(users[hudata.huUser].handlist)
+                allcard.extend(users[hudata.huUser].peng)
+                allcard.append(hudata.majong)
+                for gang in users[hudata.huUser].gang:
+                    allcard.append(gang.gangvalue)
+                if 21 not in allcard:
+                    if 1 == score:
+                        score = 12
+                    else:
+                        score *= 2
+                    user_settles[hudata.huUser].settlePatterns.append(26)
             if 0 in hudata.settle and score == 1:
                 score += 1
             if score > request.fengding:
                 score = request.fengding
-            user_settles[hudata.huUser].settlePatterns.append(cardtype)
-            user_settles[hudata.huUser].settlePatterns.extend(hudata.settle)
+            if cardtype not in user_settles[hudata.huUser].settlePatterns:
+                user_settles[hudata.huUser].settlePatterns.append(cardtype)
+            for set in hudata.settle:
+                if set not in user_settles[hudata.huUser].settlePatterns:
+                    user_settles[hudata.huUser].settlePatterns.append(set)
             for u in hudata.loseUsers:
-                if users[u].baojiao:
-                    if 2 == score or 1 == score:
-                        user_settles[u].cardScore -= 12
-                        user_settles[hudata.huUser].cardScore += 12
-                    else:
-                        user_settles[u].cardScore -= score * 2
-                        user_settles[hudata.huUser].cardScore += score * 2
-                else:
-                    user_settles[u].cardScore -= score
-                    user_settles[hudata.huUser].cardScore += score
+                user_settles[u].cardScore -= score
+                user_settles[hudata.huUser].cardScore += score
         if request.peijiao:
             peijiao_users = list()
             user_score = {}
@@ -105,6 +113,18 @@ class Performance(mahjong_pb2_grpc.MajongCalculateServicer):
                                 cardscore = 12
                             else:
                                 cardscore *= 2
+                            if request.yinghu and request.rogue != 0:
+                                allcard = list()
+                                allcard.extend(users[c].handlist)
+                                allcard.extend(users[c].peng)
+                                allcard.append(h)
+                                for gang in users[c].gang:
+                                    allcard.append(gang.gangvalue)
+                                if 21 not in allcard:
+                                    if 1 == cardscore:
+                                        cardscore = 12
+                                    else:
+                                        cardscore *= 2
                             if cardscore > score:
                                 score = cardscore
                             if score > request.fengding:
@@ -225,25 +245,45 @@ class Performance(mahjong_pb2_grpc.MajongCalculateServicer):
         :return:
         """
         gangs = Cards()
-        si = MahjongUtils.get_si(request.player.handlist)
-        for s in si:
-            temp = request.player.handlist
-            temp.remove(s)
-            temp.remove(s)
-            temp.remove(s)
-            temp.remove(s)
-            if 0 < len(MahjongUtils.get_hu(temp, 0)):
-                gangs.cards.append(s)
-            temp.append(s)
-            temp.append(s)
-            temp.append(s)
-            temp.append(s)
-        for p in request.player.peng:
-            temp = request.player.handlist
-            temp.remove(p)
-            if 0 < len(MahjongUtils.get_hu(temp, 0)):
-                gangs.cards.append(p)
-            temp.append(p)
+        # 暗杠 扒杠
+        if len(request.player.handlist) % 3 == 2:
+            temp = list()
+            temp.extend(request.player.handlist)
+            temp.remove(temp[len(temp) - 1])
+            beforeHu = MahjongUtils.get_hu(temp, 0)
+            si = MahjongUtils.get_si(request.player.handlist)
+            for s in si:
+                temp = list()
+                temp.extend(request.player.handlist)
+                temp.remove(s)
+                temp.remove(s)
+                temp.remove(s)
+                temp.remove(s)
+                afterHu = MahjongUtils.get_hu(temp, 0)
+                if 0 == len(beforeHu - afterHu) and 0 == len(afterHu - beforeHu):
+                    gangs.cards.append(s)
+            for p in request.player.peng:
+                temp = list()
+                temp.extend(request.player.handlist)
+                if p in temp:
+                    temp.remove(p)
+                    afterHu = MahjongUtils.get_hu(temp, 0)
+                    if 0 == len(beforeHu - afterHu) and 0 == len(afterHu - beforeHu):
+                        gangs.cards.append(p)
+        else:  # 点杠
+            temp = list()
+            temp.extend(request.player.handlist)
+            beforeHu = MahjongUtils.get_hu(temp, 0)
+            san = MahjongUtils.get_san(request.player.handlist)
+            for s in san:
+                temp = list()
+                temp.extend(request.player.handlist)
+                temp.remove(s)
+                temp.remove(s)
+                temp.remove(s)
+                afterHu = MahjongUtils.get_hu(temp, 0)
+                if 0 == len(beforeHu - afterHu) and 0 == len(afterHu - beforeHu):
+                    gangs.cards.append(s)
         return gangs
 
 
@@ -268,8 +308,8 @@ if __name__ == '__main__':
     log_fmt = '%(asctime)s %(filename)s[line:%(lineno)d] %(levelname)s %(message)s'
     formatter = logging.Formatter(log_fmt)
     log_file_handler = TimedRotatingFileHandler(
-        filename='../logs/mahjong/mahjong-%s.log' % time.strftime("%Y-%m-%d"), when="H", interval=1,
-        backupCount=7)
+        filename='../logs/mahjong/mahjong.log', when="H", interval=1,
+        backupCount=50)
     log_file_handler.suffix = "%Y-%m-%d_%H-%M.log"
     log_file_handler.extMatch = re.compile(r"^\d{4}-\d{2}-\d{2}_\d{2}-\d{2}.log$")
     log_file_handler.setFormatter(formatter)
@@ -278,12 +318,12 @@ if __name__ == '__main__':
 
     rpc_server()
     thislog.removeHandler(log_file_handler)()
-    # cardtype = wanzhou_mahjong.getCardType([21, 21, 21, 21, 12, 12, 15, 15,16,16,16], [28],
-    #                                        [], 21)
-    # t = CardUtils.get_si([21, 21, 21, 21, 12, 12, 15, 15,16,16,16])
+    # print wanzhou_mahjong.getCardType([1,1,1,1,22,22,22,22,3,3,4,4,5,5],[],[],21)
+    # t = CardUtils.get_si([21, 21, 21, 21, 12, 12, 15, 15, 16, 16, 16])
     # score = wanzhou_mahjong.getScore(cardtype)
     # print(cardtype)
     # print(score)
+    # print MahjongUtils.get_hu([4, 4, 6, 6, 11, 11, 15, 15, 16, 16, 24, 24, 21], 21)
 
 
 class Formatter(logging.Formatter):

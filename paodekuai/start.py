@@ -161,18 +161,32 @@ class Performance(paodekuai_pb2_grpc.PaodekuaiServicer):
         first = 0
         mincard = 415
         # 三人16张
-        if 3 == request.count:
+        if 4 != request.count:
             cardlist.remove(102)
             cardlist.remove(202)
             cardlist.remove(302)
             cardlist.remove(414)
-            for i in range(0, 3):
+            for i in range(0, request.count):
                 for j in range(i * 16, (i + 1) * 16):
                     if 402 < cardlist[j] < mincard:
                         first = i
                         mincard = cardlist[j]
+
+            if 415 == mincard:
+                mincard = 315
+                for i in range(0, request.count):
+                    for j in range(i * 16, (i + 1) * 16):
+                        if 402 == cardlist[j]:
+                            shuffle.first = i
+                            shuffle.min = 402
+                            shuffle.cardlist.extend(cardlist)
+                            return shuffle
+                        if 302 < cardlist[j] < mincard:
+                            first = i
+                            mincard = cardlist[j]
+
         else:
-            for i in range(0, 4):
+            for i in range(0, request.count):
                 for j in range(i * 13, (i + 1) * 13):
                     if 402 < cardlist[j] < mincard:
                         first = i

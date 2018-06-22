@@ -87,9 +87,11 @@ class Performance(mahjong_pb2_grpc.MajongCalculateServicer):
                 allcard.append(g.gangvalue)
             for i in range(0, len(MahjongUtils.get_si(allcard))):
                 score *= 2
+            if 0 in ct and request.zimojiafan:
+                score *= 2
             if score > request.fengding:
                 score = request.fengding
-            if 0 in ct:
+            if 0 in ct and not request.zimojiafan:
                 score += 1
             for u in hudata.loseUsers:
                 user_settles[u].cardScore -= score
@@ -202,7 +204,7 @@ class Performance(mahjong_pb2_grpc.MajongCalculateServicer):
                          27, 27, 27, 27,
                          28, 28, 28, 28,
                          29, 29, 29, 29])
-        random.shuffle(cardlist)
+        #random.shuffle(cardlist)
         shuffle.cardlist.extend(cardlist)
         return shuffle
 
