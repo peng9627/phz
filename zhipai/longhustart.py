@@ -95,8 +95,7 @@ class Performance(zhipai_pb2_grpc.ZhipaiServicer):
                          111, 211, 311, 411,
                          112, 212, 312, 412,
                          113, 213, 313, 413,
-                         114, 214, 314, 414,
-                         500, 600])
+                         114, 214, 314, 414])
         random.shuffle(cardlist)
         shuffle.cardlist.extend(cardlist)
         return shuffle

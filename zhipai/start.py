@@ -206,8 +206,8 @@ class Douniuniu(object):
             return val1
         # 万州牛牛
         if 4 == allocid:
-            # if Niuniu.sameColor(temp) and Niuniu.isShunziniu(temp):
-            #     return 17
+            if Niuniu.sameColor(temp) and Niuniu.isShunziniu(temp):
+                return 17
             # jz
             # 五小牛
             # if Niuniu.isWuxiaoniu(temp):
@@ -219,37 +219,6 @@ class Douniuniu(object):
             # if Niuniu.isWuhuaniu(temp):
             #     return 11
             # xm
-            # # 五小牛
-            # if Niuniu.isWuxiaoniu(temp):
-            #     return 16
-            # # 炸弹牛
-            # if Niuniu.isZhadanniu(temp):
-            #     return 15
-            # # 葫芦牛
-            # if Niuniu.isHuluniu(temp):
-            #     return 14
-            # # 同花牛
-            # if Niuniu.sameColor(temp):
-            #     return 13
-            # # 顺子牛
-            # if Niuniu.isShunziniu(temp):
-            #     return 12
-            # # 五花牛
-            # if Niuniu.isWuhuaniu(temp):
-            #     return 11
-
-            # wz
-            # 五花牛
-            # if Niuniu.isWuhuaniu(temp):
-            #     return 12
-            # # 炸弹牛
-            # if Niuniu.isZhadanniu(temp):
-            #     return 11
-
-            # youyou
-            # 同花顺
-            if Niuniu.sameColor(temp) and Niuniu.isShunziniu(temp):
-                return 17
             # 五小牛
             if Niuniu.isWuxiaoniu(temp):
                 return 16
@@ -269,6 +238,37 @@ class Douniuniu(object):
             if Niuniu.isWuhuaniu(temp):
                 return 11
 
+            # wz
+            # 五花牛
+            # if Niuniu.isWuhuaniu(temp):
+            #     return 12
+            # # 炸弹牛
+            # if Niuniu.isZhadanniu(temp):
+            #     return 11
+
+            # youyou
+            # 同花顺
+            # if Niuniu.sameColor(temp) and Niuniu.isShunziniu(temp):
+            #     return 17
+            # # 五小牛
+            # if Niuniu.isWuxiaoniu(temp):
+            #     return 16
+            # # 炸弹牛
+            # if Niuniu.isZhadanniu(temp):
+            #     return 15
+            # # 葫芦牛
+            # if Niuniu.isHuluniu(temp):
+            #     return 14
+            # # 同花牛
+            # if Niuniu.sameColor(temp):
+            #     return 13
+            # # 顺子牛
+            # if Niuniu.isShunziniu(temp):
+            #     return 12
+            # # 五花牛
+            # if Niuniu.isWuhuaniu(temp):
+            #     return 11
+
             val1 = 0
             for i in range(0, 4):
                 for j in range(i + 1, 5):
@@ -277,34 +277,34 @@ class Douniuniu(object):
                     if (temp1 % 100 + temp2 % 100) % 10 == sum_val % 10:
                         val1 = (10 if sum_val % 10 == 0 else sum_val % 10)
             # 坎顺斗
-            # valuetemp = list()
-            # for t in temp:
-            #     valuetemp.append(10 if (t % 100) > 10 else (t % 100))
-            # if gamerules % 2 == 1:
-            #     shunvalue = Niuniu.getShunDouValue(cardlist)
-            #     if val1 < shunvalue:
-            #         val1 = shunvalue
-            #     tempval = valuetemp[3] + valuetemp[4]
-            #     if tempval % 10 == 0:
-            #         tempval = 10
-            #     else:
-            #         tempval %= 10
-            #     if temp[0] % 100 == temp[2] % 100 and tempval > val1:
-            #         val1 = tempval
-            #     tempval = valuetemp[0] + valuetemp[4]
-            #     if tempval % 10 == 0:
-            #         tempval = 10
-            #     else:
-            #         tempval %= 10
-            #     if temp[1] % 100 == temp[3] % 100 and tempval > val1:
-            #         val1 = tempval
-            #     tempval = valuetemp[0] + valuetemp[1]
-            #     if tempval % 10 == 0:
-            #         tempval = 10
-            #     else:
-            #         tempval %= 10
-            #     if temp[2] % 100 == temp[4] % 100 and tempval > val1:
-            #         val1 = tempval
+            valuetemp = list()
+            for t in temp:
+                valuetemp.append(10 if (t % 100) > 10 else (t % 100))
+            if gamerules % 2 == 1:
+                shunvalue = Niuniu.getShunDouValue(cardlist)
+                if val1 < shunvalue:
+                    val1 = shunvalue
+                tempval = valuetemp[3] + valuetemp[4]
+                if tempval % 10 == 0:
+                    tempval = 10
+                else:
+                    tempval %= 10
+                if temp[0] % 100 == temp[2] % 100 and tempval > val1:
+                    val1 = tempval
+                tempval = valuetemp[0] + valuetemp[4]
+                if tempval % 10 == 0:
+                    tempval = 10
+                else:
+                    tempval %= 10
+                if temp[1] % 100 == temp[3] % 100 and tempval > val1:
+                    val1 = tempval
+                tempval = valuetemp[0] + valuetemp[1]
+                if tempval % 10 == 0:
+                    tempval = 10
+                else:
+                    tempval %= 10
+                if temp[2] % 100 == temp[4] % 100 and tempval > val1:
+                    val1 = tempval
             return val1
         # 南陵牛牛
         if 8 == allocid:
@@ -427,67 +427,67 @@ class Douniuniu(object):
             #     return 2
 
             # 讯米
-            # if 1 == (gamerules >> 1) % 2:
-            #     if 17 == value:
-            #         return 15
-            #     if 16 == value:
-            #         return 13
-            #     if 15 == value:
-            #         return 12
-            #     if 14 == value:
-            #         return 12
-            #     if 13 == value:
-            #         return 13
-            #     if 12 == value:
-            #         return 11
-            #     if 11 == value:
-            #         return 11
-            #     if 0 < value:
-            #         return value
-            # else:
-            #     if 17 == value:
-            #         return 5
-            #     if 16 == value:
-            #         return 5
-            #     if 15 == value:
-            #         return 5
-            #     if 14 == value:
-            #         return 5
-            #     if 13 == value:
-            #         return 5
-            #     if 12 == value:
-            #         return 5
-            #     if 11 == value:
-            #         return 5
-            #     if 10 == value:
-            #         return 4
-            #     if 9 == value:
-            #         return 3
-            #     if 6 < value:
-            #         return 2
+            if 1 == (gamerules >> 1) % 2:
+                if 17 == value:
+                    return 15
+                if 16 == value:
+                    return 13
+                if 15 == value:
+                    return 12
+                if 14 == value:
+                    return 12
+                if 13 == value:
+                    return 13
+                if 12 == value:
+                    return 11
+                if 11 == value:
+                    return 11
+                if 0 < value:
+                    return value
+            else:
+                if 17 == value:
+                    return 5
+                if 16 == value:
+                    return 5
+                if 15 == value:
+                    return 5
+                if 14 == value:
+                    return 5
+                if 13 == value:
+                    return 5
+                if 12 == value:
+                    return 5
+                if 11 == value:
+                    return 5
+                if 10 == value:
+                    return 4
+                if 9 == value:
+                    return 3
+                if 6 < value:
+                    return 2
 
             # 悠游
-            if 17 == value:
-                return 50
-            if 16 == value:
-                return 50
-            if 15 == value:
-                return 50
-            if 14 == value:
-                return 50
-            if 13 == value:
-                return 50
-            if 12 == value:
-                return 50
-            if 11 == value:
-                return 50
-            if 10 == value:
-                return 50
-            if 7 < value:
-                return 50
-            if 6 < value:
-                return 50
-            return 50
+            # if 17 == value:
+            #     return 10
+            # if 16 == value:
+            #     return 9
+            # if 15 == value:
+            #     return 8
+            # if 14 == value:
+            #     return 7
+            # if 13 == value:
+            #     return 6
+            # if 12 == value:
+            #     return 5
+            # if 11 == value:
+            #     return 5
+            # if 10 == value:
+            #     return 4
+            # if 7 < value:
+            #     return 3
+            # if 6 < value:
+            #     return 2
+            return 1
 
         if 7 == allocid:
             if 1 == (gamerules % 2):
@@ -666,8 +666,10 @@ class Performance(zhipai_pb2_grpc.ZhipaiServicer):
             userSettleResult = settle.userSettleResule.add()
             userSettleResult.userId = u1.userId
             userSettleResult.win = win
+            userSettleResult.cardValue = Zhajinhua.getCardType(u1.cardlist, False)
             userSettleResult = settle.userSettleResule.add()
             userSettleResult.userId = u2.userId
+            userSettleResult.cardValue = Zhajinhua.getCardType(u2.cardlist, False)
             userSettleResult.win = -win
         if 6 == request.allocid:
             u1 = request.userSettleData[0]
@@ -707,11 +709,7 @@ class Performance(zhipai_pb2_grpc.ZhipaiServicer):
                                 user_multiple *= user_value / 2
 
                             # TODO
-                            if user_type == banker_type and user_value == banker_value == 0:
-                                userSettleResult.win = -banker_multiple * u.score
-                                win += banker_multiple * u.score
-
-                            elif user_type < banker_type or (user_type == banker_type and user_value < banker_value):
+                            if user_type < banker_type or (user_type == banker_type and user_value < banker_value):
                                 userSettleResult.win = -banker_multiple * u.score
                                 win += banker_multiple * u.score
                             elif user_type > banker_type or (user_type == banker_type and user_value > banker_value):
@@ -720,19 +718,20 @@ class Performance(zhipai_pb2_grpc.ZhipaiServicer):
                             else:
                                 user_array_cards = sorted(u.cardlist)
                                 # TODO
-                                # if banker_array_cards[1] % 10 < user_array_cards[1] % 10:
-                                #     userSettleResult.win = user_multiple * u.score
-                                #     win -= user_multiple * u.score
-                                # elif banker_array_cards[1] % 10 > user_array_cards[1] % 10:
-                                #     userSettleResult.win = -banker_multiple * u.score
-                                #     win += banker_multiple * u.score
-
                                 if banker_array_cards[1] % 10 < user_array_cards[1] % 10:
                                     userSettleResult.win = user_multiple * u.score
                                     win -= user_multiple * u.score
-                                else:
+                                elif banker_array_cards[1] % 10 > user_array_cards[1] % 10:
                                     userSettleResult.win = -banker_multiple * u.score
                                     win += banker_multiple * u.score
+
+                                # if banker_array_cards[1] != 31 and (banker_array_cards[1] % 10 < user_array_cards[
+                                #     1] % 10 or user_array_cards[1] == 31):
+                                #     userSettleResult.win = user_multiple * u.score
+                                #     win -= user_multiple * u.score
+                                # else:
+                                #     userSettleResult.win = -banker_multiple * u.score
+                                #     win += banker_multiple * u.score
 
                     userSettleResult = settle.userSettleResule.add()
                     userSettleResult.userId = b.userId
@@ -775,6 +774,7 @@ class Performance(zhipai_pb2_grpc.ZhipaiServicer):
                              112, 212, 312, 412,
                              113, 213, 313, 413,
                              114, 214, 314, 414])
+            shuffle.cardlist.extend([102, 204, 304, 308, 413])
             random.shuffle(cardlist)
             cheat_index = 0
             cheat_probability = 0

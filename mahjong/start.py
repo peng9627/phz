@@ -214,6 +214,10 @@ class Performance(mahjong_pb2_grpc.MajongCalculateServicer):
                 ct.extend(hudata.settle)
                 if 3 in ct and 10 in ct:
                     ct.remove(3)
+                if 3 in ct and 7 in ct:
+                    ct.remove(3)
+                    ct.remove(7)
+                    ct.append(10)
                 if 0 == len(ct):
                     ct.append(0)
                 user_settles[hudata.huUser].settlePatterns.extend(ct)
