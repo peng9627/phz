@@ -206,8 +206,8 @@ class Douniuniu(object):
             return val1
         # 万州牛牛
         if 4 == allocid:
-            if Niuniu.sameColor(temp) and Niuniu.isShunziniu(temp):
-                return 17
+            # if Niuniu.sameColor(temp) and Niuniu.isShunziniu(temp):
+            #     return 17
             # jz
             # 五小牛
             # if Niuniu.isWuxiaoniu(temp):
@@ -220,23 +220,23 @@ class Douniuniu(object):
             #     return 11
             # xm
             # 五小牛
-            if Niuniu.isWuxiaoniu(temp):
-                return 16
-            # 炸弹牛
-            if Niuniu.isZhadanniu(temp):
-                return 15
-            # 葫芦牛
-            if Niuniu.isHuluniu(temp):
-                return 14
-            # 同花牛
-            if Niuniu.sameColor(temp):
-                return 13
-            # 顺子牛
-            if Niuniu.isShunziniu(temp):
-                return 12
-            # 五花牛
-            if Niuniu.isWuhuaniu(temp):
-                return 11
+            # if Niuniu.isWuxiaoniu(temp):
+            #     return 16
+            # # 炸弹牛
+            # if Niuniu.isZhadanniu(temp):
+            #     return 15
+            # # 葫芦牛
+            # if Niuniu.isHuluniu(temp):
+            #     return 14
+            # # 同花牛
+            # if Niuniu.sameColor(temp):
+            #     return 13
+            # # 顺子牛
+            # if Niuniu.isShunziniu(temp):
+            #     return 12
+            # # 五花牛
+            # if Niuniu.isWuhuaniu(temp):
+            #     return 11
 
             # wz
             # 五花牛
@@ -269,6 +269,39 @@ class Douniuniu(object):
             # if Niuniu.isWuhuaniu(temp):
             #     return 11
 
+            # 心悦
+            if (gamerules >> 2) % 2 == 1:
+                # 同花顺
+                if Niuniu.sameColor(temp) and Niuniu.isShunziniu(temp):
+                    return 17
+                # 五小牛
+                if Niuniu.isWuxiaoniu(temp):
+                    return 16
+                # 炸弹牛
+                if Niuniu.isZhadanniu(temp):
+                    return 15
+                # 葫芦牛
+                if Niuniu.isHuluniu(temp):
+                    return 14
+                # 同花牛
+                if Niuniu.sameColor(temp):
+                    return 13
+                # 顺子牛
+                if Niuniu.isShunziniu(temp):
+                    return 12
+                # 五花牛
+                if Niuniu.isWuhuaniu(temp):
+                    return 11
+            else:
+                # 五小牛
+                if Niuniu.isWuxiaoniu(temp):
+                    return 16
+                # 炸弹牛
+                if Niuniu.isZhadanniu(temp):
+                    return 15
+                # 五花牛
+                if Niuniu.isWuhuaniu(temp):
+                    return 11
             val1 = 0
             for i in range(0, 4):
                 for j in range(i + 1, 5):
@@ -466,7 +499,7 @@ class Douniuniu(object):
                 if 6 < value:
                     return 2
 
-            # 悠游
+            # # 悠游
             # if 17 == value:
             #     return 10
             # if 16 == value:
@@ -774,7 +807,6 @@ class Performance(zhipai_pb2_grpc.ZhipaiServicer):
                              112, 212, 312, 412,
                              113, 213, 313, 413,
                              114, 214, 314, 414])
-            shuffle.cardlist.extend([102, 204, 304, 308, 413])
             random.shuffle(cardlist)
             cheat_index = 0
             cheat_probability = 0
