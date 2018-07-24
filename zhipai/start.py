@@ -270,7 +270,7 @@ class Douniuniu(object):
             #     return 11
 
             # 心悦
-            if (gamerules >> 2) % 2 == 1:
+            if (gamerules >> 3) % 2 == 1:
                 # 同花顺
                 if Niuniu.sameColor(temp) and Niuniu.isShunziniu(temp):
                     return 17
@@ -338,6 +338,7 @@ class Douniuniu(object):
                     tempval %= 10
                 if temp[2] % 100 == temp[4] % 100 and tempval > val1:
                     val1 = tempval
+            logging.info(val1)
             return val1
         # 南陵牛牛
         if 8 == allocid:
@@ -808,6 +809,8 @@ class Performance(zhipai_pb2_grpc.ZhipaiServicer):
                              113, 213, 313, 413,
                              114, 214, 314, 414])
             random.shuffle(cardlist)
+            shuffle.cardlist.extend([202, 408, 111, 302, 411])
+            shuffle.cardlist.extend([404, 414, 205, 112, 113])
             cheat_index = 0
             cheat_probability = 0
             for c in range(0, len(request.cheatData)):
