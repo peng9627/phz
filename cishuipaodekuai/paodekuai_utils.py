@@ -16,10 +16,13 @@ class PaodekuaiUtils(object):
         temp = []
         for c in cards:
             if 2 == c % 100:
-                temp.append(15)
+                temp.append(16)
             else:
                 temp.append(c % 100)
         temp = sorted(temp)
+
+        if 5 <= len(cards) and PaodekuaiUtils.is_shunzi(cards):
+            return PaodekuaiType.SHUNZI
 
         if 1 == len(temp):
             return PaodekuaiType.DANPAI
@@ -39,31 +42,16 @@ class PaodekuaiUtils(object):
                 if (temp[0] == temp[2] and temp[3] == temp[4]) or (temp[0] == temp[1] and temp[2] == temp[4]):
                     return PaodekuaiType.SANDAIDUI
                 return PaodekuaiType.SANDAIER
-            for c in range(0, len(temp) - 1):
-                if temp[c] != temp[c + 1] - 1:
-                    return PaodekuaiType.ERROR
-            return PaodekuaiType.SHUNZI
         elif 6 == len(temp):
             if temp[0] == temp[2] and temp[3] == temp[5] and temp[0] == temp[3] - 1:
                 return PaodekuaiType.SANLIAN
             elif temp[0] == temp[1] and temp[0] == temp[2] - 1 and temp[2] == temp[3] and temp[2] == temp[4] - 1 and \
                     temp[4] == temp[5]:
                 return PaodekuaiType.LIANDUI
-            for c in range(0, len(temp) - 1):
-                if temp[c] != temp[c + 1] - 1:
-                    return PaodekuaiType.ERROR
-            return PaodekuaiType.SHUNZI
         elif 7 == len(temp):
             if temp[0] == temp[3] or temp[1] == temp[4] or temp[2] == temp[5] or temp[3] == temp[6]:
                 return PaodekuaiType.SIZHANG
         if len(temp) > 6:
-            istype = True
-            for c in range(0, len(temp) - 1):
-                if temp[c] != temp[c + 1] - 1:
-                    istype = False
-                    break
-            if istype:
-                return PaodekuaiType.SHUNZI
             istype = True
             for c in range(1, len(temp) - 2, 2):
                 if temp[c] != temp[c + 1] - 1 or temp[c + 1] != temp[c + 2]:
@@ -106,17 +94,24 @@ class PaodekuaiUtils(object):
         temp = []
         for c in cards:
             if 2 == c % 100:
-                temp.append(15)
+                temp.append(16)
             else:
                 temp.append(c % 100)
         temp = sorted(temp)
         if cardtype == PaodekuaiType.DANPAI \
                 or cardtype == PaodekuaiType.DUIZI \
                 or cardtype == PaodekuaiType.LIANDUI \
-                or cardtype == PaodekuaiType.SHUNZI \
                 or cardtype == PaodekuaiType.ZHADAN \
                 or cardtype == PaodekuaiType.SANLIAN:
             return temp[0]
+        elif cardtype == PaodekuaiType.SHUNZI:
+            if 16 in temp:
+                if 14 in temp:
+                    return 1
+                else:
+                    return 2
+            else:
+                return temp[0]
         elif cardtype == PaodekuaiType.SANBUDAI \
                 or cardtype == PaodekuaiType.SANDAIER \
                 or cardtype == PaodekuaiType.SANDAIDUI:
@@ -203,6 +198,25 @@ class PaodekuaiUtils(object):
                             return shunzi
                     elif dan[j] % 100 > lastvalue:
                         break
+        if 1 > value and (114 in cardlist or 214 in cardlist or 314 in cardlist or 414):
+            shunzi = list()
+            v = 2
+            for d in dan:
+                if d % 100 == v:
+                    shunzi.append(d)
+                    if len(shunzi) == size:
+                        if 114 in cardlist:
+                            shunzi.append(114)
+                        elif 214 in cardlist:
+                            shunzi.append(214)
+                        elif 314 in cardlist:
+                            shunzi.append(314)
+                        elif 414 in cardlist:
+                            shunzi.append(414)
+                        return shunzi
+                    v += 1
+                elif d % 100 > v:
+                    break
         return []
 
     @staticmethod
@@ -286,7 +300,7 @@ class PaodekuaiUtils(object):
         cards.sort(cmp=PaodekuaiUtils.reversed_cmp)
         si = PaodekuaiUtils.get_zhadan(cards)
         if cardtype == PaodekuaiType.DANPAI:
-            if cards[len(cards) - 1] % 100 > lastvalue or (cards[len(cards) - 1] % 100 == 2 and lastvalue != 15):
+            if cards[len(cards) - 1] % 100 > lastvalue or (cards[len(cards) - 1] % 100 == 2 and lastvalue != 16):
                 playcards.append(cards[len(cards) - 1])
                 return playcards
             if len(si) > 0:
@@ -295,7 +309,7 @@ class PaodekuaiUtils(object):
         elif cardtype == PaodekuaiType.DUIZI:
             dui = PaodekuaiUtils.get_duizi(cards)
             if len(dui) > 0 and (
-                    dui[len(dui) - 1] % 100 > lastvalue or (dui[len(dui) - 1] % 100 == 2 and lastvalue != 15)):
+                    dui[len(dui) - 1] % 100 > lastvalue or (dui[len(dui) - 1] % 100 == 2 and lastvalue != 16)):
                 playcards.append(dui[len(dui) - 1])
                 playcards.append(dui[len(dui) - 2])
                 return playcards
@@ -323,7 +337,7 @@ class PaodekuaiUtils(object):
                 return playcards
             san = PaodekuaiUtils.get_san(cards)
             if len(san) > 0 and (
-                    san[len(san) - 1] % 100 > lastvalue or (san[len(san) - 1] % 100 == 2 and lastvalue != 15)):
+                    san[len(san) - 1] % 100 > lastvalue or (san[len(san) - 1] % 100 == 2 and lastvalue != 16)):
                 tempcards = list()
                 tempcards.extend(cards)
                 tempcards.remove(san[len(san) - 1])
@@ -357,7 +371,7 @@ class PaodekuaiUtils(object):
                 playcards.extend(si[0:4])
                 return playcards
         elif cardtype == PaodekuaiType.ZHADAN:
-            if 0 < len(si) and (si[len(si) - 1] % 100 > lastvalue or (si[len(si) - 1] % 100 == 2 and lastvalue != 15)):
+            if 0 < len(si) and (si[len(si) - 1] % 100 > lastvalue or (si[len(si) - 1] % 100 == 2 and lastvalue != 16)):
                 playcards.append(si[len(si) - 1])
                 playcards.append(si[len(si) - 2])
                 playcards.append(si[len(si) - 3])
@@ -450,3 +464,24 @@ class PaodekuaiUtils(object):
         if x < y:
             return -1
         return 0
+
+    @staticmethod
+    def is_shunzi(cardlist):
+        """
+        :是不是顺子
+        :param cardlist
+        """
+        has2 = 102 in cardlist or 202 in cardlist or 302 in cardlist or 402 in cardlist
+        temp = []
+        for c in cardlist:
+            if has2 and 14 == c % 100:
+                temp.append(1)
+            else:
+                temp.append(c % 100)
+        temp = sorted(temp)
+        istype = True
+        for c in range(0, len(temp) - 1):
+            if temp[c] != temp[c + 1] - 1:
+                istype = False
+                break
+        return istype

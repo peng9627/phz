@@ -53,14 +53,14 @@ class Daer(object):
         :return:
         """
         if (s - 2 in handlist and s - 1 in handlist) or (s + 1 in handlist and s - 1 in handlist) or (
-                            s + 2 in handlist and s + 1 in handlist):
+                s + 2 in handlist and s + 1 in handlist):
             return True
         if (s == 2 and 7 in handlist and 10 in handlist) or (s == 7 and 2 in handlist and 10 in handlist) or (
-                            s == 10 and 7 in handlist and 2 in handlist):
+                s == 10 and 7 in handlist and 2 in handlist):
             return True
         if (s == 102 and 107 in handlist and 110 in handlist) or (
-                            s == 107 and 102 in handlist and 110 in handlist) or (
-                            s == 110 and 107 in handlist and 102 in handlist):
+                s == 107 and 102 in handlist and 110 in handlist) or (
+                s == 110 and 107 in handlist and 102 in handlist):
             return True
         if 1 < Daer.containSize(handlist, s + 100):
             return True
@@ -273,7 +273,7 @@ class Daer(object):
         return si
 
     @staticmethod
-    def hu(handlist, penglist, hashu):
+    def hu(handlist, penglist, hashu, lanhu):
         """
         :计算能胡哪些牌
         :param handlist:
@@ -285,6 +285,7 @@ class Daer(object):
         possible = Daer.possible(handlist, 1)
         temp = []
         temp.extend(handlist)
+        temp = sorted(temp, cmp=Daer.reversed_cmp)
         if Daer.check_lug(temp) and (Daer.check_hu(temp, hashu) >= 10 or 0 == Daer.check_hu(temp, hashu)):
             hu = set.union(hu, penglist)
         for p in possible:
@@ -294,14 +295,16 @@ class Daer(object):
             temp = sorted(temp, cmp=Daer.reversed_cmp)
             dui = Daer.get_dui(temp)
             for d in dui:
-                if 2 == Daer.containSize(temp, d):
+                if 2 <= Daer.containSize(temp, d):
                     tempd = list()
                     tempd.extend(temp)
                     tempd.remove(d)
                     tempd.remove(d)
-                    if Daer.check_lug(tempd) and (Daer.check_hu(temp, hashu) >= 10 or 0 == Daer.check_hu(temp, hashu)):
+                    if Daer.check_lug(tempd) and (
+                            Daer.check_hu(tempd, hashu) >= 10 or (0 == Daer.check_hu(tempd, hashu) and lanhu)):
                         hu.add(p)
-            if Daer.check_lug(temp) and (Daer.check_hu(temp, hashu) >= 10 or 0 == Daer.check_hu(temp, hashu)):
+            if Daer.check_lug(temp) and (
+                    Daer.check_hu(temp, hashu) >= 10 or (0 == Daer.check_hu(temp, hashu) and lanhu)):
                 hu.add(p)
         return hu
 
@@ -332,7 +335,7 @@ class Daer(object):
         temp.extend(handlist)
         md_val = temp[0]
         temp.remove(md_val)
-        if 2 == Daer.containSize(temp, md_val):
+        if 2 <= Daer.containSize(temp, md_val):
             tempSame = list()
             tempSame.extend(temp)
             tempSame.remove(md_val)
@@ -390,8 +393,8 @@ class Daer(object):
         temp.extend(handlist)
         md_val = temp[0]
         temp.remove(md_val)
-        valtemp = 0
-        if 2 == Daer.containSize(temp, md_val):
+        valtemp = -1
+        if 2 <= Daer.containSize(temp, md_val):
             tempSame = list()
             tempSame.extend(temp)
             tempSame.remove(md_val)
@@ -456,7 +459,7 @@ class Daer(object):
                 if daxiaoxie1 > valtemp:
                     valtemp = daxiaoxie1
         if valtemp > -1:
-            return val + valtemp
+            return valtemp
         return -1
 
     @staticmethod
@@ -544,7 +547,22 @@ class Daer(object):
         handlist.extend(u.handlist)
         if 0 != huCard:
             handlist.append(huCard)
-        hu += Daer.check_hu(handlist, 0)
+        handlist = sorted(handlist, cmp=Daer.reversed_cmp)
+        handhu = 0
+        dui = Daer.get_dui(handlist)
+        for d in dui:
+            if 2 <= Daer.containSize(handlist, d):
+                tempd = list()
+                tempd.extend(handlist)
+                tempd.remove(d)
+                tempd.remove(d)
+                if Daer.check_lug(tempd):
+                    if -1 != Daer.check_hu(tempd, 0) and handhu < Daer.check_hu(tempd, 0):
+                        handhu = Daer.check_hu(tempd, 0)
+        if 0 != handhu:
+            hu += handhu
+        if -1 != Daer.check_hu(handlist, 0):
+            hu += Daer.check_hu(handlist, 0)
         return hu
 
 
@@ -575,8 +593,9 @@ class Performance(zipai_pb2_grpc.ZipaiServicer):
                     bang = 0
                 if hu > 26:
                     bang = (hu - 27) / 3 + 3
-                if request.qia:
+                if 1 == (request.gameRules >> 3) % 2 and hu > 0 and hu % 10 == 0:
                     bang += 1
+                    settle_type.add(QIA)
                 temp_card = list()
                 temp_card.extend(u.chilist)
                 temp_card.extend(u.penglist)
@@ -611,16 +630,19 @@ class Performance(zipai_pb2_grpc.ZipaiServicer):
                         bang *= bang
                     else:
                         bang += 5
+                if SANLONGSIKAN in request.settlePatterns:
+                    settle_type.add(SANLONGSIKAN)
                 if TIANHU in request.settlePatterns:
                     settle_type.add(TIANHU)
                     bang += 5
                 if DIHU in request.settlePatterns:
                     settle_type.add(DIHU)
                     bang += 5
-                if ZIMO in request.settlePatterns:
+                if 1 == request.gameRules % 2 and ZIMO in request.settlePatterns:
                     settle_type.add(ZIMO)
                     bang += 1
-                if 0 == len(u.kanlist) + len(u.longlist):
+                if 1 == (request.gameRules >> 1) % 2 and 0 == len(u.kanlist) + len(u.longlist) + len(
+                        u.zhaolist) and 0 != hu:
                     settle_type.add(PIAOHU)
                     bang += 1
                 if 5 > bang and 0 == hu:
@@ -656,7 +678,8 @@ class Performance(zipai_pb2_grpc.ZipaiServicer):
             Daer.chi(u.handlist, calculate)
             calculate.penglist.extend(Daer.peng(u.handlist))
             calculate.zhaolist.extend(Daer.get_san(u.handlist, u.kanlist))
-            calculate.hulist.extend(Daer.hu(u.handlist, u.penglist, Daer.get_hu(u, 0)))
+            calculate.hulist.extend(
+                Daer.hu(u.handlist, u.penglist, Daer.get_hu(u, 0), 1 == (request.gameRules >> 2) % 2))
             print "calculate返回penglist", calculate.penglist
             print "calculate返回zhaolist", calculate.zhaolist
             print "calculate返回hulist", calculate.hulist
@@ -704,47 +727,52 @@ class Performance(zipai_pb2_grpc.ZipaiServicer):
                     surplusCards.remove(surplusCards[index])
                 # if request.banker == dealCards.userId:
                 #     dealCards.cardlist.append(1)
-                #     dealCards.cardlist.append(2)
-                #     dealCards.cardlist.append(3)
-                #     dealCards.cardlist.append(4)
-                #     dealCards.cardlist.append(5)
-                #     dealCards.cardlist.append(6)
-                #     dealCards.cardlist.append(7)
-                #     dealCards.cardlist.append(8)
-                #     dealCards.cardlist.append(9)
-                #     dealCards.cardlist.append(10)
-                #     dealCards.cardlist.append(101)
-                #     dealCards.cardlist.append(102)
-                #     dealCards.cardlist.append(103)
-                #     dealCards.cardlist.append(104)
-                #     dealCards.cardlist.append(105)
-                #     dealCards.cardlist.append(106)
-                #     dealCards.cardlist.append(107)
-                #     dealCards.cardlist.append(108)
-                #     dealCards.cardlist.append(109)
-                #     dealCards.cardlist.append(110)
-                #     dealCards.cardlist.append(110)
-                # else:
                 #     dealCards.cardlist.append(1)
                 #     dealCards.cardlist.append(2)
+                #     dealCards.cardlist.append(2)
                 #     dealCards.cardlist.append(3)
+                #     dealCards.cardlist.append(3)
+                #     dealCards.cardlist.append(101)
+                #     dealCards.cardlist.append(101)
                 #     dealCards.cardlist.append(4)
+                #     dealCards.cardlist.append(4)
+                #
+                #     dealCards.cardlist.append(5)
                 #     dealCards.cardlist.append(5)
                 #     dealCards.cardlist.append(6)
+                #
+                #     dealCards.cardlist.append(6)
+                #
+                #     dealCards.cardlist.append(106)
+                #     dealCards.cardlist.append(106)
+                #     dealCards.cardlist.append(7)
+                #
                 #     dealCards.cardlist.append(7)
                 #     dealCards.cardlist.append(8)
+                #     dealCards.cardlist.append(8)
+                #
                 #     dealCards.cardlist.append(9)
-                #     dealCards.cardlist.append(10)
-                #     dealCards.cardlist.append(101)
-                #     dealCards.cardlist.append(102)
+                # else:
+                #     dealCards.cardlist.append(109)
+                #     dealCards.cardlist.append(9)
+                #     dealCards.cardlist.append(1)
+                #     dealCards.cardlist.append(2)
                 #     dealCards.cardlist.append(103)
+                #     dealCards.cardlist.append(4)
+                #     dealCards.cardlist.append(4)
+                #     dealCards.cardlist.append(104)
+                #     dealCards.cardlist.append(104)
+                #     dealCards.cardlist.append(5)
+                #     dealCards.cardlist.append(5)
+                #     dealCards.cardlist.append(105)
+                #     dealCards.cardlist.append(6)
+                #     dealCards.cardlist.append(6)
+                #     dealCards.cardlist.append(101)
+                #     dealCards.cardlist.append(106)
+                #     dealCards.cardlist.append(7)
+                #     dealCards.cardlist.append(8)
+                #     dealCards.cardlist.append(10)
                 #     dealCards.cardlist.append(108)
-                #     dealCards.cardlist.append(108)
-                #     dealCards.cardlist.append(109)
-                #     dealCards.cardlist.append(109)
-                #     dealCards.cardlist.append(109)
-                #     dealCards.cardlist.append(109)
-                #     dealCards.cardlist.append(110)
                 si = Daer.get_si(dealCards.cardlist)
                 dealCards.longlist.extend(si)
                 handTemp = list()
@@ -765,12 +793,13 @@ class Performance(zipai_pb2_grpc.ZipaiServicer):
                 u.longlist.extend(si)
                 u.kanlist.extend(san)
                 hu = Daer.get_hu(u, 0)
-                dealCards.hulist.extend(Daer.hu(handTemp, san, hu))
+                dealCards.hulist.extend(Daer.hu(handTemp, san, hu, 1 == (request.gameRules >> 2) % 2))
                 dealCards.penglist.extend(Daer.peng(handTemp))
                 dealCards.zhaolist.extend(Daer.get_san(handTemp, []))
                 dealCards.zhaolist.extend(dealCards.kanlist)
                 dealCards.tianhu = request.banker == dealCards.userId and Daer.check_lug(handTemp) and (
-                    Daer.check_hu(handTemp, hu) >= 10 or 0 == Daer.check_hu(handTemp, hu))
+                        Daer.check_hu(handTemp, hu) >= 10 or (
+                        0 == Daer.check_hu(handTemp, hu) and 1 == (request.gameRules >> 2) % 2))
         random.shuffle(surplusCards)
         shuffle.surplusCards.extend(surplusCards)
         return shuffle
@@ -794,3 +823,4 @@ def rpc_server():
 
 if __name__ == '__main__':
     rpc_server()
+    # print(Daer.hu([2, 2, 102, 3, 3, 103, 4, 5, 5, 6, 7, 8, 104, 104, 105, 105, 106, 9, 9, 109], [], 0))

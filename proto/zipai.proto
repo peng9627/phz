@@ -22,6 +22,7 @@ service Zipai {
 message CalculateData {
     int32 allocid = 1;
     UserData userData = 2;
+    int32 gameRules = 3; //规则
 }
 
 message CalculateResult {
@@ -37,7 +38,7 @@ message SettleData {
     int32 huCard = 3; //胡牌的牌
     repeated SettlePatterns settlePatterns = 4; //如果天地胡和自摸，需要传入
     bool dagun = 5; //红黑胡打滚
-    bool qia = 6; //洽
+    int32 gameRules = 6; //规则
     repeated UserData userData = 7; //结算用户
 }
 
@@ -69,6 +70,7 @@ message ShuffleData {
     int32 allocid = 1;
     repeated UserCardLevel userCardLevel = 2;
     int32 banker = 3;
+    int32 gameRules = 4; //规则
 }
 
 message UserCardLevel {
@@ -106,4 +108,6 @@ enum SettlePatterns {
     LANHU = 4; //烂胡
     ZIMO = 5; //自摸
     PIAOHU = 6; //票胡
+    SANLONGSIKAN = 7; //三拢四坎
+    QIA = 8; //洽
 }

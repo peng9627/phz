@@ -1063,20 +1063,20 @@ def rpc_server():
 
 
 if __name__ == '__main__':
-    log_fmt = '%(asctime)s %(filename)s[line:%(lineno)d] %(levelname)s %(message)s'
-    formatter = logging.Formatter(log_fmt)
-    log_file_handler = TimedRotatingFileHandler(
-        filename='../logs/zhipai/zhipai-%s.log' % time.strftime("%Y-%m-%d"), when="H", interval=1,
-        backupCount=7)
-    log_file_handler.suffix = "%Y-%m-%d_%H-%M.log"
-    log_file_handler.extMatch = re.compile(r"^\d{4}-\d{2}-\d{2}_\d{2}-\d{2}.log$")
-    log_file_handler.setFormatter(formatter)
-    log_file_handler.setLevel(logging.DEBUG)
-    thislog.addHandler(log_file_handler)
-
-    rpc_server()
-    thislog.removeHandler(log_file_handler)()
-    # print wanzhou_mahjong.getCardType([5, 7, 22, 22, 9, 29, 9, 29, 14, 17, 14, 17, 5, 7], [], [], 21)
+    # log_fmt = '%(asctime)s %(filename)s[line:%(lineno)d] %(levelname)s %(message)s'
+    # formatter = logging.Formatter(log_fmt)
+    # log_file_handler = TimedRotatingFileHandler(
+    #     filename='../logs/zhipai/zhipai-%s.log' % time.strftime("%Y-%m-%d"), when="H", interval=1,
+    #     backupCount=7)
+    # log_file_handler.suffix = "%Y-%m-%d_%H-%M.log"
+    # log_file_handler.extMatch = re.compile(r"^\d{4}-\d{2}-\d{2}_\d{2}-\d{2}.log$")
+    # log_file_handler.setFormatter(formatter)
+    # log_file_handler.setLevel(logging.DEBUG)
+    # thislog.addHandler(log_file_handler)
+    #
+    # rpc_server()
+    # thislog.removeHandler(log_file_handler)()
+    print Zhajinhua.compare([203, 213, 206], [203, 414, 413], False)
 
 
 class Formatter(logging.Formatter):

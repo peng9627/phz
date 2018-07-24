@@ -21,7 +21,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
     package='',
     syntax='proto3',
     serialized_pb=_b(
-        '\n\x0bzipai.proto\"=\n\rCalculateData\x12\x0f\n\x07\x61llocid\x18\x01 \x01(\x05\x12\x1b\n\x08userData\x18\x02 \x01(\x0b\x32\t.UserData\"\\\n\x0f\x43\x61lculateResult\x12\x15\n\x07\x63hilist\x18\x01 \x03(\x0b\x32\x04.Chi\x12\x10\n\x08penglist\x18\x02 \x03(\x05\x12\x10\n\x08zhaolist\x18\x03 \x03(\x05\x12\x0e\n\x06hulist\x18\x04 \x03(\x05\"\xa1\x01\n\nSettleData\x12\x0f\n\x07\x61llocid\x18\x01 \x01(\x05\x12\x10\n\x08huUserId\x18\x02 \x01(\x05\x12\x0e\n\x06huCard\x18\x03 \x01(\x05\x12\'\n\x0esettlePatterns\x18\x04 \x03(\x0e\x32\x0f.SettlePatterns\x12\r\n\x05\x64\x61gun\x18\x05 \x01(\x08\x12\x0b\n\x03qia\x18\x06 \x01(\x08\x12\x1b\n\x08userData\x18\x07 \x03(\x0b\x32\t.UserData\"\x84\x01\n\x08UserData\x12\x0e\n\x06userId\x18\x01 \x01(\x05\x12\x0f\n\x07\x63hilist\x18\x02 \x03(\x05\x12\x10\n\x08penglist\x18\x03 \x03(\x05\x12\x0f\n\x07kanlist\x18\x04 \x03(\x05\x12\x10\n\x08zhaolist\x18\x05 \x03(\x05\x12\x10\n\x08longlist\x18\x06 \x03(\x05\x12\x10\n\x08handlist\x18\x07 \x03(\x05\";\n\x0cSettleResult\x12+\n\x10userSettleResule\x18\x01 \x03(\x0b\x32\x11.UserSettleResult\"t\n\x10UserSettleResult\x12\x0e\n\x06userId\x18\x01 \x01(\x05\x12\n\n\x02hu\x18\x02 \x01(\x05\x12\x0c\n\x04\x62\x61ng\x18\x03 \x01(\x05\x12\r\n\x05score\x18\x04 \x01(\x05\x12\'\n\x0esettlePatterns\x18\x05 \x03(\x0e\x32\x0f.SettlePatterns\"U\n\x0bShuffleData\x12\x0f\n\x07\x61llocid\x18\x01 \x01(\x05\x12%\n\ruserCardLevel\x18\x02 \x03(\x0b\x32\x0e.UserCardLevel\x12\x0e\n\x06\x62\x61nker\x18\x03 \x01(\x05\".\n\rUserCardLevel\x12\x0e\n\x06userId\x18\x01 \x01(\x05\x12\r\n\x05level\x18\x02 \x01(\x05\"D\n\rShuffleResult\x12\x14\n\x0csurplusCards\x18\x01 \x03(\x05\x12\x1d\n\tdealCards\x18\x02 \x03(\x0b\x32\n.DealCards\"\xab\x01\n\tDealCards\x12\x0e\n\x06userId\x18\x01 \x01(\x05\x12\x10\n\x08\x63\x61rdlist\x18\x02 \x03(\x05\x12\x10\n\x08longlist\x18\x03 \x03(\x05\x12\x0f\n\x07kanlist\x18\x04 \x03(\x05\x12\x10\n\x08penglist\x18\x05 \x03(\x05\x12\x10\n\x08zhaolist\x18\x06 \x03(\x05\x12\x0e\n\x06hulist\x18\x07 \x03(\x05\x12\x15\n\x07\x63hilist\x18\x08 \x03(\x0b\x32\x04.Chi\x12\x0e\n\x06tianhu\x18\t \x01(\x08\"(\n\x03\x43hi\x12\x0f\n\x07\x63hicard\x18\x01 \x01(\x05\x12\x10\n\x08\x63hiCards\x18\x02 \x03(\x05*^\n\x0eSettlePatterns\x12\n\n\x06HONGHU\x10\x00\x12\t\n\x05HEIHU\x10\x01\x12\n\n\x06TIANHU\x10\x02\x12\x08\n\x04\x44IHU\x10\x03\x12\t\n\x05LANHU\x10\x04\x12\x08\n\x04ZIMO\x10\x05\x12\n\n\x06PIAOHU\x10\x06\x32\x8b\x01\n\x05Zipai\x12/\n\tcalculate\x12\x0e.CalculateData\x1a\x10.CalculateResult\"\x00\x12&\n\x06settle\x12\x0b.SettleData\x1a\r.SettleResult\"\x00\x12)\n\x07shuffle\x12\x0c.ShuffleData\x1a\x0e.ShuffleResult\"\x00\x42\x1b\n\x10zipai.mode.protoB\x05ZipaiP\x01\x62\x06proto3')
+        '\n\x0bzipai.proto\"P\n\rCalculateData\x12\x0f\n\x07\x61llocid\x18\x01 \x01(\x05\x12\x1b\n\x08userData\x18\x02 \x01(\x0b\x32\t.UserData\x12\x11\n\tgameRules\x18\x03 \x01(\x05\"\\\n\x0f\x43\x61lculateResult\x12\x15\n\x07\x63hilist\x18\x01 \x03(\x0b\x32\x04.Chi\x12\x10\n\x08penglist\x18\x02 \x03(\x05\x12\x10\n\x08zhaolist\x18\x03 \x03(\x05\x12\x0e\n\x06hulist\x18\x04 \x03(\x05\"\xa7\x01\n\nSettleData\x12\x0f\n\x07\x61llocid\x18\x01 \x01(\x05\x12\x10\n\x08huUserId\x18\x02 \x01(\x05\x12\x0e\n\x06huCard\x18\x03 \x01(\x05\x12\'\n\x0esettlePatterns\x18\x04 \x03(\x0e\x32\x0f.SettlePatterns\x12\r\n\x05\x64\x61gun\x18\x05 \x01(\x08\x12\x11\n\tgameRules\x18\x06 \x01(\x05\x12\x1b\n\x08userData\x18\x07 \x03(\x0b\x32\t.UserData\"\x84\x01\n\x08UserData\x12\x0e\n\x06userId\x18\x01 \x01(\x05\x12\x0f\n\x07\x63hilist\x18\x02 \x03(\x05\x12\x10\n\x08penglist\x18\x03 \x03(\x05\x12\x0f\n\x07kanlist\x18\x04 \x03(\x05\x12\x10\n\x08zhaolist\x18\x05 \x03(\x05\x12\x10\n\x08longlist\x18\x06 \x03(\x05\x12\x10\n\x08handlist\x18\x07 \x03(\x05\";\n\x0cSettleResult\x12+\n\x10userSettleResule\x18\x01 \x03(\x0b\x32\x11.UserSettleResult\"t\n\x10UserSettleResult\x12\x0e\n\x06userId\x18\x01 \x01(\x05\x12\n\n\x02hu\x18\x02 \x01(\x05\x12\x0c\n\x04\x62\x61ng\x18\x03 \x01(\x05\x12\r\n\x05score\x18\x04 \x01(\x05\x12\'\n\x0esettlePatterns\x18\x05 \x03(\x0e\x32\x0f.SettlePatterns\"h\n\x0bShuffleData\x12\x0f\n\x07\x61llocid\x18\x01 \x01(\x05\x12%\n\ruserCardLevel\x18\x02 \x03(\x0b\x32\x0e.UserCardLevel\x12\x0e\n\x06\x62\x61nker\x18\x03 \x01(\x05\x12\x11\n\tgameRules\x18\x04 \x01(\x05\".\n\rUserCardLevel\x12\x0e\n\x06userId\x18\x01 \x01(\x05\x12\r\n\x05level\x18\x02 \x01(\x05\"D\n\rShuffleResult\x12\x14\n\x0csurplusCards\x18\x01 \x03(\x05\x12\x1d\n\tdealCards\x18\x02 \x03(\x0b\x32\n.DealCards\"\xab\x01\n\tDealCards\x12\x0e\n\x06userId\x18\x01 \x01(\x05\x12\x10\n\x08\x63\x61rdlist\x18\x02 \x03(\x05\x12\x10\n\x08longlist\x18\x03 \x03(\x05\x12\x0f\n\x07kanlist\x18\x04 \x03(\x05\x12\x10\n\x08penglist\x18\x05 \x03(\x05\x12\x10\n\x08zhaolist\x18\x06 \x03(\x05\x12\x0e\n\x06hulist\x18\x07 \x03(\x05\x12\x15\n\x07\x63hilist\x18\x08 \x03(\x0b\x32\x04.Chi\x12\x0e\n\x06tianhu\x18\t \x01(\x08\"(\n\x03\x43hi\x12\x0f\n\x07\x63hicard\x18\x01 \x01(\x05\x12\x10\n\x08\x63hiCards\x18\x02 \x03(\x05*y\n\x0eSettlePatterns\x12\n\n\x06HONGHU\x10\x00\x12\t\n\x05HEIHU\x10\x01\x12\n\n\x06TIANHU\x10\x02\x12\x08\n\x04\x44IHU\x10\x03\x12\t\n\x05LANHU\x10\x04\x12\x08\n\x04ZIMO\x10\x05\x12\n\n\x06PIAOHU\x10\x06\x12\x10\n\x0cSANLONGSIKAN\x10\x07\x12\x07\n\x03QIA\x10\x08\x32\x8b\x01\n\x05Zipai\x12/\n\tcalculate\x12\x0e.CalculateData\x1a\x10.CalculateResult\"\x00\x12&\n\x06settle\x12\x0b.SettleData\x1a\r.SettleResult\"\x00\x12)\n\x07shuffle\x12\x0c.ShuffleData\x1a\x0e.ShuffleResult\"\x00\x42\x1b\n\x10zipai.mode.protoB\x05ZipaiP\x01\x62\x06proto3')
 )
 
 _SETTLEPATTERNS = _descriptor.EnumDescriptor(
@@ -58,11 +58,19 @@ _SETTLEPATTERNS = _descriptor.EnumDescriptor(
             name='PIAOHU', index=6, number=6,
             options=None,
             type=None),
+        _descriptor.EnumValueDescriptor(
+            name='SANLONGSIKAN', index=7, number=7,
+            options=None,
+            type=None),
+        _descriptor.EnumValueDescriptor(
+            name='QIA', index=8, number=8,
+            options=None,
+            type=None),
     ],
     containing_type=None,
     options=None,
-    serialized_start=1071,
-    serialized_end=1165,
+    serialized_start=1115,
+    serialized_end=1236,
 )
 _sym_db.RegisterEnumDescriptor(_SETTLEPATTERNS)
 
@@ -74,6 +82,8 @@ DIHU = 3
 LANHU = 4
 ZIMO = 5
 PIAOHU = 6
+SANLONGSIKAN = 7
+QIA = 8
 
 _CALCULATEDATA = _descriptor.Descriptor(
     name='CalculateData',
@@ -96,6 +106,13 @@ _CALCULATEDATA = _descriptor.Descriptor(
             message_type=None, enum_type=None, containing_type=None,
             is_extension=False, extension_scope=None,
             options=None, file=DESCRIPTOR),
+        _descriptor.FieldDescriptor(
+            name='gameRules', full_name='CalculateData.gameRules', index=2,
+            number=3, type=5, cpp_type=1, label=1,
+            has_default_value=False, default_value=0,
+            message_type=None, enum_type=None, containing_type=None,
+            is_extension=False, extension_scope=None,
+            options=None, file=DESCRIPTOR),
     ],
     extensions=[
     ],
@@ -109,7 +126,7 @@ _CALCULATEDATA = _descriptor.Descriptor(
     oneofs=[
     ],
     serialized_start=15,
-    serialized_end=76,
+    serialized_end=95,
 )
 
 _CALCULATERESULT = _descriptor.Descriptor(
@@ -159,8 +176,8 @@ _CALCULATERESULT = _descriptor.Descriptor(
     extension_ranges=[],
     oneofs=[
     ],
-    serialized_start=78,
-    serialized_end=170,
+    serialized_start=97,
+    serialized_end=189,
 )
 
 _SETTLEDATA = _descriptor.Descriptor(
@@ -206,9 +223,9 @@ _SETTLEDATA = _descriptor.Descriptor(
             is_extension=False, extension_scope=None,
             options=None, file=DESCRIPTOR),
         _descriptor.FieldDescriptor(
-            name='qia', full_name='SettleData.qia', index=5,
-            number=6, type=8, cpp_type=7, label=1,
-            has_default_value=False, default_value=False,
+            name='gameRules', full_name='SettleData.gameRules', index=5,
+            number=6, type=5, cpp_type=1, label=1,
+            has_default_value=False, default_value=0,
             message_type=None, enum_type=None, containing_type=None,
             is_extension=False, extension_scope=None,
             options=None, file=DESCRIPTOR),
@@ -231,8 +248,8 @@ _SETTLEDATA = _descriptor.Descriptor(
     extension_ranges=[],
     oneofs=[
     ],
-    serialized_start=173,
-    serialized_end=334,
+    serialized_start=192,
+    serialized_end=359,
 )
 
 _USERDATA = _descriptor.Descriptor(
@@ -303,8 +320,8 @@ _USERDATA = _descriptor.Descriptor(
     extension_ranges=[],
     oneofs=[
     ],
-    serialized_start=337,
-    serialized_end=469,
+    serialized_start=362,
+    serialized_end=494,
 )
 
 _SETTLERESULT = _descriptor.Descriptor(
@@ -333,8 +350,8 @@ _SETTLERESULT = _descriptor.Descriptor(
     extension_ranges=[],
     oneofs=[
     ],
-    serialized_start=471,
-    serialized_end=530,
+    serialized_start=496,
+    serialized_end=555,
 )
 
 _USERSETTLERESULT = _descriptor.Descriptor(
@@ -391,8 +408,8 @@ _USERSETTLERESULT = _descriptor.Descriptor(
     extension_ranges=[],
     oneofs=[
     ],
-    serialized_start=532,
-    serialized_end=648,
+    serialized_start=557,
+    serialized_end=673,
 )
 
 _SHUFFLEDATA = _descriptor.Descriptor(
@@ -423,6 +440,13 @@ _SHUFFLEDATA = _descriptor.Descriptor(
             message_type=None, enum_type=None, containing_type=None,
             is_extension=False, extension_scope=None,
             options=None, file=DESCRIPTOR),
+        _descriptor.FieldDescriptor(
+            name='gameRules', full_name='ShuffleData.gameRules', index=3,
+            number=4, type=5, cpp_type=1, label=1,
+            has_default_value=False, default_value=0,
+            message_type=None, enum_type=None, containing_type=None,
+            is_extension=False, extension_scope=None,
+            options=None, file=DESCRIPTOR),
     ],
     extensions=[
     ],
@@ -435,8 +459,8 @@ _SHUFFLEDATA = _descriptor.Descriptor(
     extension_ranges=[],
     oneofs=[
     ],
-    serialized_start=650,
-    serialized_end=735,
+    serialized_start=675,
+    serialized_end=779,
 )
 
 _USERCARDLEVEL = _descriptor.Descriptor(
@@ -472,8 +496,8 @@ _USERCARDLEVEL = _descriptor.Descriptor(
     extension_ranges=[],
     oneofs=[
     ],
-    serialized_start=737,
-    serialized_end=783,
+    serialized_start=781,
+    serialized_end=827,
 )
 
 _SHUFFLERESULT = _descriptor.Descriptor(
@@ -509,8 +533,8 @@ _SHUFFLERESULT = _descriptor.Descriptor(
     extension_ranges=[],
     oneofs=[
     ],
-    serialized_start=785,
-    serialized_end=853,
+    serialized_start=829,
+    serialized_end=897,
 )
 
 _DEALCARDS = _descriptor.Descriptor(
@@ -595,8 +619,8 @@ _DEALCARDS = _descriptor.Descriptor(
     extension_ranges=[],
     oneofs=[
     ],
-    serialized_start=856,
-    serialized_end=1027,
+    serialized_start=900,
+    serialized_end=1071,
 )
 
 _CHI = _descriptor.Descriptor(
@@ -632,8 +656,8 @@ _CHI = _descriptor.Descriptor(
     extension_ranges=[],
     oneofs=[
     ],
-    serialized_start=1029,
-    serialized_end=1069,
+    serialized_start=1073,
+    serialized_end=1113,
 )
 
 _CALCULATEDATA.fields_by_name['userData'].message_type = _USERDATA
@@ -746,8 +770,8 @@ _ZIPAI = _descriptor.ServiceDescriptor(
     file=DESCRIPTOR,
     index=0,
     options=None,
-    serialized_start=1168,
-    serialized_end=1307,
+    serialized_start=1239,
+    serialized_end=1378,
     methods=[
         _descriptor.MethodDescriptor(
             name='calculate',
