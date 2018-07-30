@@ -273,12 +273,13 @@ class Daer(object):
         return si
 
     @staticmethod
-    def hu(handlist, penglist, hashu, lanhu):
+    def hu(handlist, kanlist, hashu, lanhu):
         """
         :计算能胡哪些牌
         :param handlist:
-        :param penglist:
+        :param kanlist:
         :param hashu:
+        :param lanhu:
         :return:
         """
         hu = set()
@@ -286,8 +287,19 @@ class Daer(object):
         temp = []
         temp.extend(handlist)
         temp = sorted(temp, cmp=Daer.reversed_cmp)
-        if Daer.check_lug(temp) and (Daer.check_hu(temp, hashu) >= 10 or 0 == Daer.check_hu(temp, hashu)):
-            hu = set.union(hu, penglist)
+
+        dui = Daer.get_dui(temp)
+        for d in dui:
+            if 2 <= Daer.containSize(temp, d):
+                tempd = list()
+                tempd.extend(temp)
+                tempd.remove(d)
+                tempd.remove(d)
+                if Daer.check_lug(tempd) and hashu > 7:
+                    hu = set.union(hu, kanlist)
+                    break
+        if Daer.check_lug(temp) and Daer.check_hu(temp, hashu):
+            hu = set.union(hu, kanlist)
         for p in possible:
             temp = []
             temp.extend(handlist)
@@ -342,6 +354,8 @@ class Daer(object):
             tempSame.remove(md_val)
             if Daer.check_lug(tempSame):
                 return True
+            else:
+                return False
         if md_val + 1 in temp and md_val + 2 in temp:
             tempShun = list()
             tempShun.extend(temp)
@@ -406,6 +420,11 @@ class Daer(object):
                         tempSame += 9
                     else:
                         tempSame += 6
+                else:
+                    if md_val > 100:
+                        tempSame += 3
+                    else:
+                        tempSame += 1
                 valtemp = tempSame
         if md_val + 1 in temp and md_val + 2 in temp:
             tempShun = list()
@@ -477,11 +496,10 @@ class Daer(object):
         return size
 
     @staticmethod
-    def get_hu(u, huCard):
+    def get_hu_without_handle(u):
         """
         :胡数
         :param u:
-        :param huCard:
         :return:
         """
         hu = 0
@@ -543,6 +561,17 @@ class Daer(object):
                 hu += 6
             elif chitemp[0] == 102 and chitemp[1] == 107 and chitemp[2] == 110:
                 hu += 9
+        return hu
+
+    @staticmethod
+    def get_hu(u, huCard):
+        """
+        :胡数
+        :param u:
+        :param huCard:
+        :return:
+        """
+        hu = Daer.get_hu_without_handle(u)
         handlist = list()
         handlist.extend(u.handlist)
         if 0 != huCard:
@@ -625,7 +654,6 @@ class Performance(zipai_pb2_grpc.ZipaiServicer):
                         + Daer.containSize(temp_card, 10) + Daer.containSize(temp_card, 102) \
                         + Daer.containSize(temp_card, 107) + Daer.containSize(temp_card, 110) == 0:
                     settle_type.add(HEIHU)
-                    bang += 5
                     if request.dagun:
                         bang *= bang
                     else:
@@ -673,13 +701,14 @@ class Performance(zipai_pb2_grpc.ZipaiServicer):
         u = request.userData
         print "calculate传入handlist", u.handlist
         print "calculate传入penglist", u.penglist
+        print "calculate传入gameRules", request.gameRules
         calculate = CalculateResult()
         if 1 == request.allocid:
             Daer.chi(u.handlist, calculate)
             calculate.penglist.extend(Daer.peng(u.handlist))
             calculate.zhaolist.extend(Daer.get_san(u.handlist, u.kanlist))
             calculate.hulist.extend(
-                Daer.hu(u.handlist, u.penglist, Daer.get_hu(u, 0), 1 == (request.gameRules >> 2) % 2))
+                Daer.hu(u.handlist, u.kanlist, Daer.get_hu_without_handle(u), 1 == (request.gameRules >> 2) % 2))
             print "calculate返回penglist", calculate.penglist
             print "calculate返回zhaolist", calculate.zhaolist
             print "calculate返回hulist", calculate.hulist
@@ -720,59 +749,63 @@ class Performance(zipai_pb2_grpc.ZipaiServicer):
             dealCards.userId = user.userId
             if 0 == user.level:
                 cardSize = request.banker == dealCards.userId and 21 or 20
-                # for i in range(0, cardSize):
-                #     index = random.randint(0, len(surplusCards) - 1)
-                #     # index = random.randint(0, 15)
-                #     dealCards.cardlist.append(surplusCards[index])
-                #     surplusCards.remove(surplusCards[index])
-                if request.banker == dealCards.userId:
-                    dealCards.cardlist.append(1)
-                    dealCards.cardlist.append(1)
-                    dealCards.cardlist.append(1)
-                    dealCards.cardlist.append(1)
-                    dealCards.cardlist.append(3)
-                    dealCards.cardlist.append(3)
-                    dealCards.cardlist.append(3)
-                    dealCards.cardlist.append(3)
-                    dealCards.cardlist.append(4)
-                    dealCards.cardlist.append(4)
-
-                    dealCards.cardlist.append(5)
-                    dealCards.cardlist.append(5)
-                    dealCards.cardlist.append(6)
-
-                    dealCards.cardlist.append(6)
-
-                    dealCards.cardlist.append(106)
-                    dealCards.cardlist.append(106)
-                    dealCards.cardlist.append(7)
-
-                    dealCards.cardlist.append(7)
-                    dealCards.cardlist.append(8)
-                    dealCards.cardlist.append(8)
-
-                    dealCards.cardlist.append(9)
-                else:
-                    dealCards.cardlist.append(109)
-                    dealCards.cardlist.append(9)
-                    dealCards.cardlist.append(1)
-                    dealCards.cardlist.append(2)
-                    dealCards.cardlist.append(103)
-                    dealCards.cardlist.append(4)
-                    dealCards.cardlist.append(4)
-                    dealCards.cardlist.append(104)
-                    dealCards.cardlist.append(104)
-                    dealCards.cardlist.append(5)
-                    dealCards.cardlist.append(5)
-                    dealCards.cardlist.append(105)
-                    dealCards.cardlist.append(6)
-                    dealCards.cardlist.append(6)
-                    dealCards.cardlist.append(101)
-                    dealCards.cardlist.append(106)
-                    dealCards.cardlist.append(7)
-                    dealCards.cardlist.append(8)
-                    dealCards.cardlist.append(10)
-                    dealCards.cardlist.append(108)
+                for i in range(0, cardSize):
+                    index = random.randint(0, len(surplusCards) - 1)
+                    # index = random.randint(0, 15)
+                    dealCards.cardlist.append(surplusCards[index])
+                    surplusCards.remove(surplusCards[index])
+                # if request.banker == dealCards.userId:
+                #     dealCards.cardlist.append(1)
+                #     dealCards.cardlist.append(1)
+                #     dealCards.cardlist.append(1)
+                #     dealCards.cardlist.append(2)
+                #     dealCards.cardlist.append(3)
+                #     dealCards.cardlist.append(4)
+                #     dealCards.cardlist.append(5)
+                #     dealCards.cardlist.append(6)
+                #     dealCards.cardlist.append(7)
+                #     dealCards.cardlist.append(8)
+                #
+                #     dealCards.cardlist.append(9)
+                #     dealCards.cardlist.append(10)
+                #     dealCards.cardlist.append(101)
+                #
+                #     dealCards.cardlist.append(102)
+                #
+                #     dealCards.cardlist.append(103)
+                #     dealCards.cardlist.append(104)
+                #     dealCards.cardlist.append(105)
+                #
+                #     dealCards.cardlist.append(106)
+                #     dealCards.cardlist.append(10)
+                #     dealCards.cardlist.append(10)
+                #
+                #     dealCards.cardlist.append(101)
+                # else:
+                #     dealCards.cardlist.append(1)
+                #     dealCards.cardlist.append(1)
+                #     dealCards.cardlist.append(1)
+                #     dealCards.cardlist.append(2)
+                #     dealCards.cardlist.append(2)
+                #     dealCards.cardlist.append(2)
+                #     dealCards.cardlist.append(3)
+                #     dealCards.cardlist.append(3)
+                #     dealCards.cardlist.append(3)
+                #     dealCards.cardlist.append(4)
+                #
+                #     dealCards.cardlist.append(4)
+                #     dealCards.cardlist.append(4)
+                #     dealCards.cardlist.append(5)
+                #
+                #     dealCards.cardlist.append(5)
+                #
+                #     dealCards.cardlist.append(5)
+                #     dealCards.cardlist.append(6)
+                #     dealCards.cardlist.append(6)
+                #
+                #     dealCards.cardlist.append(6)
+                #     dealCards.cardlist.append(10)
+                #     dealCards.cardlist.append(10)
                 si = Daer.get_si(dealCards.cardlist)
                 dealCards.longlist.extend(si)
                 handTemp = list()
@@ -793,7 +826,8 @@ class Performance(zipai_pb2_grpc.ZipaiServicer):
                 u.longlist.extend(si)
                 u.kanlist.extend(san)
                 hu = Daer.get_hu(u, 0)
-                dealCards.hulist.extend(Daer.hu(handTemp, san, hu, 1 == (request.gameRules >> 2) % 2))
+                dealCards.hulist.extend(
+                    Daer.hu(handTemp, san, Daer.get_hu_without_handle(u), 1 == (request.gameRules >> 2) % 2))
                 dealCards.penglist.extend(Daer.peng(handTemp))
                 dealCards.zhaolist.extend(Daer.get_san(handTemp, []))
                 dealCards.zhaolist.extend(dealCards.kanlist)
@@ -823,4 +857,5 @@ def rpc_server():
 
 if __name__ == '__main__':
     rpc_server()
+    # print(Daer.check_hu([7, 8, 9, 106, 106, 106], 0))
     # print(Daer.hu([2, 2, 102, 3, 3, 103, 4, 5, 5, 6, 7, 8, 104, 104, 105, 105, 106, 9, 9, 109], [], 0))

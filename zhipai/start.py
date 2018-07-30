@@ -809,7 +809,7 @@ class Performance(zhipai_pb2_grpc.ZhipaiServicer):
                              113, 213, 313, 413,
                              114, 214, 314, 414])
             random.shuffle(cardlist)
-            shuffle.cardlist.extend([202, 408, 111, 302, 411])
+            shuffle.cardlist.extend([202, 302, 402, 303, 403])
             shuffle.cardlist.extend([404, 414, 205, 112, 113])
             cheat_index = 0
             cheat_probability = 0

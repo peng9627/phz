@@ -356,7 +356,7 @@ class PaodekuaiUtils(object):
                 else:
                     card1 = tempcards[0]
                     for s in tempcards:
-                        if s != card1:
+                        if s % 100 != card1 % 100:
                             playcards.append(san[len(san) - 1])
                             playcards.append(san[len(san) - 2])
                             playcards.append(san[len(san) - 3])

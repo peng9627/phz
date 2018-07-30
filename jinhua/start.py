@@ -17,6 +17,26 @@ logging.basicConfig(level=logging.INFO)
 thislog = logging.getLogger()
 
 
+def changeCard(cardlist, cheat_index, max_card, i):
+    """
+    : 换牌
+    :param cardlist:
+    :param cheat_index:
+    :param max_card:
+    :param i:
+    :return:
+    """
+    cardlist[cheat_index * 3] = cardlist[i * 3]
+    cardlist[cheat_index * 3 + 1] = cardlist[i * 3 + 1]
+    cardlist[cheat_index * 3 + 2] = cardlist[i * 3 + 2]
+    cardlist[i * 3] = max_card[0]
+    cardlist[i * 3 + 1] = max_card[1]
+    cardlist[i * 3 + 2] = max_card[2]
+    max_card[0] = cardlist[cheat_index * 5]
+    max_card[1] = cardlist[cheat_index * 5 + 1]
+    max_card[2] = cardlist[cheat_index * 5 + 2]
+
+
 class Performance(zhipai_pb2_grpc.ZhipaiServicer):
     """
     :实现grpc
@@ -97,28 +117,14 @@ class Performance(zhipai_pb2_grpc.ZhipaiServicer):
                     if i != cheat_index:
                         if -1 == Zhajinhua.compare(max_card,
                                                    [cardlist[i * 3], cardlist[i * 3 + 1], cardlist[i * 3 + 2]]):
-                            cardlist[cheat_index * 3] = cardlist[i * 3]
-                            cardlist[cheat_index * 3 + 1] = cardlist[i * 3 + 1]
-                            cardlist[cheat_index * 3 + 2] = cardlist[i * 3 + 2]
-                            cardlist[i * 3] = max_card[0]
-                            cardlist[i * 3 + 1] = max_card[1]
-                            cardlist[i * 3 + 2] = max_card[2]
-                            max_card = [cardlist[cheat_index * 3], cardlist[cheat_index * 3 + 1],
-                                        cardlist[cheat_index * 3 + 2]]
+                            changeCard(cardlist, cheat_index, max_card, i)
             else:
                 max_card = [cardlist[cheat_index * 3], cardlist[cheat_index * 3 + 1], cardlist[cheat_index * 3 + 2]]
                 for i in range(0, len(request.cheatData)):
                     if i != cheat_index:
                         if 1 == Zhajinhua.compare(max_card,
                                                   [cardlist[i * 3], cardlist[i * 3 + 1], cardlist[i * 3 + 2]]):
-                            cardlist[cheat_index * 3] = cardlist[i * 3]
-                            cardlist[cheat_index * 3 + 1] = cardlist[i * 3 + 1]
-                            cardlist[cheat_index * 3 + 2] = cardlist[i * 3 + 2]
-                            cardlist[i * 3] = max_card[0]
-                            cardlist[i * 3 + 1] = max_card[1]
-                            cardlist[i * 3 + 2] = max_card[2]
-                            max_card = [cardlist[cheat_index * 3], cardlist[cheat_index * 3 + 1],
-                                        cardlist[cheat_index * 3 + 2]]
+                            changeCard(cardlist, cheat_index, max_card, i)
         shuffle.cardlist.extend(cardlist)
         return shuffle
 
