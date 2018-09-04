@@ -10,6 +10,7 @@ import grpc
 from concurrent import futures
 
 import zhipai_pb2_grpc
+from pibanban import Pibanban
 from zhipai_pb2 import *
 
 logging.basicConfig(level=logging.INFO)
@@ -25,7 +26,7 @@ class Performance(zhipai_pb2_grpc.ZhipaiServicer):
         logging.basicConfig(level=logging.DEBUG,
                             format='%(asctime)s %(filename)s[line:%(lineno)d] %(levelname)s %(message)s',
                             datefmt='%a, %d %b %Y %H:%M:%S',
-                            filename='longhu.log',
+                            filename='zhipai.log',
                             filemode='w')
 
     def settle(self, request, context):
@@ -36,42 +37,53 @@ class Performance(zhipai_pb2_grpc.ZhipaiServicer):
         :return:
         """
         settle = SettleResult()
-        u1 = request.userSettleData[0]
-        u2 = request.userSettleData[1]
-        if 499 < u1.cardlist[0]:
-            u1_value = u1.cardlist[0] / 10
-        else:
-            u1_value = u1.cardlist[0] % 100
-        if 14 == u1_value:
-            u1_value = 1
-        if 499 < u2.cardlist[0]:
-            u2_value = u2.cardlist[0] / 10
-        else:
-            u2_value = u2.cardlist[0] % 100
-        if 14 == u2_value:
-            u2_value = 1
-        if u1_value > u2_value:
-            userSettleResult = settle.userSettleResule.add()
-            userSettleResult.userId = u1.userId
-            userSettleResult.win = 1
-
-            userSettleResult = settle.userSettleResule.add()
-            userSettleResult.userId = u2.userId
-            userSettleResult.win = -1
-        elif u1_value < u2_value:
-            userSettleResult = settle.userSettleResule.add()
-            userSettleResult.userId = u1.userId
-            userSettleResult.win = -1
-
-            userSettleResult = settle.userSettleResule.add()
-            userSettleResult.userId = u2.userId
-            userSettleResult.win = 1
-        else:
-            userSettleResult = settle.userSettleResule.add()
-            userSettleResult.userId = u1.userId
-
-            userSettleResult = settle.userSettleResule.add()
-            userSettleResult.userId = u2.userId
+        if 1 == request.allocid:
+            pd = PiBanBanSettleData()
+            pd.ParseFromString(request.extraData)
+            jackpot = pd.jackpot
+            deskScore = pd.jackpot
+            for b in request.userSettleData:
+                if b.userId == request.banker:
+                    banker_value = Pibanban.get_card_value(b.cardlist)
+                    win = 0
+                    for u in request.userSettleData:
+                        if u.userId != request.banker:
+                            playScore = u.score
+                            if 2 == pd.playType:
+                                if 1 == playScore:
+                                    playScore = jackpot
+                                    deskScore = 0
+                                if 2 == playScore:
+                                    playScore = jackpot / 2
+                                    deskScore = jackpot / 2
+                                if 3 == playScore:
+                                    playScore = jackpot
+                                    deskScore = 0
+                                if 4 == playScore:
+                                    playScore = deskScore
+                                    deskScore = 0
+                            elif playScore > jackpot:
+                                playScore = jackpot
+                            userSettleResult = settle.userSettleResule.add()
+                            user_value = Pibanban.get_card_value(u.cardlist)
+                            userSettleResult.userId = u.userId
+                            userSettleResult.cardValue = user_value
+                            if user_value > banker_value:
+                                if user_value > 9:
+                                    userSettleResult.win = 2 * playScore
+                                    win -= 2 * playScore
+                                else:
+                                    userSettleResult.win = playScore
+                                    win -= playScore
+                            else:
+                                userSettleResult.win = -playScore
+                                win += playScore
+                            jackpot + win
+                    userSettleResult = settle.userSettleResule.add()
+                    userSettleResult.userId = b.userId
+                    userSettleResult.cardValue = banker_value
+                    userSettleResult.win = win
+                    break
         return settle
 
     def shuffle(self, request, context):
@@ -83,22 +95,19 @@ class Performance(zhipai_pb2_grpc.ZhipaiServicer):
         """
         shuffle = ShuffleResult()
         cardlist = list()
-        cardlist.extend([102, 202, 302, 402,
-                         103, 203, 303, 403,
-                         104, 204, 304, 404,
-                         105, 205, 305, 405,
-                         106, 206, 306, 406,
-                         107, 207, 307, 407,
-                         108, 208, 308, 408,
-                         109, 209, 309, 409,
-                         110, 210, 310, 410,
-                         111, 211, 311, 411,
-                         112, 212, 312, 412,
-                         113, 213, 313, 413,
-                         114, 214, 314, 414])
-        random.shuffle(cardlist)
+        if 1 == request.allocid:
+            cardlist.extend([2, 102, 202, 302,
+                             3, 103, 203, 303,
+                             4, 104, 204, 304,
+                             5, 105, 205, 305,
+                             6, 106, 206, 306,
+                             7, 107, 207, 307,
+                             8, 108, 208, 308,
+                             9, 109, 209, 309,
+                             10, 110, 210, 310,
+                             14, 114, 214, 314])
+            random.shuffle(cardlist)
         shuffle.cardlist.extend(cardlist)
-        thislog.info(cardlist)
         return shuffle
 
 
@@ -107,10 +116,10 @@ def rpc_server():
     :启动grpc服务
     :return:
     """
-    thislog.info("started!")
+    logging.info("started!")
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
     zhipai_pb2_grpc.add_ZhipaiServicer_to_server(Performance(), server)
-    server.add_insecure_port('[::]:50011')
+    server.add_insecure_port('[::]:50001')
     server.start()
     try:
         while True:
@@ -123,9 +132,9 @@ if __name__ == '__main__':
     log_fmt = '%(asctime)s %(filename)s[line:%(lineno)d] %(levelname)s %(message)s'
     formatter = logging.Formatter(log_fmt)
     log_file_handler = TimedRotatingFileHandler(
-        filename='../logs/longhu.log', when="H", interval=1,
-        backupCount=720)
-    log_file_handler.suffix = "%Y-%m-%d_%H.log"
+        filename='../logs/zhipai/zhipai-%s.log' % time.strftime("%Y-%m-%d"), when="H", interval=1,
+        backupCount=7)
+    log_file_handler.suffix = "%Y-%m-%d_%H-%M.log"
     log_file_handler.extMatch = re.compile(r"^\d{4}-\d{2}-\d{2}_\d{2}-\d{2}.log$")
     log_file_handler.setFormatter(formatter)
     log_file_handler.setLevel(logging.DEBUG)
@@ -133,6 +142,7 @@ if __name__ == '__main__':
 
     rpc_server()
     thislog.removeHandler(log_file_handler)()
+    # print Zhajinhua.compare([203, 213, 206], [203, 414, 413], False)
 
 
 class Formatter(logging.Formatter):

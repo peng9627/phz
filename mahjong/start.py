@@ -460,7 +460,8 @@ class Performance(mahjong_pb2_grpc.MajongCalculateServicer):
         gangs = Cards()
         si = MahjongUtils.get_si(request.player.handlist)
         for s in si:
-            temp = request.player.handlist
+            temp = list()
+            temp.extend(request.player.handlist)
             temp.remove(s)
             temp.remove(s)
             temp.remove(s)
@@ -473,10 +474,24 @@ class Performance(mahjong_pb2_grpc.MajongCalculateServicer):
             temp.append(s)
         for p in request.player.peng:
             temp = request.player.handlist
-            temp.remove(p)
-            if 0 < len(MahjongUtils.get_hu(temp, 0)):
-                gangs.cards.append(p)
-            temp.append(p)
+            if p in temp:
+                temp.remove(p)
+                if 0 < len(MahjongUtils.get_hu(temp, 0)):
+                    gangs.cards.append(p)
+                temp.append(p)
+        if 0 == len(gangs.cards) and len(request.player.handlist) % 3 == 1:
+            san = MahjongUtils.get_san(request.player.handlist)
+            for s in san:
+                temp = list()
+                temp.extend(request.player.handlist)
+                temp.remove(s)
+                temp.remove(s)
+                temp.remove(s)
+                if 0 < len(MahjongUtils.get_hu(temp, 0)):
+                    gangs.cards.append(s)
+                temp.append(s)
+                temp.append(s)
+                temp.append(s)
         return gangs
 
 

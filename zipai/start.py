@@ -1,12 +1,18 @@
 # -*- encoding=utf-8 -*-
+import logging
 import random
+import re
 import time
+from logging.handlers import TimedRotatingFileHandler
 
 import grpc
 from concurrent import futures
 
 import zipai_pb2_grpc
 from zipai_pb2 import *
+
+logging.basicConfig(level=logging.INFO)
+thislog = logging.getLogger()
 
 
 class Daer(object):
@@ -284,22 +290,6 @@ class Daer(object):
         """
         hu = set()
         possible = Daer.possible(handlist, 1)
-        temp = []
-        temp.extend(handlist)
-        temp = sorted(temp, cmp=Daer.reversed_cmp)
-
-        dui = Daer.get_dui(temp)
-        for d in dui:
-            if 2 <= Daer.containSize(temp, d):
-                tempd = list()
-                tempd.extend(temp)
-                tempd.remove(d)
-                tempd.remove(d)
-                if Daer.check_lug(tempd) and hashu > 7:
-                    hu = set.union(hu, kanlist)
-                    break
-        if Daer.check_lug(temp) and Daer.check_hu(temp, hashu):
-            hu = set.union(hu, kanlist)
         for p in possible:
             temp = []
             temp.extend(handlist)
@@ -318,6 +308,24 @@ class Daer(object):
             if Daer.check_lug(temp) and (
                     Daer.check_hu(temp, hashu) >= 10 or (0 == Daer.check_hu(temp, hashu) and lanhu)):
                 hu.add(p)
+        for k in kanlist:
+            if k in hu:
+                hu.remove(k)
+        temp = []
+        temp.extend(handlist)
+        temp = sorted(temp, cmp=Daer.reversed_cmp)
+        dui = Daer.get_dui(temp)
+        for d in dui:
+            if 2 <= Daer.containSize(temp, d):
+                tempd = list()
+                tempd.extend(temp)
+                tempd.remove(d)
+                tempd.remove(d)
+                if Daer.check_lug(tempd) and Daer.check_hu(tempd, hashu) >= 7:
+                    hu = set.union(hu, kanlist)
+                    break
+        if Daer.check_lug(temp) and Daer.check_hu(temp, hashu + 3):
+            hu = set.union(hu, kanlist)
         return hu
 
     @staticmethod
@@ -345,17 +353,15 @@ class Daer(object):
             return True
         temp = list()
         temp.extend(handlist)
+        san = Daer.get_san(temp, [])
+        for s in san:
+            temp.remove(s)
+            temp.remove(s)
+            temp.remove(s)
+        if 0 == len(temp):
+            return True
         md_val = temp[0]
         temp.remove(md_val)
-        if 2 <= Daer.containSize(temp, md_val):
-            tempSame = list()
-            tempSame.extend(temp)
-            tempSame.remove(md_val)
-            tempSame.remove(md_val)
-            if Daer.check_lug(tempSame):
-                return True
-            else:
-                return False
         if md_val + 1 in temp and md_val + 2 in temp:
             tempShun = list()
             tempShun.extend(temp)
@@ -405,81 +411,160 @@ class Daer(object):
             return val
         temp = list()
         temp.extend(handlist)
-        md_val = temp[0]
-        temp.remove(md_val)
-        valtemp = -1
-        if 2 <= Daer.containSize(temp, md_val):
-            tempSame = list()
-            tempSame.extend(temp)
-            tempSame.remove(md_val)
-            tempSame.remove(md_val)
-            tempSame = Daer.check_hu(tempSame, val)
-            if tempSame > -1:
-                if 2 == md_val % 100 or 7 == md_val % 100 or 10 == md_val % 100:
-                    if md_val > 100:
-                        tempSame += 9
-                    else:
-                        tempSame += 6
+
+        san = Daer.get_san(temp, [])
+        tempSame = 0
+        for s in san:
+            temp.remove(s)
+            temp.remove(s)
+            temp.remove(s)
+            if 2 == s % 100 or 7 == s % 100 or 10 == s % 100:
+                if s > 100:
+                    tempSame += 9
                 else:
-                    if md_val > 100:
-                        tempSame += 3
-                    else:
-                        tempSame += 1
-                valtemp = tempSame
-        if md_val + 1 in temp and md_val + 2 in temp:
-            tempShun = list()
-            tempShun.extend(temp)
-            tempShun.remove(md_val + 1)
-            tempShun.remove(md_val + 2)
-            tempShunVal = Daer.check_hu(tempShun, val)
-            if tempShunVal > -1:
-                if md_val == 1:
-                    tempShunVal += 3
-                if md_val == 101:
-                    tempShunVal += 6
-                if tempShunVal > valtemp:
-                    valtemp = tempShunVal
-        if 2 == md_val and 7 in temp and 10 in temp:
-            xiao2710 = list()
-            xiao2710.extend(temp)
-            xiao2710.remove(7)
-            xiao2710.remove(10)
-            xiao2710 = Daer.check_hu(xiao2710, val)
-            if xiao2710 > -1:
-                xiao2710 += 6
-                if xiao2710 > valtemp:
-                    valtemp = xiao2710
-        if 102 == md_val and 107 in temp and 110 in temp:
-            da2710 = list()
-            da2710.extend(temp)
-            da2710.remove(107)
-            da2710.remove(110)
-            da2710 = Daer.check_hu(da2710, val)
-            if da2710 > -1:
-                da2710 += 9
-                if da2710 > valtemp:
-                    valtemp = da2710
-        if 1 < Daer.containSize(temp, md_val + 100):
-            daxiaoxie = list()
-            daxiaoxie.extend(temp)
-            daxiaoxie.remove(md_val + 100)
-            daxiaoxie.remove(md_val + 100)
-            daxiaoxie = Daer.check_hu(daxiaoxie, val)
-            if daxiaoxie > -1:
-                if daxiaoxie > valtemp:
-                    valtemp = daxiaoxie
-        if md_val + 100 in temp and md_val in temp:
-            daxiaoxie1 = list()
-            daxiaoxie1.extend(temp)
-            daxiaoxie1.remove(md_val)
-            daxiaoxie1.remove(md_val + 100)
-            daxiaoxie1 = Daer.check_hu(daxiaoxie1, val)
-            if daxiaoxie1 > -1:
-                if daxiaoxie1 > valtemp:
-                    valtemp = daxiaoxie1
-        if valtemp > -1:
-            return valtemp
-        return -1
+                    tempSame += 6
+            else:
+                if s > 100:
+                    tempSame += 3
+                else:
+                    tempSame += 1
+        if tempSame != 0:
+            return Daer.check_hu(temp, val + tempSame)
+        else:
+            valtemp = -1
+            md_val = temp[0]
+            temp.remove(md_val)
+            if md_val + 1 in temp and md_val + 2 in temp:
+                tempShun = list()
+                tempShun.extend(temp)
+                tempShun.remove(md_val + 1)
+                tempShun.remove(md_val + 2)
+                tempShunVal = Daer.check_hu(tempShun, val)
+                if tempShunVal > -1:
+                    if md_val == 1:
+                        tempShunVal += 3
+                    if md_val == 101:
+                        tempShunVal += 6
+                    if tempShunVal > valtemp:
+                        valtemp = tempShunVal
+            if 2 == md_val and 7 in temp and 10 in temp:
+                xiao2710 = list()
+                xiao2710.extend(temp)
+                xiao2710.remove(7)
+                xiao2710.remove(10)
+                xiao2710 = Daer.check_hu(xiao2710, val)
+                if xiao2710 > -1:
+                    xiao2710 += 6
+                    if xiao2710 > valtemp:
+                        valtemp = xiao2710
+            if 102 == md_val and 107 in temp and 110 in temp:
+                da2710 = list()
+                da2710.extend(temp)
+                da2710.remove(107)
+                da2710.remove(110)
+                da2710 = Daer.check_hu(da2710, val)
+                if da2710 > -1:
+                    da2710 += 9
+                    if da2710 > valtemp:
+                        valtemp = da2710
+            if 1 < Daer.containSize(temp, md_val + 100):
+                daxiaoxie = list()
+                daxiaoxie.extend(temp)
+                daxiaoxie.remove(md_val + 100)
+                daxiaoxie.remove(md_val + 100)
+                daxiaoxie = Daer.check_hu(daxiaoxie, val)
+                if daxiaoxie > -1:
+                    if daxiaoxie > valtemp:
+                        valtemp = daxiaoxie
+            if md_val + 100 in temp and md_val in temp:
+                daxiaoxie1 = list()
+                daxiaoxie1.extend(temp)
+                daxiaoxie1.remove(md_val)
+                daxiaoxie1.remove(md_val + 100)
+                daxiaoxie1 = Daer.check_hu(daxiaoxie1, val)
+                if daxiaoxie1 > -1:
+                    if daxiaoxie1 > valtemp:
+                        valtemp = daxiaoxie1
+            if valtemp > -1:
+                return valtemp
+            return -1
+
+    @staticmethod
+    def isLanhu(handlist, hucard):
+        """
+        : 检测是否烂胡
+        :param handlist:
+        :param hucard:
+        :return:
+        """
+        temp = list()
+        temp.extend(handlist)
+        temp.append(hucard)
+        temp = sorted(temp, cmp=Daer.reversed_cmp)
+        if -1 != Daer.check_lanhu(temp, 0):
+            return True
+        dui = Daer.get_dui(temp)
+        for d in dui:
+            if 2 == Daer.containSize(temp, d):
+                tempd = list()
+                tempd.extend(handlist)
+                temp.append(hucard)
+                tempd.remove(d)
+                tempd.remove(d)
+                if -1 != Daer.check_lanhu(temp, 0):
+                    return True
+        return False
+
+    @staticmethod
+    def check_lanhu(handlist, val):
+        """
+        :检查胡
+        :param handlist:
+        :param val:
+        :return:
+        """
+        if 0 == len(handlist):
+            return val
+        temp = list()
+        temp.extend(handlist)
+
+        san = Daer.get_san(temp, [])
+        if 0 != len(san):
+            return -1
+        else:
+            valtemp = -1
+            md_val = temp[0]
+            temp.remove(md_val)
+            if md_val + 1 in temp and md_val + 2 in temp and md_val % 100 != 1:
+                tempShun = list()
+                tempShun.extend(temp)
+                tempShun.remove(md_val + 1)
+                tempShun.remove(md_val + 2)
+                tempShunVal = Daer.check_lanhu(tempShun, val)
+                if tempShunVal > -1:
+                    if tempShunVal > valtemp:
+                        valtemp = tempShunVal
+            if 1 < Daer.containSize(temp, md_val + 100):
+                daxiaoxie = list()
+                daxiaoxie.extend(temp)
+                daxiaoxie.remove(md_val + 100)
+                daxiaoxie.remove(md_val + 100)
+                daxiaoxie = Daer.check_lanhu(daxiaoxie, val)
+                if daxiaoxie > -1:
+                    if daxiaoxie > valtemp:
+                        valtemp = daxiaoxie
+            if md_val + 100 in temp and md_val in temp:
+                daxiaoxie1 = list()
+                daxiaoxie1.extend(temp)
+                daxiaoxie1.remove(md_val)
+                daxiaoxie1.remove(md_val + 100)
+                daxiaoxie1 = Daer.check_lanhu(daxiaoxie1, val)
+                if daxiaoxie1 > -1:
+                    if daxiaoxie1 > valtemp:
+                        valtemp = daxiaoxie1
+            if valtemp > -1:
+                return valtemp
+            return -1
 
     @staticmethod
     def containSize(cardlist, card):
@@ -600,6 +685,13 @@ class Performance(zipai_pb2_grpc.ZipaiServicer):
     :实现grpc
     """
 
+    def __init__(self):
+        logging.basicConfig(level=logging.DEBUG,
+                            format='%(asctime)s %(filename)s[line:%(lineno)d] %(levelname)s %(message)s',
+                            datefmt='%a, %d %b %Y %H:%M:%S',
+                            filename='daer.log',
+                            filemode='w')
+
     def settle(self, request, context):
         """
         :结算
@@ -623,8 +715,19 @@ class Performance(zipai_pb2_grpc.ZipaiServicer):
                 if hu > 26:
                     bang = (hu - 27) / 3 + 3
                 if 1 == (request.gameRules >> 3) % 2 and hu > 0 and hu % 10 == 0:
-                    bang += 1
+                    bang += hu / 10
                     settle_type.add(QIA)
+
+                if 5 > bang and 0 == Daer.get_hu_without_handle(u) and Daer.isLanhu(u.handlist, request.huCard):
+                    bang = 5
+                    settle_type.clear()
+                    hu = 0
+                    settle_type.add(LANHU)
+                elif 1 == (request.gameRules >> 1) % 2 and 0 == len(u.kanlist) + len(u.longlist) + len(
+                        u.zhaolist) and 0 != hu:
+                    settle_type.add(PIAOHU)
+                    bang += 1
+
                 temp_card = list()
                 temp_card.extend(u.chilist)
                 temp_card.extend(u.penglist)
@@ -642,6 +745,7 @@ class Performance(zipai_pb2_grpc.ZipaiServicer):
                 temp_card.extend(u.longlist)
                 temp_card.extend(u.longlist)
                 temp_card.extend(u.handlist)
+                temp_card.append(request.huCard)
                 if Daer.containSize(temp_card, 2) + Daer.containSize(temp_card, 7) \
                         + Daer.containSize(temp_card, 10) + Daer.containSize(temp_card, 102) \
                         + Daer.containSize(temp_card, 107) + Daer.containSize(temp_card, 110) > 9:
@@ -669,14 +773,6 @@ class Performance(zipai_pb2_grpc.ZipaiServicer):
                 if 1 == request.gameRules % 2 and ZIMO in request.settlePatterns:
                     settle_type.add(ZIMO)
                     bang += 1
-                if 1 == (request.gameRules >> 1) % 2 and 0 == len(u.kanlist) + len(u.longlist) + len(
-                        u.zhaolist) and 0 != hu:
-                    settle_type.add(PIAOHU)
-                    bang += 1
-                if 5 > bang and 0 == hu:
-                    bang = 5
-                    settle_type.clear()
-                    settle_type.add(LANHU)
         for u in request.userData:
             if u.userId == request.huUserId:
                 userSettleResult = settle.userSettleResule.add()
@@ -699,9 +795,12 @@ class Performance(zipai_pb2_grpc.ZipaiServicer):
         :return:
         """
         u = request.userData
-        print "calculate传入handlist", u.handlist
-        print "calculate传入penglist", u.penglist
-        print "calculate传入gameRules", request.gameRules
+        logging.info("calculate传入handlist")
+        logging.info(u.handlist)
+        logging.info("calculate传入penglist")
+        logging.info(u.penglist)
+        logging.info("calculate传入gameRules")
+        logging.info(request.gameRules)
         calculate = CalculateResult()
         if 1 == request.allocid:
             Daer.chi(u.handlist, calculate)
@@ -709,10 +808,14 @@ class Performance(zipai_pb2_grpc.ZipaiServicer):
             calculate.zhaolist.extend(Daer.get_san(u.handlist, u.kanlist))
             calculate.hulist.extend(
                 Daer.hu(u.handlist, u.kanlist, Daer.get_hu_without_handle(u), 1 == (request.gameRules >> 2) % 2))
-            print "calculate返回penglist", calculate.penglist
-            print "calculate返回zhaolist", calculate.zhaolist
-            print "calculate返回hulist", calculate.hulist
-            print "calculate返回chilist", calculate.chilist
+            logging.info("calculate返回penglist")
+            logging.info(calculate.penglist)
+            logging.info("calculate返回zhaolist")
+            logging.info(calculate.zhaolist)
+            logging.info("calculate返回hulist")
+            logging.info(calculate.hulist)
+            logging.info("calculate返回chilist")
+            logging.info(calculate.chilist)
 
         return calculate
 
@@ -831,9 +934,25 @@ class Performance(zipai_pb2_grpc.ZipaiServicer):
                 dealCards.penglist.extend(Daer.peng(handTemp))
                 dealCards.zhaolist.extend(Daer.get_san(handTemp, []))
                 dealCards.zhaolist.extend(dealCards.kanlist)
-                dealCards.tianhu = request.banker == dealCards.userId and Daer.check_lug(handTemp) and (
-                        Daer.check_hu(handTemp, hu) >= 10 or (
-                        0 == Daer.check_hu(handTemp, hu) and 1 == (request.gameRules >> 2) % 2))
+                handTemp = sorted(handTemp, cmp=Daer.reversed_cmp)
+                if len(handTemp) % 3 == 0:
+                    dealCards.tianhu = request.banker == dealCards.userId and Daer.check_lug(handTemp) and (
+                            Daer.check_hu(handTemp, hu) >= 10 or (
+                            0 == Daer.check_hu(handTemp, hu) and 1 == (request.gameRules >> 2) % 2))
+                elif request.banker == dealCards.userId:
+                    dui = Daer.get_dui(handTemp)
+                    for d in dui:
+                        if 2 <= Daer.containSize(handTemp, d):
+                            tempd = list()
+                            tempd.extend(handTemp)
+                            tempd.remove(d)
+                            tempd.remove(d)
+                            if Daer.check_lug(tempd) and (
+                                    Daer.check_hu(tempd, hu) >= 10 or (
+                                    0 == Daer.check_hu(tempd, hu) and 1 == (request.gameRules >> 2) % 2)):
+                                dealCards.tianhu = True
+                                break
+
         random.shuffle(surplusCards)
         shuffle.surplusCards.extend(surplusCards)
         return shuffle
@@ -844,6 +963,7 @@ def rpc_server():
     :启动grpc服务
     :return:
     """
+    thislog.info("started!")
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
     zipai_pb2_grpc.add_ZipaiServicer_to_server(Performance(), server)
     server.add_insecure_port('[::]:50000')
@@ -856,6 +976,18 @@ def rpc_server():
 
 
 if __name__ == '__main__':
+    log_fmt = '%(asctime)s %(filename)s[line:%(lineno)d] %(levelname)s %(message)s'
+    formatter = logging.Formatter(log_fmt)
+    log_file_handler = TimedRotatingFileHandler(
+        filename='../logs/daer.log', when="H", interval=1,
+        backupCount=720)
+    log_file_handler.suffix = "%Y-%m-%d_%H-%M.log"
+    log_file_handler.extMatch = re.compile(r"^\d{4}-\d{2}-\d{2}_\d{2}-\d{2}.log$")
+    log_file_handler.setFormatter(formatter)
+    log_file_handler.setLevel(logging.DEBUG)
+    thislog.addHandler(log_file_handler)
+
     rpc_server()
-    # print(Daer.check_hu([7, 8, 9, 106, 106, 106], 0))
-    # print(Daer.hu([2, 2, 102, 3, 3, 103, 4, 5, 5, 6, 7, 8, 104, 104, 105, 105, 106, 9, 9, 109], [], 0))
+    thislog.removeHandler(log_file_handler)()
+    # print(Daer.check_lanhu([6, 7, 8, 9, 106, 106], 0))
+    # print(Daer.hu([4, 2, 2, 3, 3, 4, 5, 5], [], 12, True))

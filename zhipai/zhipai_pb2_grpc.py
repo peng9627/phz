@@ -25,6 +25,11 @@ class ZhipaiStub(object):
             request_serializer=zhipai__pb2.ShuffleData.SerializeToString,
             response_deserializer=zhipai__pb2.ShuffleResult.FromString,
         )
+        self.cheat = channel.unary_unary(
+            '/Zhipai/cheat',
+            request_serializer=zhipai__pb2.ShuffleData.SerializeToString,
+            response_deserializer=zhipai__pb2.ShuffleResult.FromString,
+        )
 
 
 class ZhipaiServicer(object):
@@ -45,6 +50,13 @@ class ZhipaiServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def cheat(self, request, context):
+        """洗牌函数
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
 
 def add_ZhipaiServicer_to_server(servicer, server):
     rpc_method_handlers = {
@@ -55,6 +67,11 @@ def add_ZhipaiServicer_to_server(servicer, server):
         ),
         'shuffle': grpc.unary_unary_rpc_method_handler(
             servicer.shuffle,
+            request_deserializer=zhipai__pb2.ShuffleData.FromString,
+            response_serializer=zhipai__pb2.ShuffleResult.SerializeToString,
+        ),
+        'cheat': grpc.unary_unary_rpc_method_handler(
+            servicer.cheat,
             request_deserializer=zhipai__pb2.ShuffleData.FromString,
             response_serializer=zhipai__pb2.ShuffleResult.SerializeToString,
         ),
