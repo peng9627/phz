@@ -204,7 +204,7 @@ class Performance(mahjong_pb2_grpc.MajongCalculateServicer):
                          27, 27, 27, 27,
                          28, 28, 28, 28,
                          29, 29, 29, 29])
-        #random.shuffle(cardlist)
+        # random.shuffle(cardlist)
         shuffle.cardlist.extend(cardlist)
         return shuffle
 
@@ -230,8 +230,8 @@ if __name__ == '__main__':
     log_fmt = '%(asctime)s %(filename)s[line:%(lineno)d] %(levelname)s %(message)s'
     formatter = logging.Formatter(log_fmt)
     log_file_handler = TimedRotatingFileHandler(
-        filename='../logs/chengdu_mahjong/chengdu_mahjong-%s.log' % time.strftime("%Y-%m-%d"), when="H", interval=1,
-        backupCount=7)
+        filename='../logs/chengdu_mahjong.log', when="H", interval=1,
+        backupCount=200)
     log_file_handler.suffix = "%Y-%m-%d_%H-%M.log"
     log_file_handler.extMatch = re.compile(r"^\d{4}-\d{2}-\d{2}_\d{2}-\d{2}.log$")
     log_file_handler.setFormatter(formatter)

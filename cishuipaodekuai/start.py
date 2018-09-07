@@ -157,45 +157,20 @@ class Performance(paodekuai_pb2_grpc.PaodekuaiServicer):
         """
         shuffle = ShuffleResult()
         cardlist = list()
-        cardlist.extend([102,
-                         103,
-                         104,
-                         105,
-                         106,
-                         107,
-                         108,
-                         109,
-                         110,
-                         111,
-                         112,
-                         113,
-                         114, 202
-                            , 203
-                            , 204
-                            , 205
-                            , 206
-                            , 207
-                            , 208
-                            , 209
-                            , 210
-                            , 211
-                            , 212
-                            , 213
-                            , 214
-                            , 302, 402
-                            , 303, 403
-                            , 304, 404
-                            , 305, 405
-                            , 306, 406
-                            , 307, 407
-                            , 308, 408
-                            , 309, 409
-                            , 310, 410
-                            , 311, 411
-                            , 312, 412
-                            , 313, 413
-                            , 314, 414])
-        #random.shuffle(cardlist)
+        cardlist.extend([102, 202, 302, 402,
+                         103, 203, 303, 403,
+                         104, 204, 304, 404,
+                         105, 205, 305, 405,
+                         106, 206, 306, 406,
+                         107, 207, 307, 407,
+                         108, 208, 308, 408,
+                         109, 209, 309, 409,
+                         110, 210, 310, 410,
+                         111, 211, 311, 411,
+                         112, 212, 312, 412,
+                         113, 213, 313, 413,
+                         114, 214, 314, 414])
+        random.shuffle(cardlist)
         first = 0
         mincard = 415
         for i in range(0, request.count):
@@ -256,8 +231,8 @@ if __name__ == '__main__':
     log_fmt = '%(asctime)s %(filename)s[line:%(lineno)d] %(levelname)s %(message)s'
     formatter = logging.Formatter(log_fmt)
     log_file_handler = TimedRotatingFileHandler(
-        filename='../logs/paodekuai/paodekuai-%s.log' % time.strftime("%Y-%m-%d"), when="H", interval=1,
-        backupCount=7)
+        filename='../logs/paodekuai.log', when="H", interval=1,
+        backupCount=200)
     log_file_handler.suffix = "%Y-%m-%d_%H-%M.log"
     log_file_handler.extMatch = re.compile(r"^\d{4}-\d{2}-\d{2}_\d{2}-\d{2}.log$")
     log_file_handler.setFormatter(formatter)

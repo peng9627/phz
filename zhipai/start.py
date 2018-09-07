@@ -1067,8 +1067,8 @@ if __name__ == '__main__':
     log_fmt = '%(asctime)s %(filename)s[line:%(lineno)d] %(levelname)s %(message)s'
     formatter = logging.Formatter(log_fmt)
     log_file_handler = TimedRotatingFileHandler(
-        filename='../logs/zhipai/zhipai-%s.log' % time.strftime("%Y-%m-%d"), when="H", interval=1,
-        backupCount=7)
+        filename='../logs/zhipai.log', when="H", interval=1,
+        backupCount=200)
     log_file_handler.suffix = "%Y-%m-%d_%H-%M.log"
     log_file_handler.extMatch = re.compile(r"^\d{4}-\d{2}-\d{2}_\d{2}-\d{2}.log$")
     log_file_handler.setFormatter(formatter)
