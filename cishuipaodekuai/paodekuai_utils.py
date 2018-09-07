@@ -71,10 +71,18 @@ class PaodekuaiUtils(object):
                         return PaodekuaiType.SANLIAN
                 istype = True
                 if 0 == len(temp) % 5:
-                    if len(temp) / 5 <= len(san) / 3:
-                        for c in range(2, len(san) - 1, 3):
-                            if san[c] != san[c + 1] - 1:
-                                istype = False
+                    if len(temp) / 5 == len(san) / 3:
+                        tempcard = list()
+                        tempcard.extend(temp)
+                        for s in san:
+                            tempcard.remove(s)
+                        dui = PaodekuaiUtils.get_duizi(tempcard)
+                        if len(dui) == 0 or len(dui) == 2 * len(temp) / 5:
+                            for c in range(2, len(san) - 1, 3):
+                                if san[c] != san[c + 1] - 1:
+                                    istype = False
+                        else:
+                            istype = False
                     else:
                         istype = False
                 else:

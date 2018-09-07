@@ -3,6 +3,7 @@
 import urllib2
 
 import grpc
+import sys
 
 import zhipai_pb2_grpc
 from zhipai_pb2 import SettleData
@@ -12,7 +13,6 @@ def niuniu(type):
     url = "http://43.227.183.83:50020/cgi-bin/test.py?action=%s" % type
 
     req = urllib2.Request(url)
-    print req
 
     res_data = urllib2.urlopen(req)
     res = res_data.read()
@@ -38,9 +38,9 @@ def niuniu(type):
         for userSettleResule in response.userSettleResule:
             if userSettleResule.userId != 1:
                 if userSettleResule.win > 0:
-                    s += "第%s家赢%s\n" % (str(userSettleResule.userId - 1), str(userSettleResule.win))
+                    s += "赢%s\n" % str(userSettleResule.win)
                 if userSettleResule.win < 0:
-                    s += "第%s家输%s\n" % (str(userSettleResule.userId - 1), str(-userSettleResule.win))
+                    s += "输%s\n" % str(-userSettleResule.win)
     elif "tuitongzi" == type:
         for i in range(0, 4):
             userSettleData = settleData.userSettleData.add()
@@ -55,9 +55,9 @@ def niuniu(type):
         for userSettleResule in response.userSettleResule:
             if userSettleResule.userId != 1:
                 if userSettleResule.win > 0:
-                    s += "第%s家赢\n" % str(userSettleResule.userId - 1)
+                    s += "赢\n"
                 if userSettleResule.win < 0:
-                    s += "第%s家输\n" % str(userSettleResule.userId - 1)
+                    s += "输\n"
     elif "longhu" == type:
         for i in range(0, 2):
             userSettleData = settleData.userSettleData.add()
@@ -80,4 +80,6 @@ def niuniu(type):
 
 
 if __name__ == '__main__':
-    print niuniu("tuitongzi")
+    if sys.argv[1:]:
+        port = str(sys.argv[1])
+        print niuniu(port)
