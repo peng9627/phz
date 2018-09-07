@@ -74,55 +74,51 @@ class Performance(zhipai_pb2_grpc.ZhipaiServicer):
         :return:
         """
         settle = SettleResult()
-        if 7 == request.allocid:
-            data = NiuniuSettleData()
-            data.ParseFromString(request.extraData)
-            for b in request.userSettleData:
-                if b.userId == request.banker:
-                    banker_type = Tuitongzi.getCardType(b.cardlist)
-                    banker_value = Tuitongzi.get_card_value(b.cardlist, banker_type)
-                    banker_multiple = 1
-                    win = 0
-                    banker_array_cards = sorted(b.cardlist)
-                    for u in request.userSettleData:
-                        if u.userId != request.banker:
-                            userSettleResult = settle.userSettleResule.add()
-                            user_type = Tuitongzi.getCardType(u.cardlist)
-                            user_value = Tuitongzi.get_card_value(u.cardlist, user_type)
-                            userSettleResult.userId = u.userId
-                            userSettleResult.cardValue = user_type
-                            user_multiple = 1
-
+        data = NiuniuSettleData()
+        data.ParseFromString(request.extraData)
+        for b in request.userSettleData:
+            if b.userId == request.banker:
+                banker_type = Tuitongzi.getCardType(b.cardlist)
+                banker_value = Tuitongzi.get_card_value(b.cardlist, banker_type)
+                banker_multiple = 1
+                win = 0
+                banker_array_cards = sorted(b.cardlist)
+                for u in request.userSettleData:
+                    if u.userId != request.banker:
+                        userSettleResult = settle.userSettleResule.add()
+                        user_type = Tuitongzi.getCardType(u.cardlist)
+                        user_value = Tuitongzi.get_card_value(u.cardlist, user_type)
+                        userSettleResult.userId = u.userId
+                        userSettleResult.cardValue = user_type
+                        user_multiple = 1
+                        # TODO
+                        if user_type < banker_type or (user_type == banker_type and user_value < banker_value):
+                            userSettleResult.win = -banker_multiple * u.score
+                            win += banker_multiple * u.score
+                        elif user_type > banker_type or (user_type == banker_type and user_value > banker_value):
+                            userSettleResult.win = user_multiple * u.score
+                            win -= user_multiple * u.score
+                        else:
+                            user_array_cards = sorted(u.cardlist)
                             # TODO
-                            if user_type < banker_type or (user_type == banker_type and user_value < banker_value):
-                                userSettleResult.win = -banker_multiple * u.score
-                                win += banker_multiple * u.score
-                            elif user_type > banker_type or (user_type == banker_type and user_value > banker_value):
+                            # if banker_array_cards[1] % 10 < user_array_cards[1] % 10:
+                            #     userSettleResult.win = user_multiple * u.score
+                            #     win -= user_multiple * u.score
+                            # elif banker_array_cards[1] % 10 > user_array_cards[1] % 10:
+                            #     userSettleResult.win = -banker_multiple * u.score
+                            #     win += banker_multiple * u.score
+                            if banker_array_cards[1] != 31 and (banker_array_cards[1] % 10 < user_array_cards[
+                                1] % 10 or user_array_cards[1] == 31):
                                 userSettleResult.win = user_multiple * u.score
                                 win -= user_multiple * u.score
                             else:
-                                user_array_cards = sorted(u.cardlist)
-                                # TODO
-                                # if banker_array_cards[1] % 10 < user_array_cards[1] % 10:
-                                #     userSettleResult.win = user_multiple * u.score
-                                #     win -= user_multiple * u.score
-                                # elif banker_array_cards[1] % 10 > user_array_cards[1] % 10:
-                                #     userSettleResult.win = -banker_multiple * u.score
-                                #     win += banker_multiple * u.score
-
-                                if banker_array_cards[1] != 31 and (banker_array_cards[1] % 10 < user_array_cards[
-                                    1] % 10 or user_array_cards[1] == 31):
-                                    userSettleResult.win = user_multiple * u.score
-                                    win -= user_multiple * u.score
-                                else:
-                                    userSettleResult.win = -banker_multiple * u.score
-                                    win += banker_multiple * u.score
-
-                    userSettleResult = settle.userSettleResule.add()
-                    userSettleResult.userId = b.userId
-                    userSettleResult.cardValue = banker_value
-                    userSettleResult.win = win
-                    break
+                                userSettleResult.win = -banker_multiple * u.score
+                                win += banker_multiple * u.score
+                userSettleResult = settle.userSettleResule.add()
+                userSettleResult.userId = b.userId
+                userSettleResult.cardValue = banker_value
+                userSettleResult.win = win
+                break
         return settle
 
     def shuffle(self, request, context):
