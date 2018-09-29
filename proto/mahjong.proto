@@ -110,6 +110,7 @@ message CheatData {
 message ShuffleData {
     int32 alloc_id = 1;
     repeated CheatData cheats = 2;
+    int32 count = 3;
 }
 
 //洗牌结果

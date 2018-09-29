@@ -107,7 +107,7 @@ class Performance(zhipai_pb2_grpc.ZhipaiServicer):
                             # elif banker_array_cards[1] % 10 > user_array_cards[1] % 10:
                             #     userSettleResult.win = -banker_multiple * u.score
                             #     win += banker_multiple * u.score
-                            if banker_array_cards[1] != 31 and (banker_array_cards[1] % 10 < user_array_cards[
+                            if user_value != 0 and banker_array_cards[1] != 31 and (banker_array_cards[1] % 10 < user_array_cards[
                                 1] % 10 or user_array_cards[1] == 31):
                                 userSettleResult.win = user_multiple * u.score
                                 win -= user_multiple * u.score

@@ -9,8 +9,8 @@ from logging.handlers import TimedRotatingFileHandler
 import grpc
 from concurrent import futures
 
-import mahjong_pb2_grpc
 import chengdu_mahjong
+import mahjong_pb2_grpc
 from mahjong_pb2 import *
 from mahjong_utils import MahjongUtils
 
@@ -177,34 +177,54 @@ class Performance(mahjong_pb2_grpc.MajongCalculateServicer):
         """
         shuffle = ShuffleResult()
         cardlist = list()
-        cardlist.extend([1, 1, 1, 1,
-                         2, 2, 2, 2,
-                         3, 3, 3, 3,
-                         4, 4, 4, 4,
-                         5, 5, 5, 5,
-                         6, 6, 6, 6,
-                         7, 7, 7, 7,
-                         8, 8, 8, 8,
-                         9, 9, 9, 9,
-                         11, 11, 11, 11,
-                         12, 12, 12, 12,
-                         13, 13, 13, 13,
-                         14, 14, 14, 14,
-                         15, 15, 15, 15,
-                         16, 16, 16, 16,
-                         17, 17, 17, 17,
-                         18, 18, 18, 18,
-                         19, 19, 19, 19,
-                         21, 21, 21, 21,
-                         22, 22, 22, 22,
-                         23, 23, 23, 23,
-                         24, 24, 24, 24,
-                         25, 25, 25, 25,
-                         26, 26, 26, 26,
-                         27, 27, 27, 27,
-                         28, 28, 28, 28,
-                         29, 29, 29, 29])
-        # random.shuffle(cardlist)
+        if 2 == request.count:
+            cardlist.extend([11, 11, 11, 11,
+                             12, 12, 12, 12,
+                             13, 13, 13, 13,
+                             14, 14, 14, 14,
+                             15, 15, 15, 15,
+                             16, 16, 16, 16,
+                             17, 17, 17, 17,
+                             18, 18, 18, 18,
+                             19, 19, 19, 19,
+                             21, 21, 21, 21,
+                             22, 22, 22, 22,
+                             23, 23, 23, 23,
+                             24, 24, 24, 24,
+                             25, 25, 25, 25,
+                             26, 26, 26, 26,
+                             27, 27, 27, 27,
+                             28, 28, 28, 28,
+                             29, 29, 29, 29])
+        else:
+            cardlist.extend([1, 1, 1, 1,
+                             2, 2, 2, 2,
+                             3, 3, 3, 3,
+                             4, 4, 4, 4,
+                             5, 5, 5, 5,
+                             6, 6, 6, 6,
+                             7, 7, 7, 7,
+                             8, 8, 8, 8,
+                             9, 9, 9, 9,
+                             11, 11, 11, 11,
+                             12, 12, 12, 12,
+                             13, 13, 13, 13,
+                             14, 14, 14, 14,
+                             15, 15, 15, 15,
+                             16, 16, 16, 16,
+                             17, 17, 17, 17,
+                             18, 18, 18, 18,
+                             19, 19, 19, 19,
+                             21, 21, 21, 21,
+                             22, 22, 22, 22,
+                             23, 23, 23, 23,
+                             24, 24, 24, 24,
+                             25, 25, 25, 25,
+                             26, 26, 26, 26,
+                             27, 27, 27, 27,
+                             28, 28, 28, 28,
+                             29, 29, 29, 29])
+        random.shuffle(cardlist)
         shuffle.cardlist.extend(cardlist)
         return shuffle
 

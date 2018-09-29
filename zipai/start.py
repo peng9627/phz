@@ -77,7 +77,7 @@ class Daer(object):
         return False
 
     @staticmethod
-    def get_chi(handlist, s):
+    def get_bi_chi(handlist, s):
         canchi = list()
         if s - 2 in handlist and s - 1 in handlist:
             temp = list()
@@ -190,6 +190,44 @@ class Daer(object):
         return canchi
 
     @staticmethod
+    def get_chi(handlist, s):
+        canchi = list()
+        if s - 2 in handlist and s - 1 in handlist:
+            canchi.append(s - 2)
+            canchi.append(s - 1)
+        if s + 1 in handlist and s - 1 in handlist:
+            canchi.append(s + 1)
+            canchi.append(s - 1)
+        if s + 2 in handlist and s + 1 in handlist:
+            canchi.append(s + 1)
+            canchi.append(s + 2)
+        if s == 2 and 7 in handlist and 10 in handlist:
+            canchi.append(7)
+            canchi.append(10)
+        if s == 7 and 2 in handlist and 10 in handlist:
+            canchi.append(2)
+            canchi.append(10)
+        if s == 10 and 7 in handlist and 2 in handlist:
+            canchi.append(2)
+            canchi.append(7)
+        if s == 102 and 107 in handlist and 110 in handlist:
+            canchi.append(107)
+            canchi.append(110)
+        if s == 107 and 102 in handlist and 110 in handlist:
+            canchi.append(102)
+            canchi.append(110)
+        if s == 110 and 107 in handlist and 102 in handlist:
+            canchi.append(102)
+            canchi.append(107)
+        if 1 < Daer.containSize(handlist, s + 100):
+            canchi.append(s + 100)
+            canchi.append(s + 100)
+        if 1 < Daer.containSize(handlist, s - 100):
+            canchi.append(s - 100)
+            canchi.append(s - 100)
+        return canchi
+
+    @staticmethod
     def chi(handlist, calculate):
         """
         :能吃的牌
@@ -204,12 +242,17 @@ class Daer(object):
                     temp = list()
                     temp.extend(handlist)
                     temp.remove(s)
-                    chitemp = Daer.get_chi(temp, s)
+                    chitemp = Daer.get_bi_chi(temp, s)
                     if 0 < len(chitemp):
                         chi.chicard = s
                         chi.chiCards.extend(chitemp)
                 else:
-                    chi.chicard = s
+                    temp = list()
+                    temp.extend(handlist)
+                    chitemp = Daer.get_chi(temp, s)
+                    if 0 < len(chitemp):
+                        chi.chicard = s
+                        chi.chiCards.extend(chitemp)
 
     @staticmethod
     def peng(handlist):
@@ -499,7 +542,8 @@ class Daer(object):
         """
         temp = list()
         temp.extend(handlist)
-        temp.append(hucard)
+        if hucard > 0:
+            temp.append(hucard)
         temp = sorted(temp, cmp=Daer.reversed_cmp)
         if -1 != Daer.check_lanhu(temp, 0):
             return True
@@ -508,7 +552,8 @@ class Daer(object):
             if 2 == Daer.containSize(temp, d):
                 tempd = list()
                 tempd.extend(handlist)
-                temp.append(hucard)
+                if hucard > 0:
+                    temp.append(hucard)
                 tempd.remove(d)
                 tempd.remove(d)
                 if -1 != Daer.check_lanhu(temp, 0):
@@ -781,10 +826,17 @@ class Performance(zipai_pb2_grpc.ZipaiServicer):
                 userSettleResult.bang = bang
                 userSettleResult.score = (len(request.userData) - 1) * bang
                 userSettleResult.settlePatterns.extend(settle_type)
-            else:
+            elif 0 == request.fangpaoUser:
                 userSettleResult = settle.userSettleResule.add()
                 userSettleResult.userId = u.userId
                 userSettleResult.score = -bang
+            elif u.userId == request.fangpaoUser:
+                userSettleResult = settle.userSettleResule.add()
+                userSettleResult.userId = u.userId
+                userSettleResult.score = -(len(request.userData) - 1) * bang
+            else:
+                userSettleResult = settle.userSettleResule.add()
+                userSettleResult.userId = u.userId
         return settle
 
     def calculate(self, request, context):

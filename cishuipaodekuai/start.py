@@ -33,27 +33,30 @@ class Performance(paodekuai_pb2_grpc.PaodekuaiServicer):
         playResult = PlayResult()
         playResult.cardtype = request.cardtype
 
-        last_card_type = PaodekuaiUtils.get_card_type(request.lastcards)
+        last_card_type = PaodekuaiUtils.get_card_type(request.lastcards, request.count)
         if request.cardtype != last_card_type and 0 != request.cardtype:
             if last_card_type == PaodekuaiType.SANLIAN and request.cardtype == PaodekuaiType.FEIJI:
                 last_card_type = PaodekuaiType.FEIJI
         last_value = PaodekuaiUtils.get_card_value(request.lastcards, last_card_type)
+        feijidaidui = False
+        if last_value == PaodekuaiType.FEIJI:
+            feijidaidui = PaodekuaiUtils.is_feijidaidui(request.lastcards)
 
         # 上家没出牌
         if 0 == len(request.lastcards):
             if 0 == len(request.playcards):
                 if request.baodan:
-                    return PaodekuaiUtils.baodan(request, playResult)
+                    return PaodekuaiUtils.baodan(request, playResult, feijidaidui)
                 playResult.cardtype = PaodekuaiType.DANPAI
                 playResult.result.append(request.handcards[0])
                 return playResult
             else:
-                my_card_type = PaodekuaiUtils.get_card_type(request.playcards)
+                my_card_type = PaodekuaiUtils.get_card_type(request.playcards, request.count)
                 if request.baodan and my_card_type == PaodekuaiType.DANPAI:
                     return PaodekuaiUtils.maxdan(request, playResult)
                 if my_card_type == PaodekuaiType.ERROR:
                     if request.baodan:
-                        return PaodekuaiUtils.baodan(request, playResult)
+                        return PaodekuaiUtils.baodan(request, playResult, feijidaidui)
                     playResult.cardtype = PaodekuaiType.DANPAI
                     playResult.result.append(request.handcards[0])
                     return playResult
@@ -69,10 +72,10 @@ class Performance(paodekuai_pb2_grpc.PaodekuaiServicer):
             # 不出
             if 0 == len(request.playcards):
                 autocard = PaodekuaiUtils.auto_play(request.handcards, last_card_type, last_value,
-                                                    len(request.lastcards))
+                                                    len(request.lastcards), request.count, feijidaidui)
                 if 0 != len(autocard):
                     playResult.result.extend(autocard)
-                    cardtype = PaodekuaiUtils.get_card_type(autocard)
+                    cardtype = PaodekuaiUtils.get_card_type(autocard, request.count)
                     if 0 == request.cardtype:
                         playResult.cardtype = cardtype
                     elif cardtype != PaodekuaiType.ZHADAN:
@@ -81,13 +84,13 @@ class Performance(paodekuai_pb2_grpc.PaodekuaiServicer):
                         playResult.cardtype = PaodekuaiType.ZHADAN
                 return playResult
             else:
-                my_card_type = PaodekuaiUtils.get_card_type(request.playcards)
+                my_card_type = PaodekuaiUtils.get_card_type(request.playcards, request.count)
                 if my_card_type == PaodekuaiType.ERROR:
                     autocard = PaodekuaiUtils.auto_play(request.handcards, last_card_type, last_value,
-                                                        len(request.lastcards))
+                                                        len(request.lastcards), request.count, feijidaidui)
                     if 0 != len(autocard):
                         playResult.result.extend(autocard)
-                        cardtype = PaodekuaiUtils.get_card_type(autocard)
+                        cardtype = PaodekuaiUtils.get_card_type(autocard, request.count)
                         if 0 == request.cardtype:
                             playResult.cardtype = cardtype
                         elif cardtype != PaodekuaiType.ZHADAN:
@@ -104,10 +107,10 @@ class Performance(paodekuai_pb2_grpc.PaodekuaiServicer):
                         if my_value <= last_value:
                             thislog.warn("出牌错误:值小于")
                             autocard = PaodekuaiUtils.auto_play(request.handcards, last_card_type, last_value,
-                                                                len(request.lastcards))
+                                                                len(request.lastcards), request.count, feijidaidui)
                             if 0 != len(autocard):
                                 playResult.result.extend(autocard)
-                                cardtype = PaodekuaiUtils.get_card_type(autocard)
+                                cardtype = PaodekuaiUtils.get_card_type(autocard, request.count)
                                 if 0 == request.cardtype:
                                     playResult.cardtype = cardtype
                                 elif cardtype != PaodekuaiType.ZHADAN:
@@ -118,10 +121,10 @@ class Performance(paodekuai_pb2_grpc.PaodekuaiServicer):
                     else:
                         thislog.warn("出牌错误:张数不同")
                         autocard = PaodekuaiUtils.auto_play(request.handcards, last_card_type, last_value,
-                                                            len(request.lastcards))
+                                                            len(request.lastcards), request.count, feijidaidui)
                         if 0 != len(autocard):
                             playResult.result.extend(autocard)
-                            cardtype = PaodekuaiUtils.get_card_type(autocard)
+                            cardtype = PaodekuaiUtils.get_card_type(autocard, request.count)
                             if 0 == request.cardtype:
                                 playResult.cardtype = cardtype
                             elif cardtype != PaodekuaiType.ZHADAN:
@@ -132,10 +135,10 @@ class Performance(paodekuai_pb2_grpc.PaodekuaiServicer):
                 elif my_card_type != PaodekuaiType.ZHADAN:
                     thislog.warn("出牌错误:牌型不同并且不是炸弹")
                     autocard = PaodekuaiUtils.auto_play(request.handcards, last_card_type, last_value,
-                                                        len(request.lastcards))
+                                                        len(request.lastcards), request.count, feijidaidui)
                     if 0 != len(autocard):
                         playResult.result.extend(autocard)
-                        cardtype = PaodekuaiUtils.get_card_type(autocard)
+                        cardtype = PaodekuaiUtils.get_card_type(autocard, request.count)
                         if 0 == request.cardtype:
                             playResult.cardtype = cardtype
                         elif cardtype != PaodekuaiType.ZHADAN:
@@ -157,65 +160,55 @@ class Performance(paodekuai_pb2_grpc.PaodekuaiServicer):
         """
         shuffle = ShuffleResult()
         cardlist = list()
-        cardlist.extend([102, 202, 402,
-                         103, 203, 403,
-                         104, 204, 404,
-                         105, 205, 405,
-                         106, 206, 406,
-                         107, 207, 407,
-                         108, 208, 408,
-                         109, 209, 409,
-                         110, 210, 410,
-                         111, 211, 411,
-                         112, 212, 412,
-                         113, 213, 413,
-                         114, 214, 414, 302
-                            , 303
-                            , 304
-                            , 305
-                            , 306
-                            , 307
-                            , 308
-                            , 309
-                            , 310
-                            , 311
-                            , 312
-                            , 313
-                            , 314])
-        #random.shuffle(cardlist)
+        shuffle.cardlist.extend([114, 214, 314])
+        cardlist.extend([102, 202, 302, 402,
+                         103, 203, 303, 403,
+                         104, 204, 304, 404,
+                         105, 205, 305, 405,
+                         106, 206, 306, 406,
+                         107, 207, 307, 407,
+                         108, 208, 308, 408,
+                         109, 209, 309, 409,
+                         110, 210, 310, 410,
+                         111, 211, 311, 411,
+                         112, 212, 312, 412,
+                         113, 213, 313, 413,
+                         114, 214, 314, 414
+                         ])
+        random.shuffle(cardlist)
         first = 0
         mincard = 415
-        for i in range(0, request.count):
-            for j in range(i * 13, (i + 1) * 13):
-                if 402 < cardlist[j] < mincard:
-                    first = i
-                    mincard = cardlist[j]
-
-        if 415 == mincard:
-            mincard = 315
+        # 三人16张
+        if 4 != request.count:
+            cardlist.remove(102)
+            cardlist.remove(202)
+            cardlist.remove(302)
+            cardlist.remove(414)
             for i in range(0, request.count):
-                for j in range(i * 13, (i + 1) * 13):
-                    if 402 == cardlist[j]:
-                        shuffle.first = i
-                        shuffle.min = 402
-                        shuffle.cardlist.extend(cardlist)
-                        return shuffle
-                    if 302 < cardlist[j] < mincard:
-                        first = i
-                        mincard = cardlist[j]
-        if mincard == 315:
-            mincard = 215
-            for i in range(0, request.count):
-                for j in range(i * 13, (i + 1) * 13):
-                    if 302 == cardlist[j]:
-                        shuffle.first = i
-                        shuffle.min = 302
-                        shuffle.cardlist.extend(cardlist)
-                        return shuffle
-                    if 202 < cardlist[j] < mincard:
+                for j in range(i * 16, (i + 1) * 16):
+                    if 402 < cardlist[j] < mincard:
                         first = i
                         mincard = cardlist[j]
 
+            if 415 == mincard:
+                mincard = 315
+                for i in range(0, request.count):
+                    for j in range(i * 16, (i + 1) * 16):
+                        if 402 == cardlist[j]:
+                            shuffle.first = i
+                            shuffle.min = 402
+                            shuffle.cardlist.extend(cardlist)
+                            return shuffle
+                        if 302 < cardlist[j] < mincard:
+                            first = i
+                            mincard = cardlist[j]
+
+        else:
+            for i in range(0, request.count):
+                for j in range(i * 13, (i + 1) * 13):
+                    if 402 < cardlist[j] < mincard:
+                        first = i
+                        mincard = cardlist[j]
         shuffle.first = first
         shuffle.min = mincard
         shuffle.cardlist.extend(cardlist)

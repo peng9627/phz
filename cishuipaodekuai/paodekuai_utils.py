@@ -8,10 +8,11 @@ class PaodekuaiUtils(object):
     """
 
     @staticmethod
-    def get_card_type(cards):
+    def get_card_type(cards, count):
         """
         :获取牌型 0错误 1单牌 2对子 3三张 4顺子 5连对 6三连 7飞机 8炸弹 9四张 10三带对 11三带二
         :param cards
+        :param count
         """
         temp = []
         for c in cards:
@@ -29,6 +30,8 @@ class PaodekuaiUtils(object):
         elif 2 == len(temp) and temp[0] == temp[1]:
             return PaodekuaiType.DUIZI
         elif 3 == len(temp) and temp[0] == temp[2]:
+            if 3 == count and 14 == temp[0]:
+                return PaodekuaiType.ZHADAN
             return PaodekuaiType.SANBUDAI
         elif 4 == len(temp):
             if temp[0] == temp[3]:
@@ -294,15 +297,21 @@ class PaodekuaiUtils(object):
         return []
 
     @staticmethod
-    def auto_play(cardlist, cardtype, lastvalue, lastsize):
+    def auto_play(cardlist, cardtype, lastvalue, lastsize, count, feijidaidui):
         """
         :自动出牌
         :param cardlist
         :param cardtype
         :param lastvalue
         :param lastsize
+        :param count
         """
         playcards = list()
+        if 4 != count and 114 in cardlist and 214 in cardlist and 314 in cardlist:
+            playcards.append(114)
+            playcards.append(214)
+            playcards.append(314)
+            return playcards
         cards = list()
         cards.extend(cardlist)
         cards.sort(cmp=PaodekuaiUtils.reversed_cmp)
@@ -408,25 +417,40 @@ class PaodekuaiUtils(object):
                         tempcards.remove(s)
                     else:
                         return []
-                if 0 == lastsize % 5 and len(tempcards) >= 2 * len(sanlian) / 3:
-                    playcards.extend(tempcards[0:2 * len(sanlian) / 3])
-                    return playcards
+                if feijidaidui:
+                    dui = PaodekuaiUtils.get_duizi(tempcards)
+                    if len(dui) / 2 >= lastsize / 5:
+                        playcards.extend(dui[0:2 * lastsize / 5])
+                        return playcards
+                    return []
+                else:
+                    dai = []
+                    t1 = 0
+                    for t in tempcards:
+                        if t % 100 != t1 % 100:
+                            dai.append(t)
+                            t1 = t
+                            if len(dai) / 2 == lastsize / 5:
+                                playcards.extend(dai)
+                                return playcards
+                    return []
             if len(si) > 0:
                 playcards.extend(si[0:4])
                 return playcards
         return playcards
 
     @staticmethod
-    def baodan(request, playResult):
+    def baodan(request, playResult, feijidaidui):
         """
         :下家报单后出牌
         :param request
         :param playResult
         """
-        autocard = PaodekuaiUtils.auto_play(request.handcards, PaodekuaiType.DUIZI, 0, 2)
+        autocard = PaodekuaiUtils.auto_play(request.handcards, PaodekuaiType.DUIZI, 0, 2, request.count, feijidaidui)
         playResult.cardtype = PaodekuaiType.DUIZI
         if len(autocard) == 0:
-            autocard = PaodekuaiUtils.auto_play(request.handcards, PaodekuaiType.SHUNZI, 0, 5)
+            autocard = PaodekuaiUtils.auto_play(request.handcards, PaodekuaiType.SHUNZI, 0, 5, request.count,
+                                                feijidaidui)
             playResult.cardtype = PaodekuaiType.SHUNZI
             if len(autocard) == 0:
                 return PaodekuaiUtils.maxdan(request, playResult)
@@ -493,3 +517,18 @@ class PaodekuaiUtils(object):
                 istype = False
                 break
         return istype
+
+    @staticmethod
+    def is_feijidaidui(cards):
+        temp = []
+        for c in cards:
+            if 2 == c % 100:
+                temp.append(16)
+            else:
+                temp.append(c % 100)
+        temp = sorted(temp)
+        san = PaodekuaiUtils.get_san(temp)
+        for c in san:
+            temp.remove(c)
+        dui = PaodekuaiUtils.get_duizi(temp)
+        return len(dui) > 0

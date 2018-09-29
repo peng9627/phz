@@ -40,6 +40,7 @@ message SettleData {
     bool dagun = 5; //红黑胡打滚
     int32 gameRules = 6; //规则
     repeated UserData userData = 7; //结算用户
+    int32 fangpaoUser = 8;
 }
 
 //用户结算数据

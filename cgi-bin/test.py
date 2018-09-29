@@ -1,8 +1,10 @@
-#! /usr/bin/env python
+#! /usr/bin/python
 # -*- coding: utf-8 -*-
 import cgi
 
-import look
+import look1
+
+print("Content-type: text/html;charset=utf-8\n\n")
 
 html = '''
     <!DOCTYPE html>
@@ -14,8 +16,6 @@ if form.has_key('action'):
     <!DOCTYPE html>
     %s
     '''
-    print html % look.look(action)
+    print html % look1.look(action)
 else:
     print html
-
-
