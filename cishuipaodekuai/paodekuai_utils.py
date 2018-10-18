@@ -142,13 +142,15 @@ class PaodekuaiUtils(object):
         """
         zhadan = list()
         if len(cardlist) > 3:
-            for i in range(0, len(cardlist) - 3):
+            i = 0
+            while i < len(cardlist) - 3:
                 if cardlist[i] % 100 == cardlist[i + 3] % 100:
                     zhadan.append(cardlist[i])
                     zhadan.append(cardlist[i + 1])
                     zhadan.append(cardlist[i + 2])
                     zhadan.append(cardlist[i + 3])
-                    i += 3
+                    i += 2
+                i += 1
         return zhadan
 
     @staticmethod
@@ -159,11 +161,14 @@ class PaodekuaiUtils(object):
         """
         san = list()
         if len(cardlist) >= 3:
-            for i in range(0, len(cardlist) - 2):
+            i = 0
+            while i < len(cardlist) - 2:
                 if cardlist[i] % 100 == cardlist[i + 2] % 100:
                     san.append(cardlist[i])
                     san.append(cardlist[i + 1])
                     san.append(cardlist[i + 2])
+                    i += 2
+                i += 1
         return san
 
     @staticmethod
@@ -174,10 +179,13 @@ class PaodekuaiUtils(object):
         """
         duizi = list()
         if len(cardlist) >= 2:
-            for i in range(0, len(cardlist) - 1):
+            i = 0
+            while i < len(cardlist) - 1:
                 if cardlist[i] % 100 == cardlist[i + 1] % 100:
                     duizi.append(cardlist[i])
                     duizi.append(cardlist[i + 1])
+                    i += 1
+                i += 1
         return duizi
 
     @staticmethod

@@ -19,12 +19,13 @@ class Tuitongzi(object):
         if 0 == cardtype:
             if cardlist[0] != 31:
                 cardvalue += (MahjongUtils.get_card_value(cardlist[0])) * 2
-            # else:
-            #     cardvalue += 1
+            # TODO 江湖　揽胜 半点
+            else:
+                cardvalue += 1
             if cardlist[1] != 31:
                 cardvalue += (MahjongUtils.get_card_value(cardlist[1])) * 2
-            # else:
-            # cardvalue += 1
+            else:
+                cardvalue += 1
             while cardvalue >= 20:
                 cardvalue -= 20
             return cardvalue
@@ -77,7 +78,7 @@ class Tuitongzi(object):
         return 0
 
     @staticmethod
-    def get_multiple(value, gamerules):
+    def get_multiple(cardtype, value):
 
         """
         :获取倍数
@@ -85,18 +86,14 @@ class Tuitongzi(object):
         :param gamerules
         :return:
         """
-        if 1 == (gamerules % 2):
-            if 1 == value:
-                return 12
-            if 2 == value:
-                return 13
-            if 3 == value:
-                return 15
-        else:
-            if 1 == value:
-                return 2
-            if 2 == value:
-                return 3
-            if 3 == value:
-                return 5
-        return 1
+        multiple = 1
+        if 0 == cardtype:
+            if value > 15:
+                multiple = 2
+            if value > 17:
+                multiple = 3
+        elif 1 == cardtype or 2 == cardtype:
+            multiple = 4
+        elif 3 == cardtype:
+            multiple = 5
+        return multiple

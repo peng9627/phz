@@ -11,6 +11,18 @@ service Paodekuai {
     //洗牌函数
     rpc shuffle (ShuffleData) returns (ShuffleResult) {
     }
+
+    //洗牌函数
+    rpc yitiaolong (UserCards) returns (YitiaolongResult) {
+    }
+}
+
+message UserCards {
+    repeated int32 cardlist = 1; //牌
+}
+
+message YitiaolongResult {
+    bool yitiaolong = 1;
 }
 
 message PlayData {

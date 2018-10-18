@@ -553,10 +553,10 @@ class Daer(object):
                 tempd = list()
                 tempd.extend(handlist)
                 if hucard > 0:
-                    temp.append(hucard)
+                    tempd.append(hucard)
                 tempd.remove(d)
                 tempd.remove(d)
-                if -1 != Daer.check_lanhu(temp, 0):
+                if -1 != Daer.check_lanhu(tempd, 0):
                     return True
         return False
 

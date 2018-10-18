@@ -80,7 +80,7 @@ class Performance(zhipai_pb2_grpc.ZhipaiServicer):
             if b.userId == request.banker:
                 banker_type = Tuitongzi.getCardType(b.cardlist)
                 banker_value = Tuitongzi.get_card_value(b.cardlist, banker_type)
-                banker_multiple = 1
+                banker_multiple = Tuitongzi.get_multiple(banker_type, banker_value)
                 win = 0
                 banker_array_cards = sorted(b.cardlist)
                 for u in request.userSettleData:
@@ -90,7 +90,7 @@ class Performance(zhipai_pb2_grpc.ZhipaiServicer):
                         user_value = Tuitongzi.get_card_value(u.cardlist, user_type)
                         userSettleResult.userId = u.userId
                         userSettleResult.cardValue = user_type
-                        user_multiple = 1
+                        user_multiple = Tuitongzi.get_multiple(user_type, user_value)
                         # TODO
                         if user_type < banker_type or (user_type == banker_type and user_value < banker_value):
                             userSettleResult.win = -banker_multiple * u.score
@@ -100,15 +100,25 @@ class Performance(zhipai_pb2_grpc.ZhipaiServicer):
                             win -= user_multiple * u.score
                         else:
                             user_array_cards = sorted(u.cardlist)
-                            # TODO
+                            # TODO 江湖
                             # if banker_array_cards[1] % 10 < user_array_cards[1] % 10:
                             #     userSettleResult.win = user_multiple * u.score
                             #     win -= user_multiple * u.score
                             # elif banker_array_cards[1] % 10 > user_array_cards[1] % 10:
                             #     userSettleResult.win = -banker_multiple * u.score
                             #     win += banker_multiple * u.score
-                            if user_value != 0 and banker_array_cards[1] != 31 and (banker_array_cards[1] % 10 < user_array_cards[
-                                1] % 10 or user_array_cards[1] == 31):
+
+                            # 其他
+                            # if user_value != 0 and banker_array_cards[1] != 31 and (
+                            #         banker_array_cards[1] % 10 < user_array_cards[1] % 10 or user_array_cards[1] == 31):
+                            #     userSettleResult.win = user_multiple * u.score
+                            #     win -= user_multiple * u.score
+                            # else:
+                            #     userSettleResult.win = -banker_multiple * u.score
+                            #     win += banker_multiple * u.score
+
+                            # 揽胜
+                            if banker_array_cards[1] % 10 < user_array_cards[1] % 10:
                                 userSettleResult.win = user_multiple * u.score
                                 win -= user_multiple * u.score
                             else:

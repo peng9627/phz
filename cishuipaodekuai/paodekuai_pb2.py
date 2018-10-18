@@ -20,7 +20,67 @@ DESCRIPTOR = _descriptor.FileDescriptor(
     package='',
     syntax='proto3',
     serialized_pb=_b(
-        '\n\x0fpaodekuai.proto\"t\n\x08PlayData\x12\x11\n\thandcards\x18\x01 \x03(\x05\x12\x11\n\tplaycards\x18\x02 \x03(\x05\x12\x11\n\tlastcards\x18\x03 \x03(\x05\x12\x10\n\x08\x63\x61rdtype\x18\x04 \x01(\x05\x12\r\n\x05\x63ount\x18\x05 \x01(\x05\x12\x0e\n\x06\x62\x61odan\x18\x06 \x01(\x08\".\n\nPlayResult\x12\x0e\n\x06result\x18\x01 \x03(\x05\x12\x10\n\x08\x63\x61rdtype\x18\x02 \x01(\x05\"\x1c\n\x0bShuffleData\x12\r\n\x05\x63ount\x18\x01 \x01(\x05\"=\n\rShuffleResult\x12\x10\n\x08\x63\x61rdlist\x18\x01 \x03(\x05\x12\r\n\x05\x66irst\x18\x02 \x01(\x05\x12\x0b\n\x03min\x18\x03 \x01(\x05\x32\\\n\tPaodekuai\x12$\n\x08playcard\x12\t.PlayData\x1a\x0b.PlayResult\"\x00\x12)\n\x07shuffle\x12\x0c.ShuffleData\x1a\x0e.ShuffleResult\"\x00\x42\x18\n\x14paodekuai.mode.protoP\x01\x62\x06proto3')
+        '\n\x0fpaodekuai.proto\"\x1d\n\tUserCards\x12\x10\n\x08\x63\x61rdlist\x18\x01 \x03(\x05\"&\n\x10YitiaolongResult\x12\x12\n\nyitiaolong\x18\x01 \x01(\x08\"t\n\x08PlayData\x12\x11\n\thandcards\x18\x01 \x03(\x05\x12\x11\n\tplaycards\x18\x02 \x03(\x05\x12\x11\n\tlastcards\x18\x03 \x03(\x05\x12\x10\n\x08\x63\x61rdtype\x18\x04 \x01(\x05\x12\r\n\x05\x63ount\x18\x05 \x01(\x05\x12\x0e\n\x06\x62\x61odan\x18\x06 \x01(\x08\".\n\nPlayResult\x12\x0e\n\x06result\x18\x01 \x03(\x05\x12\x10\n\x08\x63\x61rdtype\x18\x02 \x01(\x05\"\x1c\n\x0bShuffleData\x12\r\n\x05\x63ount\x18\x01 \x01(\x05\"=\n\rShuffleResult\x12\x10\n\x08\x63\x61rdlist\x18\x01 \x03(\x05\x12\r\n\x05\x66irst\x18\x02 \x01(\x05\x12\x0b\n\x03min\x18\x03 \x01(\x05\x32\x8b\x01\n\tPaodekuai\x12$\n\x08playcard\x12\t.PlayData\x1a\x0b.PlayResult\"\x00\x12)\n\x07shuffle\x12\x0c.ShuffleData\x1a\x0e.ShuffleResult\"\x00\x12-\n\nyitiaolong\x12\n.UserCards\x1a\x11.YitiaolongResult\"\x00\x42\x18\n\x14paodekuai.mode.protoP\x01\x62\x06proto3')
+)
+
+_USERCARDS = _descriptor.Descriptor(
+    name='UserCards',
+    full_name='UserCards',
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name='cardlist', full_name='UserCards.cardlist', index=0,
+            number=1, type=5, cpp_type=1, label=3,
+            has_default_value=False, default_value=[],
+            message_type=None, enum_type=None, containing_type=None,
+            is_extension=False, extension_scope=None,
+            options=None, file=DESCRIPTOR),
+    ],
+    extensions=[
+    ],
+    nested_types=[],
+    enum_types=[
+    ],
+    options=None,
+    is_extendable=False,
+    syntax='proto3',
+    extension_ranges=[],
+    oneofs=[
+    ],
+    serialized_start=19,
+    serialized_end=48,
+)
+
+_YITIAOLONGRESULT = _descriptor.Descriptor(
+    name='YitiaolongResult',
+    full_name='YitiaolongResult',
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name='yitiaolong', full_name='YitiaolongResult.yitiaolong', index=0,
+            number=1, type=8, cpp_type=7, label=1,
+            has_default_value=False, default_value=False,
+            message_type=None, enum_type=None, containing_type=None,
+            is_extension=False, extension_scope=None,
+            options=None, file=DESCRIPTOR),
+    ],
+    extensions=[
+    ],
+    nested_types=[],
+    enum_types=[
+    ],
+    options=None,
+    is_extendable=False,
+    syntax='proto3',
+    extension_ranges=[],
+    oneofs=[
+    ],
+    serialized_start=50,
+    serialized_end=88,
 )
 
 _PLAYDATA = _descriptor.Descriptor(
@@ -84,8 +144,8 @@ _PLAYDATA = _descriptor.Descriptor(
     extension_ranges=[],
     oneofs=[
     ],
-    serialized_start=19,
-    serialized_end=135,
+    serialized_start=90,
+    serialized_end=206,
 )
 
 _PLAYRESULT = _descriptor.Descriptor(
@@ -121,8 +181,8 @@ _PLAYRESULT = _descriptor.Descriptor(
     extension_ranges=[],
     oneofs=[
     ],
-    serialized_start=137,
-    serialized_end=183,
+    serialized_start=208,
+    serialized_end=254,
 )
 
 _SHUFFLEDATA = _descriptor.Descriptor(
@@ -151,8 +211,8 @@ _SHUFFLEDATA = _descriptor.Descriptor(
     extension_ranges=[],
     oneofs=[
     ],
-    serialized_start=185,
-    serialized_end=213,
+    serialized_start=256,
+    serialized_end=284,
 )
 
 _SHUFFLERESULT = _descriptor.Descriptor(
@@ -195,15 +255,31 @@ _SHUFFLERESULT = _descriptor.Descriptor(
     extension_ranges=[],
     oneofs=[
     ],
-    serialized_start=215,
-    serialized_end=276,
+    serialized_start=286,
+    serialized_end=347,
 )
 
+DESCRIPTOR.message_types_by_name['UserCards'] = _USERCARDS
+DESCRIPTOR.message_types_by_name['YitiaolongResult'] = _YITIAOLONGRESULT
 DESCRIPTOR.message_types_by_name['PlayData'] = _PLAYDATA
 DESCRIPTOR.message_types_by_name['PlayResult'] = _PLAYRESULT
 DESCRIPTOR.message_types_by_name['ShuffleData'] = _SHUFFLEDATA
 DESCRIPTOR.message_types_by_name['ShuffleResult'] = _SHUFFLERESULT
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
+
+UserCards = _reflection.GeneratedProtocolMessageType('UserCards', (_message.Message,), dict(
+    DESCRIPTOR=_USERCARDS,
+    __module__='paodekuai_pb2'
+    # @@protoc_insertion_point(class_scope:UserCards)
+))
+_sym_db.RegisterMessage(UserCards)
+
+YitiaolongResult = _reflection.GeneratedProtocolMessageType('YitiaolongResult', (_message.Message,), dict(
+    DESCRIPTOR=_YITIAOLONGRESULT,
+    __module__='paodekuai_pb2'
+    # @@protoc_insertion_point(class_scope:YitiaolongResult)
+))
+_sym_db.RegisterMessage(YitiaolongResult)
 
 PlayData = _reflection.GeneratedProtocolMessageType('PlayData', (_message.Message,), dict(
     DESCRIPTOR=_PLAYDATA,
@@ -242,8 +318,8 @@ _PAODEKUAI = _descriptor.ServiceDescriptor(
     file=DESCRIPTOR,
     index=0,
     options=None,
-    serialized_start=278,
-    serialized_end=370,
+    serialized_start=350,
+    serialized_end=489,
     methods=[
         _descriptor.MethodDescriptor(
             name='playcard',
@@ -261,6 +337,15 @@ _PAODEKUAI = _descriptor.ServiceDescriptor(
             containing_service=None,
             input_type=_SHUFFLEDATA,
             output_type=_SHUFFLERESULT,
+            options=None,
+        ),
+        _descriptor.MethodDescriptor(
+            name='yitiaolong',
+            full_name='Paodekuai.yitiaolong',
+            index=2,
+            containing_service=None,
+            input_type=_USERCARDS,
+            output_type=_YITIAOLONGRESULT,
             options=None,
         ),
     ])

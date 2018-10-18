@@ -904,10 +904,9 @@ class Performance(zhipai_pb2_grpc.ZhipaiServicer):
             cheat_index = 0
             cheat_probability = 0
             for c in range(0, len(request.cheatData)):
-                if request.cheatData[c].level != 0:
+                if request.cheatData[c].level > cheat_probability:
                     cheat_index = c
                     cheat_probability = request.cheatData[c].level
-                    break
             if 0 != cheat_probability:
                 if random.random() * 100 < cheat_probability:
                     max_card = [cardlist[cheat_index * 3], cardlist[cheat_index * 3 + 1], cardlist[cheat_index * 3 + 2]]
@@ -960,10 +959,9 @@ class Performance(zhipai_pb2_grpc.ZhipaiServicer):
             cheat_index = 0
             cheat_probability = 0
             for c in range(0, len(request.cheatData)):
-                if request.cheatData[c].level != 0:
+                if request.cheatData[c].level > cheat_probability:
                     cheat_index = c
                     cheat_probability = request.cheatData[c].level
-                    break
             if 0 != cheat_probability:
                 if random.random() * 100 < cheat_probability:
                     max_card = [cardlist[cheat_index * 3], cardlist[cheat_index * 3 + 1], cardlist[cheat_index * 3 + 2]]

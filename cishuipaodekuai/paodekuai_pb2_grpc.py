@@ -25,6 +25,11 @@ class PaodekuaiStub(object):
             request_serializer=paodekuai__pb2.ShuffleData.SerializeToString,
             response_deserializer=paodekuai__pb2.ShuffleResult.FromString,
         )
+        self.yitiaolong = channel.unary_unary(
+            '/Paodekuai/yitiaolong',
+            request_serializer=paodekuai__pb2.UserCards.SerializeToString,
+            response_deserializer=paodekuai__pb2.YitiaolongResult.FromString,
+        )
 
 
 class PaodekuaiServicer(object):
@@ -45,6 +50,13 @@ class PaodekuaiServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def yitiaolong(self, request, context):
+        """洗牌函数
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
 
 def add_PaodekuaiServicer_to_server(servicer, server):
     rpc_method_handlers = {
@@ -57,6 +69,11 @@ def add_PaodekuaiServicer_to_server(servicer, server):
             servicer.shuffle,
             request_deserializer=paodekuai__pb2.ShuffleData.FromString,
             response_serializer=paodekuai__pb2.ShuffleResult.SerializeToString,
+        ),
+        'yitiaolong': grpc.unary_unary_rpc_method_handler(
+            servicer.yitiaolong,
+            request_deserializer=paodekuai__pb2.UserCards.FromString,
+            response_serializer=paodekuai__pb2.YitiaolongResult.SerializeToString,
         ),
     }
     generic_handler = grpc.method_handlers_generic_handler(

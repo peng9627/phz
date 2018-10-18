@@ -39,7 +39,7 @@ class Performance(paodekuai_pb2_grpc.PaodekuaiServicer):
                 last_card_type = PaodekuaiType.FEIJI
         last_value = PaodekuaiUtils.get_card_value(request.lastcards, last_card_type)
         feijidaidui = False
-        if last_value == PaodekuaiType.FEIJI:
+        if last_card_type == PaodekuaiType.FEIJI:
             feijidaidui = PaodekuaiUtils.is_feijidaidui(request.lastcards)
 
         # 上家没出牌
@@ -160,7 +160,6 @@ class Performance(paodekuai_pb2_grpc.PaodekuaiServicer):
         """
         shuffle = ShuffleResult()
         cardlist = list()
-        shuffle.cardlist.extend([114, 214, 314])
         cardlist.extend([102, 202, 302, 402,
                          103, 203, 303, 403,
                          104, 204, 304, 404,
@@ -179,7 +178,7 @@ class Performance(paodekuai_pb2_grpc.PaodekuaiServicer):
         first = 0
         mincard = 415
         # 三人16张
-        if 4 != request.count:
+        if 3 == request.count:
             cardlist.remove(102)
             cardlist.remove(202)
             cardlist.remove(302)
@@ -213,6 +212,12 @@ class Performance(paodekuai_pb2_grpc.PaodekuaiServicer):
         shuffle.min = mincard
         shuffle.cardlist.extend(cardlist)
         return shuffle
+
+    def yitiaolong(self, request, context):
+        result = YitiaolongResult()
+        cardtype = PaodekuaiUtils.get_card_type(request.cardlist, 4)
+        result.yitiaolong = (cardtype == 4)
+        return result
 
 
 def rpc_server():
