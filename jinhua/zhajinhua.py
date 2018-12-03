@@ -112,7 +112,7 @@ class Zhajinhua(object):
             if cardlist_values[0] == 2 and cardlist_values[2] == 14:
                 return [3]
             else:
-                return cardlist_values[2]
+                return [cardlist_values[2]]
         elif cardtype == Zhajinhua.CARDTYPE_DUIZI:
             if cardlist_values[0] == cardlist_values[1]:
                 return [cardlist_values[0], cardlist_values[2]]

@@ -217,7 +217,7 @@ def rpc_server():
     logging.info("started!")
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
     zhipai_pb2_grpc.add_ZhipaiServicer_to_server(Performance(), server)
-    server.add_insecure_port('[::]:50001')
+    server.add_insecure_port('[::]:50002')
     server.start()
     try:
         while True:

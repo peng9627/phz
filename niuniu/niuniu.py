@@ -245,7 +245,7 @@ class Niuniu(object):
         valuetemp = list()
         for t in temp:
             valuetemp.append(
-                10 if (ZhipaiCardUtils.get_card_value(temp[t])) > 10 else (ZhipaiCardUtils.get_card_value(temp[t])))
+                10 if (ZhipaiCardUtils.get_card_value(t)) > 10 else (ZhipaiCardUtils.get_card_value(t)))
         if gamerules % 2 == 1:
             shunvalue = Niuniu.getShunDouValue(cardlist)
             if val1 < shunvalue:

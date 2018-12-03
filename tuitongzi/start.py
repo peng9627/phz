@@ -139,20 +139,19 @@ class Performance(zhipai_pb2_grpc.ZhipaiServicer):
         :return:
         """
         shuffle = ShuffleResult()
-        cardlist = list()
-        if 7 == request.allocid:
-            cardlist.extend([11, 11, 11, 11,
-                             12, 12, 12, 12,
-                             13, 13, 13, 13,
-                             14, 14, 14, 14,
-                             15, 15, 15, 15,
-                             16, 16, 16, 16,
-                             17, 17, 17, 17,
-                             18, 18, 18, 18,
-                             19, 19, 19, 19,
-                             31, 31, 31, 31])
-            random.shuffle(cardlist)
-            cardlist = cheat(cardlist, request.cheatData)
+        cardlist = []
+        cardlist.extend([11, 11, 11, 11,
+                         12, 12, 12, 12,
+                         13, 13, 13, 13,
+                         14, 14, 14, 14,
+                         15, 15, 15, 15,
+                         16, 16, 16, 16,
+                         17, 17, 17, 17,
+                         18, 18, 18, 18,
+                         19, 19, 19, 19,
+                         31, 31, 31, 31])
+        random.shuffle(cardlist)
+        cardlist = cheat(cardlist, request.cheatData)
         shuffle.cardlist.extend(cardlist)
         thislog.info(cardlist)
         return shuffle
