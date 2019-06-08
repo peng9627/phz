@@ -19,13 +19,8 @@ class Tuitongzi(object):
         if 0 == cardtype:
             if cardlist[0] != 31:
                 cardvalue += (MahjongUtils.get_card_value(cardlist[0])) * 2
-            # TODO 江湖　揽胜 半点
-            else:
-                cardvalue += 1
             if cardlist[1] != 31:
                 cardvalue += (MahjongUtils.get_card_value(cardlist[1])) * 2
-            else:
-                cardvalue += 1
             while cardvalue >= 20:
                 cardvalue -= 20
             return cardvalue
