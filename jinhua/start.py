@@ -82,6 +82,13 @@ class Performance(zhipai_pb2_grpc.ZhipaiServicer):
         jinhuaData = JinhuaData()
         jinhuaData.ParseFromString(request.extraData)
         if jinhuaData.gameType:
+            cardlist.extend([109, 209, 309, 409,
+                             110, 210, 310, 410,
+                             111, 211, 311, 411,
+                             112, 212, 312, 412,
+                             113, 213, 313, 413,
+                             114, 214, 314, 414])
+        else:
             cardlist.extend([102, 202, 302, 402,
                              103, 203, 303, 403,
                              104, 204, 304, 404,
@@ -90,13 +97,6 @@ class Performance(zhipai_pb2_grpc.ZhipaiServicer):
                              107, 207, 307, 407,
                              108, 208, 308, 408,
                              109, 209, 309, 409,
-                             110, 210, 310, 410,
-                             111, 211, 311, 411,
-                             112, 212, 312, 412,
-                             113, 213, 313, 413,
-                             114, 214, 314, 414])
-        else:
-            cardlist.extend([109, 209, 309, 409,
                              110, 210, 310, 410,
                              111, 211, 311, 411,
                              112, 212, 312, 412,
